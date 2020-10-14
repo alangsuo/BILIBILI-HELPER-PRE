@@ -22,7 +22,6 @@ public class BiliMain {
         logger.info("-----任务启动-----");
         DailyTask dailyTask = new DailyTask();
         dailyTask.doDailyTask();
-
     }
 
 }
