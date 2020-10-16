@@ -1,4 +1,4 @@
-package top.misec.Task.RewardBean;
+package top.misec.pojo.rewardbean;
 
 /**
  * Auto-generated: 2020-10-12 20:35:37

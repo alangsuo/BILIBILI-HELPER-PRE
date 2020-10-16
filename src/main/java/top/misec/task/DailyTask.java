@@ -1,4 +1,4 @@
-package top.misec.Task;
+package top.misec.task;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -6,12 +6,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import top.misec.API.API;
-import top.misec.ApiQuery.oftenAPI;
-import top.misec.CFG.Config;
-import top.misec.Login.Verify;
-import top.misec.Task.UserInfoBean.Data;
-import top.misec.Utils.HttpUnit;
+import top.misec.apiquery.ApiList;
+import top.misec.apiquery.OftenAPI;
+import top.misec.config.Config;
+import top.misec.login.Verify;
+import top.misec.pojo.userinfobean.Data;
+import top.misec.utils.HttpUnit;
 
 import java.util.*;
 
@@ -19,14 +19,17 @@ import java.util.*;
  * @author Junzhou Liu
  * @create 2020/10/11 20:44
  */
-public class DailyTask implements ExpTask {
+public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
 
     Data userInfo = null;
 
+    /**
+     * @param aid 要分享的视频aid
+     */
     public void avShare(String aid) {
         String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
-        JsonObject result = HttpUnit.Post((API.AvShare), requestBody);
+        JsonObject result = HttpUnit.doPost((ApiList.AvShare), requestBody);
 
         if (result.get("code").getAsInt() == 0) {
             logger.info("----视频: av" + aid + "分享成功----");
@@ -41,7 +44,7 @@ public class DailyTask implements ExpTask {
      */
     public void mangaSign(String platform) {
         String requestBody = "platform=" + platform;
-        JsonObject result = HttpUnit.Post(API.Manga, requestBody);
+        JsonObject result = HttpUnit.doPost(ApiList.Manga, requestBody);
 
         if (result == null) {
             logger.info("----哔哩哔哩漫画已经签到过了----");
@@ -57,15 +60,16 @@ public class DailyTask implements ExpTask {
      * @param select_like 是否同时点赞 1是
      * @return 是否投币成功
      */
-    public boolean CoinAdd(String aid, int multiply, int select_like) {
+    public boolean coinAdd(String aid, int multiply, int select_like) {
         String requestBody = "aid=" + aid
                 + "&multiply=" + multiply
                 + "&select_like=" + select_like
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
 
-        if (!isCoin(aid)) {//判断曾经是否对此av投币过
-            JsonObject jsonObject = HttpUnit.Post(API.CoinAdd, requestBody);
+        //判断曾经是否对此av投币过
+        if (!isCoin(aid)) {
+            JsonObject jsonObject = HttpUnit.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get("code").getAsInt() == 0) {
                 logger.info("-----投币成功-----");
                 return true;
@@ -87,7 +91,7 @@ public class DailyTask implements ExpTask {
      */
     public boolean isCoin(String aid) {
         String urlParam = "?aid=" + aid;
-        JsonObject result = HttpUnit.Get(API.isCoin + urlParam);
+        JsonObject result = HttpUnit.doGet(ApiList.isCoin + urlParam);
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
@@ -108,7 +112,7 @@ public class DailyTask implements ExpTask {
         Map<String, Boolean> videoMap = new HashMap<>();
 
         String urlParam = "?rid=" + rid + "&day=" + day;
-        JsonObject resultJson = HttpUnit.Get(API.getRegionRanking + urlParam);
+        JsonObject resultJson = HttpUnit.doGet(ApiList.getRegionRanking + urlParam);
 
         logger.info("----获取分区: " + rid + "的" + day + "日top10榜单成功----");
 
@@ -119,14 +123,14 @@ public class DailyTask implements ExpTask {
             //初步判断是部分分区不参与排行榜，导致没请求到数据。
         } catch (Exception e) {
             logger.debug("如果出现了这个异常，麻烦提个Issues告诉下我: " + e);
-            logger.debug("----提Issues时请附上这条信息-请求参数：" + API.getRegionRanking + urlParam);
+            logger.debug("----提Issues时请附上这条信息-请求参数：" + ApiList.getRegionRanking + urlParam);
             logger.debug("----提Issues时请附上这条信息-返回结果：" + resultJson);
         }
 
         if (jsonArray != null) {
             for (JsonElement videoInfo : jsonArray) {
-                JsonObject TempObject = videoInfo.getAsJsonObject();
-                videoMap.put(TempObject.get("aid").getAsString(), false);
+                JsonObject tempObject = videoInfo.getAsJsonObject();
+                videoMap.put(tempObject.get("aid").getAsString(), false);
             }
         }
 
@@ -163,7 +167,7 @@ public class DailyTask implements ExpTask {
      * @return 还需要投几个币  (50-已获得的经验值)/10
      */
     public int expConfirm(int coinExp) {
-        JsonObject resultJson = HttpUnit.Get(API.needCoin);
+        JsonObject resultJson = HttpUnit.doGet(ApiList.needCoin);
         int getCoinExp = resultJson.get("number").getAsInt();
         if (getCoinExp == coinExp * 10) {
             logger.info("----本日投币任务已完成，无需投币了 ----");
@@ -180,12 +184,14 @@ public class DailyTask implements ExpTask {
      */
     @Deprecated
     public void doCoinAdd() {
-        final int max_numberOfCoins = 5;//安全检查，最多最多只能投5个。
-        int numberOfCoins = Config.getInstance().getNumberOfCoins();
+        //安全检查，最多投币数
+        final int maxNumberOfCoins = 5;
         //获取自定义配置投币数 配置写在src/main/resources/config.json中
-        int exp_coin = expConfirm(numberOfCoins);//今日能够获取经验的硬币数量
-
-        Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
+        int numberOfCoins = Config.getInstance().getNumberOfCoins();
+        //今日能够获取经验的硬币数量
+        int expCoin = expConfirm(numberOfCoins);
+        //投币前硬币余额
+        Double beforeAddCoinBalance = OftenAPI.getCoinBalance();
 
         logger.debug("投币前余额为 ： " + beforeAddCoinBalance);
 
@@ -194,8 +200,8 @@ public class DailyTask implements ExpTask {
           如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
           如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
          */
-        if (numberOfCoins >= exp_coin) {
-            numberOfCoins = exp_coin;
+        if (numberOfCoins >= expCoin) {
+            numberOfCoins = expCoin;
         }
 
         /*
@@ -210,7 +216,7 @@ public class DailyTask implements ExpTask {
         /*
          * 设定的硬币数小等于已获得经验的投币数时，不再投币
          */
-        if (numberOfCoins <= 5 - exp_coin) {
+        if (numberOfCoins <= 5 - expCoin) {
             numberOfCoins = 0;
         }
 
@@ -219,19 +225,19 @@ public class DailyTask implements ExpTask {
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
          */
-        while (numberOfCoins > 0 && numberOfCoins <= max_numberOfCoins) {
+        while (numberOfCoins > 0 && numberOfCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
             logger.debug("正在为av" + aid + "投币");
-            boolean flag = CoinAdd(aid, 1, Config.getInstance().getSelect_like());
+            boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 numberOfCoins--;
             }
         }
-        logger.debug("投币任务完成后余额为:  " + oftenAPI.getCoinBalance());
+        logger.debug("投币任务完成后余额为:  " + OftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
-        JsonObject resultJson = HttpUnit.Get(API.silver2coin);
+        JsonObject resultJson = HttpUnit.doGet(ApiList.silver2coin);
         int responseCode = resultJson.get("code").getAsInt();
         if (responseCode == 0) {
             logger.info("银瓜子兑换硬币成功");
@@ -239,8 +245,8 @@ public class DailyTask implements ExpTask {
             logger.debug("银瓜子兑换硬币失败 原因是： " + resultJson.get("msg").getAsString());
         }
 
-        JsonObject queryStatus = HttpUnit.Get(API.getSilver2coinStatus).get("data").getAsJsonObject();
-        double silver2coinMoney = oftenAPI.getCoinBalance();
+        JsonObject queryStatus = HttpUnit.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
+        double silver2coinMoney = OftenAPI.getCoinBalance();
         logger.info("当前银瓜子余额 ：" + queryStatus.get("silver").getAsInt());
         logger.info("兑换银瓜子后硬币余额 ：" + silver2coinMoney);
 
@@ -254,16 +260,17 @@ public class DailyTask implements ExpTask {
 
     public void videoWatch() {
         String aid = regionRanking();
-        int played_time = (int) (Math.random() * 60) + 1;
+        int playedTime = new Random().nextInt(90) + 1;
         String postBody = "aid=" + aid
-                + "&played_time" + played_time;
-        JsonObject resultJson = HttpUnit.Post(API.videoHeartbeat, postBody);
+                + "&played_time" + playedTime;
+        JsonObject resultJson = HttpUnit.doPost(ApiList.videoHeartbeat, postBody);
         int responseCode = resultJson.get("code").getAsInt();
 
         if (responseCode == 0) {
-            logger.info("av" + aid + "播放成功,已观看到第" + played_time + "秒");
-            if (Config.getInstance().isWatch_share() == 1) {
-                avShare(aid);//观看完开始分享视频
+            logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+            if (Config.getInstance().isWatchShare() == 1) {
+                //观看完开始分享视频
+                avShare(aid);
             }
         } else {
             logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
@@ -277,7 +284,7 @@ public class DailyTask implements ExpTask {
      * 1：月会员
      * 2：年会员
      */
-    public int query_vipStatusType() {
+    public int queryVipStatusType() {
         if (userInfo.getVipStatus() == 1) {
             return userInfo.getVipType();
         } else {
@@ -287,22 +294,26 @@ public class DailyTask implements ExpTask {
     }
 
 
-    /*
+    /**
      * 月底自动给自己充电。//仅充会到期的B币券，低于2的时候不会充
      */
     public void charge() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
-        int coupon_balance = userInfo.getWallet().getCoupon_balance();//B币券余额
-        int vip_type = query_vipStatusType();//查询大会员类型
-        String userId = Verify.getInstance().getUserId();//被充电用户的userID
 
-        if (day == 1 && vip_type == 2) {
-            oftenAPI.vipPrivilege(1);
-            oftenAPI.vipPrivilege(2);
+        //B币券余额
+        int couponBalance = userInfo.getWallet().getCoupon_balance();
+        //大会员类型
+        int vipType = queryVipStatusType();
+        //被充电用户的userID
+        String userId = Verify.getInstance().getUserId();
+
+        if (day == 1 && vipType == 2) {
+            OftenAPI.vipPrivilege(1);
+            OftenAPI.vipPrivilege(2);
         }
 
-        if (vip_type == 0 || vip_type == 1) {
+        if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
         }
@@ -310,16 +321,16 @@ public class DailyTask implements ExpTask {
         /*
           判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
-        if (day == 28 && coupon_balance >= 2 &&
-                Config.getInstance().getMonth_end_auto_charge() == 1 &&
-                vip_type == 2) {
-            String requestBody = "elec_num=" + coupon_balance * 10
+        if (day == 28 && couponBalance >= 2 &&
+                Config.getInstance().getMonthEndAutoCharge() == 1 &&
+                vipType == 2) {
+            String requestBody = "elec_num=" + couponBalance * 10
                     + "&up_mid=" + userId
                     + "&otype=up"
                     + "&oid=" + userId
                     + "&csrf=" + Verify.getInstance().getBiliJct();
 
-            JsonObject jsonObject = HttpUnit.Post(API.autoCharge, requestBody);
+            JsonObject jsonObject = HttpUnit.doPost(ApiList.autoCharge, requestBody);
 
             int resultCode = jsonObject.get("code").getAsInt();
             if (resultCode == 0) {
@@ -328,8 +339,9 @@ public class DailyTask implements ExpTask {
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
                     logger.info("----月底了，给自己充电成功啦，送的B币券没有浪费哦----");
-                    logger.info("本次给自己充值了: " + coupon_balance * 10 + "个电池哦");
-                    String order_no = dataJson.get("order_no").getAsString();//充电留言token
+                    logger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
+                    //获取充电留言token
+                    String order_no = dataJson.get("order_no").getAsString();
                     chargeComments(order_no);
                 } else {
                     logger.debug("----充电失败了啊 原因: " + jsonObject);
@@ -348,7 +360,7 @@ public class DailyTask implements ExpTask {
         String requestBody = "order_id=" + token
                 + "&&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
-        JsonObject jsonObject = HttpUnit.Post(API.chargeComment, requestBody);
+        JsonObject jsonObject = HttpUnit.doPost(ApiList.chargeComment, requestBody);
         logger.debug(jsonObject);
 
     }
@@ -369,7 +381,7 @@ public class DailyTask implements ExpTask {
         //@happy888888: query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
         //@JunzhouLiu: query_isVip是可以做是否VIP判断的 根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
         //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
-        if (day != 1 || query_vipStatusType() != 0) {
+        if (day != 1 || queryVipStatusType() != 0) {
             //是会员就可以领取
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
             return;
@@ -377,7 +389,7 @@ public class DailyTask implements ExpTask {
 
         String requestBody = "{\"reason_id\":" + reason_id + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
-        JsonObject jsonObject = HttpUnit.Post(API.mangaGetVipReward, requestBody);
+        JsonObject jsonObject = HttpUnit.doPost(ApiList.mangaGetVipReward, requestBody);
         if (jsonObject.get("code").getAsInt() == 0) {
             //@happy888888:好像也可以getAsString或,getAsShort
             //@JunzhouLiu:Int比较好判断
@@ -390,7 +402,7 @@ public class DailyTask implements ExpTask {
 
     public void doDailyTask() {
 
-        JsonObject userJson = HttpUnit.Get(API.LOGIN);
+        JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
 
         if (userJson == null) {
             logger.info("-----Cookies可能失效了-----");
@@ -410,7 +422,7 @@ public class DailyTask implements ExpTask {
         logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
 
-        Config.getInstance().ConfigInit();
+        Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
         mangaSign("ios");
         silver2coin();//银瓜子换硬币

@@ -2,8 +2,8 @@ package top.misec;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-import top.misec.Login.Verify;
-import top.misec.Task.DailyTask;
+import top.misec.login.Verify;
+import top.misec.task.DailyTask;
 
 
 /**
