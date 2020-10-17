@@ -45,7 +45,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Package with Maven
-        run: -B package assembly:single --file pom.xml -Dmaven.test.skip=true
+        run: mvn -B package assembly:single --file pom.xml -Dmaven.test.skip=true
 
       - name: ZIP files
         run: |
