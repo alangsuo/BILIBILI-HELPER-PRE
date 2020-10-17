@@ -49,8 +49,8 @@ jobs:
 
       - name: ZIP files
         run: |
-          mv -f ./target/BILIBILI-HELPER-${{steps.tag_main.outputs.value}}-jar-with-dependencies.jar BILIBILI-HELPER.jar
-          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER.jar
+          mv -f ./target/BILIBILI-HELPER-${{steps.tag_main.outputs.value}}-jar-with-dependencies.jar BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
           zip -m BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
 
@@ -61,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: V${{steps.tag_latest.outputs.value}}
-          release_name: BILIBILI-HELPER - v${{steps.tag_latest.outputs.value}}
+          release_name: BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}
           body: |
             ${{steps.description.outputs.content}}
           draft: false
@@ -75,8 +75,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ./BILIBILI-HELPER v${{steps.tag_latest.outputs.value}}.zip
-          asset_name: BILIBILI-HELPER.v${{steps.tag_latest.outputs.value}}.zip
+          asset_name: BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.zip
           asset_content_type: application/zip
-
 
 
