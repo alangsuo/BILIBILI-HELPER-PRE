@@ -3,12 +3,7 @@ package top.misec.config;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
+import top.misec.utils.LoadJsonFromResources;
 
 /**
  * Auto-generated: 2020-10-13 17:10:40
@@ -108,16 +103,9 @@ public class Config {
      * 读取配置文件 src/main/resources/config.json
      */
     public void configInit() {
-        try {
-            FileInputStream in = new FileInputStream("src/main/resources/config.json");
-            Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            Config.CONFIG = new Gson().fromJson(reader, Config.class);
-            logger.info("----Init ConfigFile Successful----");
-            logger.debug(Config.getInstance().outputConfig());
-        } catch (FileNotFoundException e) {
-            logger.debug(e);
-            e.printStackTrace();
-        }
+        String configJson = LoadJsonFromResources.loadJSONFromAsset();
+        Config.CONFIG = new Gson().fromJson(configJson, Config.class);
+        logger.info("----Init ConfigFile Successful----");
+        logger.debug(Config.getInstance().outputConfig());
     }
-
 }
