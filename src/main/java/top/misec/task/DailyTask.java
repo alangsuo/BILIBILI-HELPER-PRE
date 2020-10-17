@@ -27,14 +27,14 @@ public class DailyTask {
     /**
      * @param aid 要分享的视频aid
      */
-    public void avShare(String aid) {
+    public void dailyAvShare(String aid) {
         String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUnit.doPost((ApiList.AvShare), requestBody);
 
         if (result.get("code").getAsInt() == 0) {
-            logger.info("----视频: av" + aid + "分享成功----");
+            logger.info("视频: av" + aid + "分享成功");
         } else {
-            logger.debug("----视频分享失败，原因: " + result);
+            logger.debug("视频分享失败，原因: " + result);
         }
 
     }
@@ -47,9 +47,9 @@ public class DailyTask {
         JsonObject result = HttpUnit.doPost(ApiList.Manga, requestBody);
 
         if (result == null) {
-            logger.info("----哔哩哔哩漫画已经签到过了----");
+            logger.info("哔哩哔哩漫画已经签到过了");
         } else {
-            logger.info("----完成漫画签到----");
+            logger.info("完成漫画签到");
         }
 //        logger.debug(result);
     }
@@ -71,10 +71,10 @@ public class DailyTask {
         if (!isCoin(aid)) {
             JsonObject jsonObject = HttpUnit.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get("code").getAsInt() == 0) {
-                logger.info("-----投币成功-----");
+                logger.info("为Av" + aid + "投币成功");
                 return true;
             } else {
-                logger.info("-----投币失败" + jsonObject.get("message").getAsString());
+                logger.info("投币失败" + jsonObject.get("message").getAsString());
                 return false;
             }
         } else {
@@ -95,10 +95,10 @@ public class DailyTask {
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("-----已经为Av" + aid + "投过" + multiply + "枚硬币啦-----");
+            logger.info("已经为Av" + aid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
-            logger.info("-----还没有为Av" + aid + " 投过硬币，开始投币-----");
+            logger.info("还没有为Av" + aid + " 投过硬币，开始投币");
             return false;
         }
     }
@@ -114,7 +114,7 @@ public class DailyTask {
         String urlParam = "?rid=" + rid + "&day=" + day;
         JsonObject resultJson = HttpUnit.doGet(ApiList.getRegionRanking + urlParam);
 
-        logger.info("----获取分区: " + rid + "的" + day + "日top10榜单成功----");
+        logger.info("获取分区: " + rid + "的" + day + "日top10榜单成功");
 
         JsonArray jsonArray = null;
         try {
@@ -123,8 +123,8 @@ public class DailyTask {
             //初步判断是部分分区不参与排行榜，导致没请求到数据。
         } catch (Exception e) {
             logger.debug("如果出现了这个异常，麻烦提个Issues告诉下我: " + e);
-            logger.debug("----提Issues时请附上这条信息-请求参数：" + ApiList.getRegionRanking + urlParam);
-            logger.debug("----提Issues时请附上这条信息-返回结果：" + resultJson);
+            logger.debug("提Issues时请附上这条信息-请求参数: " + ApiList.getRegionRanking + urlParam);
+            logger.debug("提Issues时请附上这条信息-返回结果: " + resultJson);
         }
 
         if (jsonArray != null) {
@@ -170,10 +170,10 @@ public class DailyTask {
         JsonObject resultJson = HttpUnit.doGet(ApiList.needCoin);
         int getCoinExp = resultJson.get("number").getAsInt();
         if (getCoinExp == coinExp * 10) {
-            logger.info("----本日投币任务已完成，无需投币了 ----");
+            logger.info("本日投币任务已完成，无需投币了");
             return 0;
         } else {
-            logger.info("----如果需要获得本日全部经验，还需要投" + (50 - getCoinExp) / 10 + "枚硬币----");
+            logger.info("如果需要获得本日全部经验，还需要投" + (50 - getCoinExp) / 10 + "枚硬币");
             return (50 - getCoinExp) / 10;
         }
     }
@@ -193,7 +193,10 @@ public class DailyTask {
         //投币前硬币余额
         Double beforeAddCoinBalance = OftenAPI.getCoinBalance();
 
-        logger.debug("投币前余额为 ： " + beforeAddCoinBalance);
+        //投币最多操作数 解决csrl校验失败时死循环的问题
+        int addCoinOperateCount = 0;
+
+        logger.debug("投币前余额为 : " + beforeAddCoinBalance);
 
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
         /*
@@ -227,13 +230,17 @@ public class DailyTask {
          */
         while (numberOfCoins > 0 && numberOfCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
+            addCoinOperateCount++;
             logger.debug("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 numberOfCoins--;
             }
+            if (addCoinOperateCount > 20) {
+                break;
+            }
         }
-        logger.debug("投币任务完成后余额为:  " + OftenAPI.getCoinBalance());
+        logger.debug("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -242,13 +249,13 @@ public class DailyTask {
         if (responseCode == 0) {
             logger.info("银瓜子兑换硬币成功");
         } else {
-            logger.debug("银瓜子兑换硬币失败 原因是： " + resultJson.get("msg").getAsString());
+            logger.debug("银瓜子兑换硬币失败 原因是: " + resultJson.get("msg").getAsString());
         }
 
         JsonObject queryStatus = HttpUnit.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
         double silver2coinMoney = OftenAPI.getCoinBalance();
-        logger.info("当前银瓜子余额 ：" + queryStatus.get("silver").getAsInt());
-        logger.info("兑换银瓜子后硬币余额 ：" + silver2coinMoney);
+        logger.info("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
+        logger.info("兑换银瓜子后硬币余额: " + silver2coinMoney);
 
         /*
         兑换银瓜子后，更新userInfo中的硬币值
@@ -257,32 +264,58 @@ public class DailyTask {
 
     }
 
+    /**
+     * @return jsonObject 返回status对象，包含{"login":true,"watch":true,"coins":50,
+     * "share":true,"email":true,"tel":true,"safe_question":true,"identify_card":false}
+     * @author @srcrs
+     */
+    public JsonObject getDailyTaskStatus() {
+        JsonObject jsonObject = HttpUnit.doGet(ApiList.reward);
 
-    public void videoWatch() {
-        String aid = regionRanking();
-        int playedTime = new Random().nextInt(90) + 1;
-        String postBody = "aid=" + aid
-                + "&played_time" + playedTime;
-        JsonObject resultJson = HttpUnit.doPost(ApiList.videoHeartbeat, postBody);
-        int responseCode = resultJson.get("code").getAsInt();
+        int responseCode = jsonObject.get("code").getAsInt();
 
         if (responseCode == 0) {
-            logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
-            if (Config.getInstance().isWatchShare() == 1) {
-                //观看完开始分享视频
-                avShare(aid);
-            }
+            logger.info("请求本日任务经验状态成功");
+            return jsonObject.get("data").getAsJsonObject();
         } else {
-            logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
+            logger.debug(jsonObject.get("message").getAsString());
         }
 
+        return jsonObject;
+    }
+
+
+    public void videoWatch() {
+
+        JsonObject dailyTaskStatus = getDailyTaskStatus();
+
+        if (dailyTaskStatus.get("watch").getAsBoolean()) {
+            logger.info("本日观看任务已经完成了，不需要再观看视频了");
+        } else {
+            String aid = regionRanking();
+            int playedTime = new Random().nextInt(90) + 1;
+            String postBody = "aid=" + aid
+                    + "&played_time" + playedTime;
+            JsonObject resultJson = HttpUnit.doPost(ApiList.videoHeartbeat, postBody);
+            int responseCode = resultJson.get("code").getAsInt();
+            if (responseCode == 0) {
+                logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+                if (dailyTaskStatus.get("share").getAsBoolean()) {
+                    logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
+                } else {
+                    dailyAvShare(aid);
+                }
+            } else {
+                logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
+            }
+        }
     }
 
     /**
      * @return 返回会员类型
-     * 0：无会员（会员过期，当前不是会员）
-     * 1：月会员
-     * 2：年会员
+     * 0:无会员（会员过期，当前不是会员）
+     * 1:月会员
+     * 2:年会员
      */
     public int queryVipStatusType() {
         if (userInfo.getVipStatus() == 1) {
@@ -338,17 +371,17 @@ public class DailyTask {
                 logger.debug(dataJson);
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
-                    logger.info("----月底了，给自己充电成功啦，送的B币券没有浪费哦----");
+                    logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
                     logger.info("本次给自己充值了: " + couponBalance * 10 + "个电池哦");
                     //获取充电留言token
                     String order_no = dataJson.get("order_no").getAsString();
                     chargeComments(order_no);
                 } else {
-                    logger.debug("----充电失败了啊 原因: " + jsonObject);
+                    logger.debug("充电失败了啊 原因: " + jsonObject);
                 }
 
             } else {
-                logger.debug("----充电失败了啊 原因: " + jsonObject);
+                logger.debug("充电失败了啊 原因: " + jsonObject);
             }
         } else {
             logger.debug("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
@@ -395,7 +428,7 @@ public class DailyTask {
             //@JunzhouLiu:Int比较好判断
             logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
         } else {
-            logger.info("大会员领取漫读劵失败，原因为：" + jsonObject.get("msg").getAsString());
+            logger.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
         }
         logger.debug(jsonObject);
     }
@@ -405,7 +438,7 @@ public class DailyTask {
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
 
         if (userJson == null) {
-            logger.info("-----Cookies可能失效了-----");
+            logger.info("Cookies可能失效了");
             //@happy88888: 失效上面好像就抛出JsonParseException异常了，这里执行得到吗.......
             //@JunzhouLiu: fixed 2020-10-15
         } else {
@@ -416,15 +449,15 @@ public class DailyTask {
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
-        logger.info("----用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
-        logger.info("----登录成功 经验+5----");
-        logger.info("----硬币余额: " + userInfo.getMoney());
-        logger.info("----距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
+        logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
+        logger.info("登录成功 经验+5");
+        logger.info("硬币余额: " + userInfo.getMoney());
+        logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
 
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
-        mangaSign("ios");
+        mangaSign(Config.getInstance().getDevicePlatform());
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
         charge();

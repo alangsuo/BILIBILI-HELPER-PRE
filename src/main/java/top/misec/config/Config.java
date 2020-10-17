@@ -22,10 +22,21 @@ public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
 
+    //每日设定的投币数 [0,5]
     private int numberOfCoins;
+    //投币时是否点赞 [0,1]
     private int selectLike;
+    //观看时并分享 [0,1]
     private int watchAndShare;
+    //年度大会员自动充电[0,1]
     private int monthEndAutoCharge;
+    //执行客户端操作时的平台 [ios,android]
+    private String devicePlatform;
+
+    public String getDevicePlatform() {
+        return devicePlatform;
+    }
+
 
     public int getMonthEndAutoCharge() {
         return monthEndAutoCharge;
@@ -72,13 +83,15 @@ public class Config {
     public String toString() {
         return "Config{" +
                 "numberOfCoins=" + numberOfCoins +
-                ", select_like=" + selectLike +
-                ", watch_share=" + watchAndShare +
+                ", selectLike=" + selectLike +
+                ", watchAndShare=" + watchAndShare +
+                ", monthEndAutoCharge=" + monthEndAutoCharge +
+                ", devicePlatform='" + devicePlatform + '\'' +
                 '}';
     }
 
     public String outputConfig() {
-        String outputConfig = "----您设置的每日投币数量为: ";
+        String outputConfig = "您设置的每日投币数量为: ";
         outputConfig += numberOfCoins;
 
         if (selectLike == 0) {
@@ -87,13 +100,8 @@ public class Config {
             outputConfig += " 投币时点赞 ";
         }
 
-        if (watchAndShare == 1) {
-            outputConfig += " 观看时分享----";
-        } else {
-            outputConfig += " 观看时不分享----";
-        }
 
-        return outputConfig;
+        return outputConfig + "执行app客户端操作的系统是: " + devicePlatform;
     }
 
     /**
