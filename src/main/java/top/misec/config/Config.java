@@ -17,15 +17,30 @@ public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
 
-    //每日设定的投币数 [0,5]
+
+    /**
+     * 每日设定的投币数 [0,5]
+     */
     private int numberOfCoins;
-    //投币时是否点赞 [0,1]
+
+    /**
+     * 投币时是否点赞 [0,1]
+     */
     private int selectLike;
-    //观看时并分享 [0,1]
+
+    /**
+     * 观看时是否分享 [0,1]
+     */
     private int watchAndShare;
-    //年度大会员自动充电[0,1]
-    private int monthEndAutoCharge;
-    //执行客户端操作时的平台 [ios,android]
+
+    /**
+     * 年度大会员自动充电[false,true]
+     */
+    private boolean monthEndAutoCharge;
+
+    /**
+     * 执行客户端操作时的平台 [ios,android]
+     */
     private String devicePlatform;
 
     public String getDevicePlatform() {
@@ -33,29 +48,26 @@ public class Config {
     }
 
 
-    public int getMonthEndAutoCharge() {
-        return monthEndAutoCharge;
-    }
-
-    public void setMonthEndAutoCharge(int monthEndAutoCharge) {
-        this.monthEndAutoCharge = monthEndAutoCharge;
-    }
-
     private static Config CONFIG = new Config();
 
     public static Config getInstance() {
         return CONFIG;
     }
 
-    public Config() {
+    public int getSelectLike() {
+        return selectLike;
     }
 
-    public int isWatchShare() {
+    public int getWatchAndShare() {
         return watchAndShare;
     }
 
-    public void setWatchAndShare(int watchAndShare) {
-        this.watchAndShare = watchAndShare;
+    public Config() {
+    }
+
+
+    public boolean isMonthEndAutoCharge() {
+        return monthEndAutoCharge;
     }
 
     public void setNumberOfCoins(int numberOfCoins) {
@@ -66,13 +78,6 @@ public class Config {
         return numberOfCoins;
     }
 
-    public void setSelectLike(int selectLike) {
-        this.selectLike = selectLike;
-    }
-
-    public int getSelectLike() {
-        return selectLike;
-    }
 
     @Override
     public String toString() {
@@ -89,14 +94,14 @@ public class Config {
         String outputConfig = "您设置的每日投币数量为: ";
         outputConfig += numberOfCoins;
 
-        if (selectLike == 0) {
-            outputConfig += " 投币时不点赞 ";
+        if (selectLike == 1) {
+            outputConfig += " 投币时是否点赞: " + "是";
         } else {
-            outputConfig += " 投币时点赞 ";
+            outputConfig += " 投币时是否点赞: " + "否";
         }
 
 
-        return outputConfig + "执行app客户端操作的系统是: " + devicePlatform;
+        return outputConfig + " 执行app客户端操作的系统是: " + devicePlatform;
     }
 
     /**
