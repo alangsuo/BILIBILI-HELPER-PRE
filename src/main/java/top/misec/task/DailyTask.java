@@ -21,6 +21,7 @@ import java.util.*;
  */
 public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
+    private String statusCodeStr = "code";
 
     Data userInfo = null;
 
@@ -31,7 +32,7 @@ public class DailyTask {
         String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUnit.doPost((ApiList.AvShare), requestBody);
 
-        if (result.get("code").getAsInt() == 0) {
+        if (result.get(statusCodeStr).getAsInt() == 0) {
             logger.info("视频: av" + aid + "分享成功");
         } else {
             logger.debug("视频分享失败，原因: " + result);
@@ -70,7 +71,7 @@ public class DailyTask {
         //判断曾经是否对此av投币过
         if (!isCoin(aid)) {
             JsonObject jsonObject = HttpUnit.doPost(ApiList.CoinAdd, requestBody);
-            if (jsonObject.get("code").getAsInt() == 0) {
+            if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
                 logger.info("为Av" + aid + "投币成功");
                 return true;
             } else {
@@ -275,43 +276,39 @@ public class DailyTask {
         int responseCode = jsonObject.get("code").getAsInt();
 
         if (responseCode == 0) {
-            logger.info("请求本日任务经验状态成功");
+            logger.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
             logger.debug(jsonObject.get("message").getAsString());
+            return HttpUnit.doGet(ApiList.reward).get("data").getAsJsonObject();
+            //偶发性请求失败，再请求一次。
         }
-
-        return jsonObject;
     }
 
 
     public void videoWatch() {
-
         JsonObject dailyTaskStatus = getDailyTaskStatus();
-
-        if (dailyTaskStatus.get("watch").getAsBoolean()) {
-            if (!dailyTaskStatus.get("share").getAsBoolean()) {
-                String aid = regionRanking();
-                dailyAvShare(aid);
-             }
-            logger.info("本日观看任务已经完成了，不需要再观看视频了");
-        } else {
-            String aid = regionRanking();
+        String aid = "";
+        if (!dailyTaskStatus.get("watch").getAsBoolean()) {
             int playedTime = new Random().nextInt(90) + 1;
+            aid = regionRanking();
             String postBody = "aid=" + aid
-                    + "&played_time" + playedTime;
+                    + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUnit.doPost(ApiList.videoHeartbeat, postBody);
             int responseCode = resultJson.get("code").getAsInt();
             if (responseCode == 0) {
                 logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
-                if (dailyTaskStatus.get("share").getAsBoolean()) {
-                    logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
-                } else {
-                    dailyAvShare(aid);
-                }
             } else {
                 logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
             }
+        } else {
+            logger.info("本日观看视频任务已经完成了，不需要再观看视频了");
+        }
+
+        if (!dailyTaskStatus.get("share").getAsBoolean()) {
+            dailyAvShare(aid);
+        } else {
+            logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
         }
     }
 
@@ -327,9 +324,7 @@ public class DailyTask {
         } else {
             return 0;
         }
-
     }
-
 
     /**
      * 月底自动给自己充电。//仅充会到期的B币券，低于2的时候不会充
@@ -427,7 +422,7 @@ public class DailyTask {
         String requestBody = "{\"reason_id\":" + reason_id + "}";
         //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
         JsonObject jsonObject = HttpUnit.doPost(ApiList.mangaGetVipReward, requestBody);
-        if (jsonObject.get("code").getAsInt() == 0) {
+        if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
             //@happy888888:好像也可以getAsString或,getAsShort
             //@JunzhouLiu:Int比较好判断
             logger.info("大会员成功领取" + jsonObject.get("data").getAsJsonObject().get("amount").getAsInt() + "张漫读劵");
