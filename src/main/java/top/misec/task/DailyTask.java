@@ -109,7 +109,7 @@ public class DailyTask {
      * @return 随机返回一个aid
      */
     public String regionRanking(int rid, int day) {
-        Map<String, Boolean> videoMap = new HashMap<>();
+        Map<String, Boolean> videoMap = new HashMap(12);
 
         String urlParam = "?rid=" + rid + "&day=" + day;
         JsonObject resultJson = HttpUnit.doGet(ApiList.getRegionRanking + urlParam);
