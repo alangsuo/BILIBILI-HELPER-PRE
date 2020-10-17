@@ -1,9 +1,10 @@
 name: Auto_Package_BILIBILI-HELPER
 
 on:
+
   push:
-    tags:
-      - "v*"
+    paths:
+      - ".github/release.json"
 
 jobs:
   build:
