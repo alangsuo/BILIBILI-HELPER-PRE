@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
-    private String statusCodeStr = "code";
+    private final String statusCodeStr = "code";
 
     Data userInfo = null;
 
@@ -40,10 +40,8 @@ public class DailyTask {
 
     }
 
-    /**
-     * @param platform "ios" or "android"
-     */
-    public void mangaSign(String platform) {
+    public void doMangaSign() {
+        String platform = Config.getInstance().getDevicePlatform();
         String requestBody = "platform=" + platform;
         JsonObject result = HttpUnit.doPost(ApiList.Manga, requestBody);
 
@@ -52,7 +50,6 @@ public class DailyTask {
         } else {
             logger.info("完成漫画签到");
         }
-//        logger.debug(result);
     }
 
     /**
@@ -120,8 +117,7 @@ public class DailyTask {
         JsonArray jsonArray = null;
         try {
             jsonArray = resultJson.getAsJsonArray("data");
-            //极低的概率会抛异常，无法获取到jsonArray 可能是API返回的数据有问题。
-            //初步判断是部分分区不参与排行榜，导致没请求到数据。
+            //极低的概率会抛异常，初步判断是部分分区不参与排行榜，导致没请求到数据。
         } catch (Exception e) {
             logger.debug("如果出现了这个异常，麻烦提个Issues告诉下我: " + e);
             logger.debug("提Issues时请附上这条信息-请求参数: " + ApiList.getRegionRanking + urlParam);
@@ -134,8 +130,6 @@ public class DailyTask {
                 videoMap.put(tempObject.get("aid").getAsString(), false);
             }
         }
-
-
         String[] keys = videoMap.keySet().toArray(new String[0]);
         Random random = new Random();
 
@@ -165,79 +159,69 @@ public class DailyTask {
     /**
      * 获取当前投币获得的经验值
      *
-     * @return 还需要投几个币  (50-已获得的经验值)/10
+     * @return 本日已经投了几个币
      */
-    public int expConfirm(int coinExp) {
+    public int expConfirm() {
         JsonObject resultJson = HttpUnit.doGet(ApiList.needCoin);
         int getCoinExp = resultJson.get("number").getAsInt();
-        if (getCoinExp == coinExp * 10) {
-            logger.info("本日投币任务已完成，无需投币了");
-            return 0;
-        } else {
-            logger.info("如果需要获得本日全部经验，还需要投" + (50 - getCoinExp) / 10 + "枚硬币");
-            return (50 - getCoinExp) / 10;
-        }
+        logger.info("今日已获得投币经验: " + getCoinExp);
+        return getCoinExp / 10;
     }
 
     /**
      * 由于bilibili Api数据更新的问题，可能造成投币多投。
      * 更换API后 已修复
      */
-    @Deprecated
     public void doCoinAdd() {
+        //投币最多操作数 解决csrf校验失败时死循环的问题
+        int addCoinOperateCount = 0;
         //安全检查，最多投币数
         final int maxNumberOfCoins = 5;
         //获取自定义配置投币数 配置写在src/main/resources/config.json中
-        int numberOfCoins = Config.getInstance().getNumberOfCoins();
-        //今日能够获取经验的硬币数量
-        int expCoin = expConfirm(numberOfCoins);
+        int setCoin = Config.getInstance().getNumberOfCoins();
+        //已投的硬币
+        int useCoin = expConfirm();
+        //还需要投的币=设置投币数-已投的币数
+
+        if (setCoin > maxNumberOfCoins) {
+            logger.info("自定义投币数为: " + setCoin + "枚," + "为保护你的资产，自定义投币数重置为: " + maxNumberOfCoins + "枚");
+            setCoin = maxNumberOfCoins;
+        }
+
+        logger.info("自定义投币数为: " + setCoin + "枚," + "程序执行前已投: " + useCoin + "枚");
+        int needCoins = setCoin - useCoin;
+
         //投币前硬币余额
         Double beforeAddCoinBalance = OftenAPI.getCoinBalance();
-
-        //投币最多操作数 解决csrl校验失败时死循环的问题
-        int addCoinOperateCount = 0;
-
-        logger.debug("投币前余额为 : " + beforeAddCoinBalance);
-
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
-        /*
-          如果设定的投币数小于可获得经验的投币数，按设定的投币数执行。
-          如果设定的投币数大于可获得经验的投币数，只投获能得经验的币数。
-         */
-        if (numberOfCoins >= expCoin) {
-            numberOfCoins = expCoin;
+
+        if (needCoins <= 0) {
+            logger.info("已完成设定的投币任务，今日无需再投币了");
+        } else {
+            logger.info("投币数调整为: " + needCoins + "枚");
+            //投币数大于余额时，按余额投
+            if (needCoins > coinBalance) {
+                logger.info("完成今日设定投币任务还需要投: " + needCoins + "枚硬币，但是余额只有: " + beforeAddCoinBalance);
+                logger.info("投币数调整为: " + coinBalance);
+                needCoins = coinBalance;
+            }
         }
 
+        logger.info("投币前余额为 : " + beforeAddCoinBalance);
         /*
-           这里惨痛的教训，写反了判断符号，自己测试的时候，硬币损失惨重(损失了41个硬币)
-           不给我star的都是坏人！ 哼(￢︿̫̿￢☆)
-           如果用户硬币余额小于以上判断后的投币数，则按用户的硬币余额数量投币。
-         */
-        if (coinBalance < numberOfCoins) {
-            numberOfCoins = coinBalance;
-        }
-
-        /*
-         * 设定的硬币数小等于已获得经验的投币数时，不再投币
-         */
-        if (numberOfCoins <= 5 - expCoin) {
-            numberOfCoins = 0;
-        }
-
-        /*
-         * 开发时进行测试时。
+         * 开始投币
          * 请勿修改 max_numberOfCoins 这里多判断一次保证投币数超过5时 不执行投币操作
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
          */
-        while (numberOfCoins > 0 && numberOfCoins <= maxNumberOfCoins) {
+        while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
             addCoinOperateCount++;
             logger.debug("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
-                numberOfCoins--;
+                needCoins--;
             }
-            if (addCoinOperateCount > 20) {
+            if (addCoinOperateCount > 10) {
                 break;
             }
         }
@@ -272,9 +256,7 @@ public class DailyTask {
      */
     public JsonObject getDailyTaskStatus() {
         JsonObject jsonObject = HttpUnit.doGet(ApiList.reward);
-
-        int responseCode = jsonObject.get("code").getAsInt();
-
+        int responseCode = jsonObject.get(statusCodeStr).getAsInt();
         if (responseCode == 0) {
             logger.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
@@ -285,13 +267,11 @@ public class DailyTask {
         }
     }
 
-
     public void videoWatch() {
         JsonObject dailyTaskStatus = getDailyTaskStatus();
-        String aid = "";
+        String aid = regionRanking();
         if (!dailyTaskStatus.get("watch").getAsBoolean()) {
             int playedTime = new Random().nextInt(90) + 1;
-            aid = regionRanking();
             String postBody = "aid=" + aid
                     + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUnit.doPost(ApiList.videoHeartbeat, postBody);
@@ -329,7 +309,7 @@ public class DailyTask {
     /**
      * 月底自动给自己充电。//仅充会到期的B币券，低于2的时候不会充
      */
-    public void charge() {
+    public void doCharge() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
 
@@ -354,7 +334,7 @@ public class DailyTask {
           判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
         if (day == 28 && couponBalance >= 2 &&
-                Config.getInstance().getMonthEndAutoCharge() == 1 &&
+                Config.getInstance().isMonthEndAutoCharge() &&
                 vipType == 2) {
             String requestBody = "elec_num=" + couponBalance * 10
                     + "&up_mid=" + userId
@@ -436,13 +416,13 @@ public class DailyTask {
 
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
 
-        if (userJson == null) {
-            logger.info("Cookies可能失效了");
-            //@happy88888: 失效上面好像就抛出JsonParseException异常了，这里执行得到吗.......
-            //@JunzhouLiu: fixed 2020-10-15
-        } else {
+        //判断Cookies是否有效
+        if (userJson.get(statusCodeStr).getAsInt() == 0) {
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
+        } else {
+            logger.debug(userJson.get("message").getAsString());
+            logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
         }
 
         String uname = userInfo.getUname();
@@ -456,10 +436,10 @@ public class DailyTask {
 
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
-        mangaSign(Config.getInstance().getDevicePlatform());
+        doMangaSign();
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
-        charge();
+        doCharge();
         mangaGetVipReward(1);
     }
 }
