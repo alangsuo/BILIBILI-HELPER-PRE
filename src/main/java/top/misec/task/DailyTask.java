@@ -290,6 +290,10 @@ public class DailyTask {
         JsonObject dailyTaskStatus = getDailyTaskStatus();
 
         if (dailyTaskStatus.get("watch").getAsBoolean()) {
+            if (!dailyTaskStatus.get("share").getAsBoolean()) {
+                String aid = regionRanking();
+                dailyAvShare(aid);
+             }
             logger.info("本日观看任务已经完成了，不需要再观看视频了");
         } else {
             String aid = regionRanking();
