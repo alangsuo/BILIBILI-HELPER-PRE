@@ -371,7 +371,7 @@ public class DailyTask {
     public void chargeComments(String token) {
 
         String requestBody = "order_id=" + token
-                + "&&message=" + "BILIBILI-HELPER自动充电"
+                + "&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUnit.doPost(ApiList.chargeComment, requestBody);
         logger.debug(jsonObject);
