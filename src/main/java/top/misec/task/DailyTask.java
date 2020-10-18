@@ -300,6 +300,7 @@ public class DailyTask {
      */
     public int queryVipStatusType() {
         if (userInfo.getVipStatus() == 1) {
+            //只有VipStatus为1的时候获取到VipType才是有效的。
             return userInfo.getVipType();
         } else {
             return 0;
@@ -390,11 +391,9 @@ public class DailyTask {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
 
-        //@happy888888: query_isVip貌似不能判断会员类型，上上面的charge函数应该做userInfo.getVipType()的判断，这里不需要
-        //@JunzhouLiu: query_isVip是可以做是否VIP判断的 根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
+        //根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
         //@JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
-        if (day != 1 || queryVipStatusType() != 0) {
-            //是会员就可以领取
+        if (day != 1 || queryVipStatusType() == 0) {
             //一个月执行一次就行，跟几号没关系，由B站策略决定(有可能改领取时间)
             return;
         }
@@ -409,7 +408,6 @@ public class DailyTask {
         } else {
             logger.info("大会员领取漫读劵失败，原因为:" + jsonObject.get("msg").getAsString());
         }
-        logger.debug(jsonObject);
     }
 
     public void doDailyTask() {
