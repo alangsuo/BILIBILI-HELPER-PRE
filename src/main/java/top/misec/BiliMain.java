@@ -23,7 +23,7 @@ public class BiliMain {
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
         //每日任务65经验
-        logger.info("-----任务启动-----");
+        logger.debug("-----任务启动-----");
         DailyTask dailyTask = new DailyTask();
         dailyTask.doDailyTask();
     }

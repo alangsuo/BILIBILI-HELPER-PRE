@@ -35,7 +35,8 @@ public class DailyTask {
         if (result.get(statusCodeStr).getAsInt() == 0) {
             logger.info("视频: av" + aid + "分享成功");
         } else {
-            logger.debug("视频分享失败，原因: " + result);
+            logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
+            logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
         }
 
     }
@@ -216,7 +217,7 @@ public class DailyTask {
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
             addCoinOperateCount++;
-            logger.debug("正在为av" + aid + "投币");
+            logger.info("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 needCoins--;
@@ -225,7 +226,7 @@ public class DailyTask {
                 break;
             }
         }
-        logger.debug("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
+        logger.info("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -348,7 +349,7 @@ public class DailyTask {
             int resultCode = jsonObject.get("code").getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
-                logger.debug(dataJson);
+                //logger.debug(dataJson);
                 int statusCode = dataJson.get("status").getAsInt();
                 if (statusCode == 4) {
                     logger.info("月底了，给自己充电成功啦，送的B币券没有浪费哦");
@@ -364,7 +365,7 @@ public class DailyTask {
                 logger.debug("充电失败了啊 原因: " + jsonObject);
             }
         } else {
-            logger.debug("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
+            logger.info("今天是本月的第: " + day + "天，还没到给自己充电日子呢");
         }
     }
 
@@ -374,7 +375,7 @@ public class DailyTask {
                 + "&message=" + "BILIBILI-HELPER自动充电"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUnit.doPost(ApiList.chargeComment, requestBody);
-        logger.debug(jsonObject);
+        //logger.debug(jsonObject);
 
     }
 
