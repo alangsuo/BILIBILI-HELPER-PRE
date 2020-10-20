@@ -416,11 +416,14 @@ public class DailyTask {
         JsonObject userJson = HttpUnit.doGet(ApiList.LOGIN);
 
         //判断Cookies是否有效
-        if (userJson.get(statusCodeStr).getAsInt() == 0) {
+        if (userJson.get(statusCodeStr).getAsInt() == 0
+                && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
+
+            logger.info("登录成功");
         } else {
-            logger.debug(userJson.get("message").getAsString());
+            logger.debug(userJson);
             logger.warn("Cookies可能失效了,请仔细检查Github Secrets中DEDEUSERID SESSDATA BILI_JCT三项的值是否正确");
         }
 
@@ -428,7 +431,6 @@ public class DailyTask {
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
-        logger.info("登录成功 经验+5");
         logger.info("硬币余额: " + userInfo.getMoney());
         logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
                 (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
