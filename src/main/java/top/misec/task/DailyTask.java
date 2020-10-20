@@ -440,6 +440,7 @@ public class DailyTask {
         doCoinAdd();//投币任务
         doCharge();
         mangaGetVipReward(1);
+        logger.info("本日任务已全部执行完毕");
     }
 }
 
