@@ -39,6 +39,7 @@ public class DailyTask {
         } else {
             logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
             logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
+            desp.appendDesp("重要:csrf校验失败请检查BILI_JCT参数是否正确或者失效");
         }
 
     }
