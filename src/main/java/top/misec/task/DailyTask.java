@@ -433,14 +433,8 @@ public class DailyTask {
         //判断Cookies是否有效
         if (userJson.get(statusCodeStr).getAsInt() == 0
                 && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
-            if (levelInfo.get("current_exp").getAsInt() > levelInfo.get("current_min").getAsInt()) {
-                levelInfo.addProperty("next_exp", 28801);
-                //紧急修复，后续会通过运行时确定反序列化对象解决
-            }
-
             userInfo = new Gson().fromJson(userJson
                     .getAsJsonObject("data"), Data.class);
-
             logger.info("登录成功");
         } else {
             logger.debug(userJson);
@@ -454,15 +448,14 @@ public class DailyTask {
         logger.info("硬币余额: " + userInfo.getMoney());
         if (userInfo.getLevel_info().getCurrent_level() < 6) {
             logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
-                    (userInfo.getLevel_info().getNext_exp() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
+                    (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
         } else {
             logger.info("当前等级Lv6，经验值为：" + userInfo.getLevel_info().getCurrent_exp());
         }
 
-
         Config.getInstance().configInit();
         videoWatch();//观看视频 默认会调用分享
-        doMangaSign();
+        doMangaSign();//漫画签到
         silver2coin();//银瓜子换硬币
         doCoinAdd();//投币任务
         doLiveCheckin(); //直播签到
