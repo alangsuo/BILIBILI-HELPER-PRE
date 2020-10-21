@@ -57,4 +57,8 @@ public class ApiList {
      * 领取大会员漫画福利
      */
     public static String mangaGetVipReward = "https://manga.bilibili.com/twirp/user.v1.User/GetVipReward";
+    /**
+     * 直播签到
+     */
+    public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
 }
