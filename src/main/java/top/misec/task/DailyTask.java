@@ -205,6 +205,7 @@ public class DailyTask {
 
         if (needCoins <= 0) {
             logger.info("已完成设定的投币任务，今日无需再投币了");
+            desp.appendDesp("已完成设定的投币任务，今日无需再投币了");
         } else {
             logger.info("投币数调整为: " + needCoins + "枚");
             //投币数大于余额时，按余额投
@@ -347,6 +348,7 @@ public class DailyTask {
 
         if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
+            desp.appendDesp("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
         }
 
