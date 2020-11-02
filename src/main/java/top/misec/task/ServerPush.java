@@ -23,7 +23,7 @@ public class ServerPush {
 
         JsonObject jsonObject = HttpUtil.doPost(url, pushBody);
 
-        if (jsonObject.get("errmsg").getAsString().equals("success")) {
+        if ("success".equals(jsonObject.get("errmsg").getAsString())) {
             logger.info("任务状态推送成功");
         } else {
             logger.debug(jsonObject);

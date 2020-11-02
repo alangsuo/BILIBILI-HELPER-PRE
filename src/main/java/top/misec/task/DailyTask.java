@@ -453,8 +453,8 @@ public class DailyTask {
             wechatLogger.info("直播签到成功，本次签到获得" + data.get("text").getAsString() + "," + data.get("specialText").getAsString());
         } else {
             String message = liveCheckinResponse.get("message").getAsString();
-            wechatLogger.info(message);
-            logger.debug(message);
+            wechatLogger.info("直播签到失败: " + message);
+            logger.debug("直播签到失败: " + message);
         }
     }
 
@@ -487,7 +487,9 @@ public class DailyTask {
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
         logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
+        wechatLogger.info("用户名称: " + userInfo.getUname());
         logger.info("硬币余额: " + userInfo.getMoney());
+        wechatLogger.info("硬币余额: " + userInfo.getMoney());
         if (userInfo.getLevel_info().getCurrent_level() < 6) {
             logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
                     (userInfo.getLevel_info().getNext_exp_asInt() - userInfo.getLevel_info().getCurrent_exp()) / 65 + "天");
@@ -496,6 +498,7 @@ public class DailyTask {
         }
 
         Config.getInstance().configInit();
+        wechatLogger.info(Config.getInstance().outputConfig());
         videoWatch();//观看视频 默认会调用分享
         doMangaSign();//漫画签到
         silver2coin();//银瓜子换硬币
