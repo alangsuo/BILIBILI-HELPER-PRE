@@ -507,6 +507,7 @@ public class DailyTask {
         doCharge();
         mangaGetVipReward(1);
         logger.info("本日任务已全部执行完毕");
+        wechatLogger.info("欢迎大家通过用户群反馈问题" + "![image.png](https://i.loli.net/2020/11/02/wiCY4JhANstkcmF.png)");
         doServerPush();
     }
 }
