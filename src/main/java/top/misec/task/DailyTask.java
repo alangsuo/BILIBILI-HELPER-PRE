@@ -72,14 +72,14 @@ public class DailyTask {
         if (!isCoin(aid)) {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
-                logger.info("为Av" + aid + "投币成功");
+                logger.info("为av" + aid + "投币成功");
                 return true;
             } else {
                 logger.info("投币失败" + jsonObject.get("message").getAsString());
                 return false;
             }
         } else {
-            logger.debug(aid + "已经投币过了");
+            logger.debug("av" + aid + "已经投币过了");
             return false;
         }
     }
@@ -96,10 +96,10 @@ public class DailyTask {
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("已经为Av" + aid + "投过" + multiply + "枚硬币啦");
+            logger.info("已经为av" + aid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
-            logger.info("还没有为Av" + aid + " 投过硬币，开始投币");
+            logger.info("还没有为av" + aid + " 投过硬币，开始投币");
             return false;
         }
     }
@@ -114,8 +114,6 @@ public class DailyTask {
 
         String urlParam = "?rid=" + rid + "&day=" + day;
         JsonObject resultJson = HttpUtil.doGet(ApiList.getRegionRanking + urlParam);
-
-        logger.info("获取分区: " + rid + "的" + day + "日top10榜单成功");
 
         JsonArray jsonArray = null;
         try {
@@ -135,8 +133,9 @@ public class DailyTask {
         }
         String[] keys = videoMap.keySet().toArray(new String[0]);
         Random random = new Random();
-
-        return keys[random.nextInt(keys.length)];
+        String randomAid = keys[random.nextInt(keys.length)];
+        logger.info("获取分区" + rid + "的" + day + "日top10榜单成功");
+        return randomAid;
     }
 
     /**
@@ -221,12 +220,12 @@ public class DailyTask {
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
             String aid = regionRanking();
             addCoinOperateCount++;
-            logger.info("正在为av" + aid + "投币");
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 needCoins--;
             }
             if (addCoinOperateCount > 10) {
+                logger.info("尝试投币次数太多");
                 break;
             }
         }
@@ -235,7 +234,7 @@ public class DailyTask {
 
     public void silver2coin() {
         JsonObject resultJson = HttpUtil.doGet(ApiList.silver2coin);
-        int responseCode = resultJson.get("code").getAsInt();
+        int responseCode = resultJson.get(statusCodeStr).getAsInt();
         if (responseCode == 0) {
             logger.info("银瓜子兑换硬币成功");
         } else {
@@ -280,7 +279,7 @@ public class DailyTask {
             String postBody = "aid=" + aid
                     + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
-            int responseCode = resultJson.get("code").getAsInt();
+            int responseCode = resultJson.get(statusCodeStr).getAsInt();
             if (responseCode == 0) {
                 logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
             } else {
@@ -350,7 +349,7 @@ public class DailyTask {
 
             JsonObject jsonObject = HttpUtil.doPost(ApiList.autoCharge, requestBody);
 
-            int resultCode = jsonObject.get("code").getAsInt();
+            int resultCode = jsonObject.get(statusCodeStr).getAsInt();
             if (resultCode == 0) {
                 JsonObject dataJson = jsonObject.get("data").getAsJsonObject();
                 int statusCode = dataJson.get("status").getAsInt();
@@ -464,7 +463,8 @@ public class DailyTask {
         String uname = userInfo.getUname();
         //用户名模糊处理 @happy88888
         int s1 = uname.length() / 2, s2 = (s1 + 1) / 2;
-        logger.info("用户名称: " + uname.substring(0, s2) + String.join("", Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
+        logger.info("用户名称: " + uname.substring(0, s2) + String.join("",
+                Collections.nCopies(s1, "*")) + uname.substring(s1 + s2));
         logger.info("硬币余额: " + userInfo.getMoney());
         if (userInfo.getLevel_info().getCurrent_level() < 6) {
             logger.info("距离升级到Lv" + (userInfo.getLevel_info().getCurrent_level() + 1) + "还有: " +
