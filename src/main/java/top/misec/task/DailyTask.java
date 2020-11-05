@@ -436,7 +436,7 @@ public class DailyTask {
 
 
     public void doServerPush() {
-        if (ServerVerify.getFTKEY() != null) {
+        if (ServerVerify.getFtkey() != null) {
             ServerPush serverPush = new ServerPush();
             serverPush.addOtherMsg("欢迎大家通过用户群反馈问题 " + "https://i.loli.net/2020/11/02/wiCY4JhANstkcmF.png");
             serverPush.pushMsg("BILIBILIHELPER任务简报", LoadFileResource.loadLogFile());
