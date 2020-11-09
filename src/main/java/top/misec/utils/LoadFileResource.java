@@ -26,7 +26,7 @@ public class LoadFileResource {
             is.close();
             config = new String(buffer, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
-            logger.info("此提示仅针对使用jar包的用户，Actions用户请忽略: 未找到自定义配置文件，将使用默认配置文件");
+            logger.info("未扫描到外部配置文件，即将加载默认配置文件【此提示仅针自行部署的Linux用户，普通用户请忽略】");
         } catch (IOException e) {
             e.printStackTrace();
             logger.debug(e);
