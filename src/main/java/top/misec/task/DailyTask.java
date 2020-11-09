@@ -164,8 +164,8 @@ public class DailyTask {
      * @return 本日已经投了几个币
      */
     public int expConfirm() {
-        JsonObject resultJson = HttpUtil.doGet(ApiList.needCoin);
-        int getCoinExp = resultJson.get("number").getAsInt();
+        JsonObject resultJson = HttpUtil.doGet(ApiList.needCoinNew);
+        int getCoinExp = resultJson.get("data").getAsInt();
         logger.info("今日已获得投币经验: " + getCoinExp);
         return getCoinExp / 10;
     }
