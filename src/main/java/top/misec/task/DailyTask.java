@@ -56,15 +56,15 @@ public class DailyTask {
     }
 
     /**
-     * @param aid         av号
-     * @param multiply    投币数量
-     * @param select_like 是否同时点赞 1是
+     * @param aid        av号
+     * @param multiply   投币数量
+     * @param selectLike 是否同时点赞 1是
      * @return 是否投币成功
      */
-    public boolean coinAdd(String aid, int multiply, int select_like) {
+    public boolean coinAdd(String aid, int multiply, int selectLike) {
         String requestBody = "aid=" + aid
                 + "&multiply=" + multiply
-                + "&select_like=" + select_like
+                + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
 
@@ -96,10 +96,9 @@ public class DailyTask {
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("已经为av" + aid + "投过" + multiply + "枚硬币啦");
+            logger.info("之前已经为av" + aid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
-            logger.info("还没有为av" + aid + " 投过硬币，开始投币");
             return false;
         }
     }
@@ -171,8 +170,7 @@ public class DailyTask {
     }
 
     /**
-     * 由于bilibili Api数据更新的问题，可能造成投币多投。
-     * 更换API后 已修复
+     * 投币操作
      */
     public void doCoinAdd() {
         //投币最多操作数 解决csrf校验失败时死循环的问题
@@ -438,7 +436,6 @@ public class DailyTask {
     public void doServerPush() {
         if (ServerVerify.getFtkey() != null) {
             ServerPush serverPush = new ServerPush();
-            serverPush.addOtherMsg("欢迎大家通过用户群反馈问题 " + "https://i.loli.net/2020/11/02/wiCY4JhANstkcmF.png");
             serverPush.pushMsg("BILIBILIHELPER任务简报", LoadFileResource.loadLogFile());
         } else {
             logger.info("未配置server酱,本次执行不推送日志到微信");
