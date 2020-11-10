@@ -28,7 +28,6 @@ public class BiliMain {
             ServerVerify.verifyInit(args[3]);
         }
 
-
         //每日任务65经验
         logger.debug("任务启动中");
         DailyTask dailyTask = new DailyTask();
