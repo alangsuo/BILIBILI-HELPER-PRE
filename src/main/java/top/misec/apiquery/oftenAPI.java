@@ -1,15 +1,10 @@
 package top.misec.apiquery;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * 部分API简单封装。
@@ -66,31 +61,12 @@ public class oftenAPI {
      *
      * @return bvid
      */
-    public static String queryDynamicNew() {
 
-        ArrayList<String> arrayList = new ArrayList();
-        String urlParameter = "?uid=" + Verify.getInstance().getUserId()
-                + "&type_list=8"
-                + "&from="
-                + "&platform=web";
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.queryDynamicNew + urlParameter);
-        JsonArray jsonArray = jsonObject.getAsJsonObject("data").getAsJsonArray("cards");
 
-        if (jsonArray != null) {
-            for (JsonElement videoInfo : jsonArray) {
-                JsonObject tempObject = videoInfo.getAsJsonObject().getAsJsonObject("desc");
-                arrayList.add(tempObject.get("bvid").getAsString());
-            }
-        }
-
-        Random random = new Random();
-        return arrayList.get(random.nextInt(arrayList.size()));
-    }
-
-    public static String videoTitle(String aid) {
+    public static String videoTitle(String bvid) {
         String title = null;
         String author = null;
-        String urlParameter = "?aid=" + aid;
+        String urlParameter = "?bvid=" + bvid;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
         author = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString();
         title = jsonObject.getAsJsonObject("data").get("title").getAsString();
