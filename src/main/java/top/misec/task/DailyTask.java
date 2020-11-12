@@ -34,8 +34,10 @@ public class DailyTask {
         String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUtil.doPost((ApiList.AvShare), requestBody);
 
+        String videoTitle = oftenAPI.videoTitle(aid);
+
         if (result.get(statusCodeStr).getAsInt() == 0) {
-            logger.info("视频: av" + aid + "分享成功");
+            logger.info("视频: " + videoTitle + "分享成功");
         } else {
             logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
             logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
@@ -68,19 +70,20 @@ public class DailyTask {
                 + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
-
+        String videoTitle = oftenAPI.videoTitle(aid);
         //判断曾经是否对此av投币过
         if (!isCoin(aid)) {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
-                logger.info("为av" + aid + "投币成功");
+
+                logger.info("为 " + videoTitle + " 投币成功");
                 return true;
             } else {
                 logger.info("投币失败" + jsonObject.get("message").getAsString());
                 return false;
             }
         } else {
-            logger.debug("av" + aid + "已经投币过了");
+            logger.debug("已经为" + videoTitle + "投过币了");
             return false;
         }
     }
@@ -286,11 +289,12 @@ public class DailyTask {
             String postBody = "aid=" + aid
                     + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
+            String videoTitle = oftenAPI.videoTitle(aid);
             int responseCode = resultJson.get(statusCodeStr).getAsInt();
             if (responseCode == 0) {
-                logger.info("av" + aid + "播放成功,已观看到第" + playedTime + "秒");
+                logger.info("视频" + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
             } else {
-                logger.debug("av" + aid + "播放失败,原因: " + resultJson.get("message").getAsString());
+                logger.debug("视频" + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
             }
         } else {
             logger.info("本日观看视频任务已经完成了，不需要再观看视频了");
@@ -485,7 +489,6 @@ public class DailyTask {
     }
 
     public void doDailyTask() {
-
         userCheck();//检查登录是否有效
         videoWatch();//观看视频 默认会调用分享
         doMangaSign();//漫画签到
