@@ -68,8 +68,16 @@ public class oftenAPI {
         String author = null;
         String urlParameter = "?bvid=" + bvid;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
-        author = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString();
-        title = jsonObject.getAsJsonObject("data").get("title").getAsString();
+
+        if (jsonObject.get("code").getAsInt() == 0) {
+            author = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString();
+            title = jsonObject.getAsJsonObject("data").get("title").getAsString();
+        } else {
+            author = "作者未获取";
+            title = "视频标题为获取";
+            logger.debug(jsonObject.get("message").getAsString());
+        }
+
         return author + " : " + title;
     }
 
