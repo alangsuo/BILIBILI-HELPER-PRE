@@ -1,8 +1,6 @@
 package top.misec.task;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -12,11 +10,13 @@ import top.misec.config.Config;
 import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
 import top.misec.pojo.userinfobean.Data;
-import top.misec.utils.AvBvConvert;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Random;
+import java.util.TimeZone;
 
 /**
  * @author Junzhou Liu
@@ -26,24 +26,24 @@ public class DailyTask {
     static Logger logger = (Logger) LogManager.getLogger(DailyTask.class.getName());
     private final String statusCodeStr = "code";
     Data userInfo = null;
+    GetVideoId getVideoId = new GetVideoId();
 
     /**
-     * @param aid 要分享的视频aid
+     * @param bvid 要分享的视频bvid
      */
-    public void dailyAvShare(String aid) {
-        String requestBody = "aid=" + aid + "&csrf=" + Verify.getInstance().getBiliJct();
+    public void dailyAvShare(String bvid) {
+        String requestBody = "bvid=" + bvid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUtil.doPost((ApiList.AvShare), requestBody);
 
-        String videoTitle = oftenAPI.videoTitle(aid);
+        String videoTitle = oftenAPI.videoTitle(bvid);
 
         if (result.get(statusCodeStr).getAsInt() == 0) {
-            logger.info("视频: " + videoTitle + "分享成功");
+            logger.info("视频: " + videoTitle + " 分享成功");
         } else {
             logger.debug("视频分享失败，原因: " + result.get("message").getAsString());
             logger.debug("开发者提示: 如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
             doServerPush();
         }
-
     }
 
     public void doMangaSign() {
@@ -59,20 +59,20 @@ public class DailyTask {
     }
 
     /**
-     * @param aid        av号
+     * @param bvid       av号
      * @param multiply   投币数量
      * @param selectLike 是否同时点赞 1是
      * @return 是否投币成功
      */
-    public boolean coinAdd(String aid, int multiply, int selectLike) {
-        String requestBody = "aid=" + aid
+    public boolean coinAdd(String bvid, int multiply, int selectLike) {
+        String requestBody = "bvid=" + bvid
                 + "&multiply=" + multiply
                 + "&select_like=" + selectLike
                 + "&cross_domain=" + "true"
                 + "&csrf=" + Verify.getInstance().getBiliJct();
-        String videoTitle = oftenAPI.videoTitle(aid);
+        String videoTitle = oftenAPI.videoTitle(bvid);
         //判断曾经是否对此av投币过
-        if (!isCoin(aid)) {
+        if (!isCoin(bvid)) {
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody);
             if (jsonObject.get(statusCodeStr).getAsInt() == 0) {
 
@@ -91,74 +91,20 @@ public class DailyTask {
     /**
      * 检查是否投币
      *
-     * @param aid av号
+     * @param bvid av号
      * @return 返回是否投过硬币了
      */
-    public boolean isCoin(String aid) {
-        String urlParam = "?aid=" + aid;
+    public boolean isCoin(String bvid) {
+        String urlParam = "?bvid=" + bvid;
         JsonObject result = HttpUtil.doGet(ApiList.isCoin + urlParam);
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
         if (multiply > 0) {
-            logger.info("之前已经为av" + aid + "投过" + multiply + "枚硬币啦");
+            logger.info("之前已经为av" + bvid + "投过" + multiply + "枚硬币啦");
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * @param rid 分区id 默认为3
-     * @param day 日榜，三日榜 周榜 1，3，7
-     * @return 随机返回一个aid
-     */
-    public String regionRanking(int rid, int day) {
-        Map<String, Boolean> videoMap = new HashMap(12);
-
-        String urlParam = "?rid=" + rid + "&day=" + day;
-        JsonObject resultJson = HttpUtil.doGet(ApiList.getRegionRanking + urlParam);
-
-        JsonArray jsonArray = null;
-        try {
-            jsonArray = resultJson.getAsJsonArray("data");
-            //极低的概率会抛异常，初步判断是部分分区不参与排行榜，导致没请求到数据。
-        } catch (Exception e) {
-            logger.debug("如果出现了这个异常，麻烦提个Issues告诉下我: " + e);
-            logger.debug("提Issues时请附上这条信息-请求参数: " + ApiList.getRegionRanking + urlParam);
-            logger.debug("提Issues时请附上这条信息-返回结果: " + resultJson);
-        }
-
-        if (jsonArray != null) {
-            for (JsonElement videoInfo : jsonArray) {
-                JsonObject tempObject = videoInfo.getAsJsonObject();
-                videoMap.put(tempObject.get("aid").getAsString(), false);
-            }
-        }
-        String[] keys = videoMap.keySet().toArray(new String[0]);
-        Random random = new Random();
-        String randomAid = keys[random.nextInt(keys.length)];
-        logger.info("获取分区" + rid + "的" + day + "日top10榜单成功");
-        return randomAid;
-    }
-
-    /**
-     * 从有限分区中随机返回一个分区rid
-     * 后续会更新请求分区
-     *
-     * @return regionId 分区id
-     */
-    public int randomRegion() {
-        int[] arr = {1, 3, 4, 5, 160, 22, 119};
-        return arr[(int) (Math.random() * arr.length)];
-    }
-
-    /**
-     * 默认请求动画区，3日榜单
-     */
-    public String regionRanking() {
-        int rid = randomRegion();
-        int day = 3;
-        return regionRanking(rid, day);
     }
 
     /**
@@ -221,16 +167,16 @@ public class DailyTask {
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
          */
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
-            String aid = null;
+            String bvid = null;
 
             if (coinAddPriority == 1 && addCoinOperateCount < 10) {
-                aid = AvBvConvert.bv2av(oftenAPI.queryDynamicNew());
+                bvid = getVideoId.getFollowUpVideoBvid();
             } else {
-                aid = regionRanking();
+                bvid = getVideoId.getRegionRankingVideoBvid();
             }
 
             addCoinOperateCount++;
-            boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
+            boolean flag = coinAdd(bvid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 try {
                     Random random = new Random();
@@ -291,25 +237,25 @@ public class DailyTask {
 
     public void videoWatch() {
         JsonObject dailyTaskStatus = getDailyTaskStatus();
-        String aid = regionRanking();
+        String bvid = getVideoId.getRegionRankingVideoBvid();
         if (!dailyTaskStatus.get("watch").getAsBoolean()) {
             int playedTime = new Random().nextInt(90) + 1;
-            String postBody = "aid=" + aid
+            String postBody = "bvid=" + bvid
                     + "&played_time=" + playedTime;
             JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
-            String videoTitle = oftenAPI.videoTitle(aid);
+            String videoTitle = oftenAPI.videoTitle(bvid);
             int responseCode = resultJson.get(statusCodeStr).getAsInt();
             if (responseCode == 0) {
-                logger.info("视频" + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
+                logger.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
             } else {
-                logger.debug("视频" + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
+                logger.debug("视频: " + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
             }
         } else {
             logger.info("本日观看视频任务已经完成了，不需要再观看视频了");
         }
 
         if (!dailyTaskStatus.get("share").getAsBoolean()) {
-            dailyAvShare(aid);
+            dailyAvShare(bvid);
         } else {
             logger.info("本日分享视频任务已经完成了，不需要再分享视频了");
         }
