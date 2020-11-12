@@ -67,4 +67,6 @@ public class ApiList {
     public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
 
     public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
+
+    public static String videoView = "https://api.bilibili.com/x/web-interface/view";
 }

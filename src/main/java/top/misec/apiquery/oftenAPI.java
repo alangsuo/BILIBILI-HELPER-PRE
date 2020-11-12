@@ -80,11 +80,21 @@ public class oftenAPI {
             for (JsonElement videoInfo : jsonArray) {
                 JsonObject tempObject = videoInfo.getAsJsonObject().getAsJsonObject("desc");
                 arrayList.add(tempObject.get("bvid").getAsString());
-                logger.info(tempObject);
             }
         }
 
         Random random = new Random();
         return arrayList.get(random.nextInt(arrayList.size()));
     }
+
+    public static String videoTitle(String aid) {
+        String title = null;
+        String author = null;
+        String urlParameter = "?aid=" + aid;
+        JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
+        author = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString();
+        title = jsonObject.getAsJsonObject("data").get("title").getAsString();
+        return author + " : " + title;
+    }
+
 }
