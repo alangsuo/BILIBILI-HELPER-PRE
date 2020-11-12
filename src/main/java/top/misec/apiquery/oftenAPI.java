@@ -1,10 +1,15 @@
 package top.misec.apiquery;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * 部分API简单封装。
@@ -12,8 +17,8 @@ import top.misec.utils.HttpUtil;
  * @author Junzhou Liu
  * @create 2020/10/14 14:27
  */
-public class OftenAPI {
-    static Logger logger = (Logger) LogManager.getLogger(OftenAPI.class.getName());
+public class oftenAPI {
+    static Logger logger = (Logger) LogManager.getLogger(oftenAPI.class.getName());
 
     /**
      * @return 返回主站查询到的硬币余额，查询失败返回0.0
@@ -54,5 +59,32 @@ public class OftenAPI {
         } else {
             logger.debug("领取年度大会员每月赠送的B币券/大会员福利失败，原因: " + jsonObject.get("message").getAsString());
         }
+    }
+
+    /**
+     * 请求关注列表更新的视频，随机返回一个bvid
+     *
+     * @return bvid
+     */
+    public static String queryDynamicNew() {
+
+        ArrayList<String> arrayList = new ArrayList();
+        String urlParameter = "?uid=" + Verify.getInstance().getUserId()
+                + "&type_list=8"
+                + "&from="
+                + "&platform=web";
+        JsonObject jsonObject = HttpUtil.doGet(ApiList.queryDynamicNew + urlParameter);
+        JsonArray jsonArray = jsonObject.getAsJsonObject("data").getAsJsonArray("cards");
+
+        if (jsonArray != null) {
+            for (JsonElement videoInfo : jsonArray) {
+                JsonObject tempObject = videoInfo.getAsJsonObject().getAsJsonObject("desc");
+                arrayList.add(tempObject.get("bvid").getAsString());
+                logger.info(tempObject);
+            }
+        }
+
+        Random random = new Random();
+        return arrayList.get(random.nextInt(arrayList.size()));
     }
 }
