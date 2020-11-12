@@ -7,11 +7,12 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
-import top.misec.apiquery.OftenAPI;
+import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
 import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
 import top.misec.pojo.userinfobean.Data;
+import top.misec.utils.AvBvConvert;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -181,7 +182,8 @@ public class DailyTask {
         int setCoin = Config.getInstance().getNumberOfCoins();
         //已投的硬币
         int useCoin = expConfirm();
-        //还需要投的币=设置投币数-已投的币数
+
+        int coinAddPriority = Config.getInstance().getCoinAddPriority();
 
         if (setCoin > maxNumberOfCoins) {
             logger.info("自定义投币数为: " + setCoin + "枚," + "为保护你的资产，自定义投币数重置为: " + maxNumberOfCoins + "枚");
@@ -194,7 +196,7 @@ public class DailyTask {
         int needCoins = setCoin - useCoin;
 
         //投币前硬币余额
-        Double beforeAddCoinBalance = OftenAPI.getCoinBalance();
+        Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
 
         if (needCoins <= 0) {
@@ -216,18 +218,25 @@ public class DailyTask {
          * 最后一道安全判断，保证即使前面的判断逻辑错了，也不至于发生投币事故
          */
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
-            String aid = regionRanking();
+            String aid = null;
+
+            if (coinAddPriority == 1 && addCoinOperateCount < 10) {
+                aid = AvBvConvert.bv2av(oftenAPI.queryDynamicNew());
+            } else {
+                aid = regionRanking();
+            }
+
             addCoinOperateCount++;
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 needCoins--;
             }
-            if (addCoinOperateCount > 10) {
-                logger.info("尝试投币次数太多");
+            if (addCoinOperateCount > 15) {
+                logger.info("尝试投币/投币失败次数太多");
                 break;
             }
         }
-        logger.info("投币任务完成后余额为: " + OftenAPI.getCoinBalance());
+        logger.info("投币任务完成后余额为: " + oftenAPI.getCoinBalance());
     }
 
     public void silver2coin() {
@@ -240,7 +249,7 @@ public class DailyTask {
         }
 
         JsonObject queryStatus = HttpUtil.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
-        double silver2coinMoney = OftenAPI.getCoinBalance();
+        double silver2coinMoney = oftenAPI.getCoinBalance();
         logger.info("当前银瓜子余额: " + queryStatus.get("silver").getAsInt());
         logger.info("兑换银瓜子后硬币余额: " + silver2coinMoney);
 
@@ -324,8 +333,8 @@ public class DailyTask {
         String userId = Verify.getInstance().getUserId();
 
         if (day == 1 && vipType == 2) {
-            OftenAPI.vipPrivilege(1);
-            OftenAPI.vipPrivilege(2);
+            oftenAPI.vipPrivilege(1);
+            oftenAPI.vipPrivilege(2);
         }
 
         if (vipType == 0 || vipType == 1) {
