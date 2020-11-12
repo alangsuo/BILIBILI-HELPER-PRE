@@ -31,11 +31,15 @@ public class GetVideoId {
 
     public String getFollowUpVideoBvid() {
         Random random = new Random();
+        if (followUpVideoList.size() == 0) {
+            return getRegionRankingVideoBvid();
+        }
         return followUpVideoList.get(random.nextInt(followUpVideoList.size()));
     }
 
     public String getRegionRankingVideoBvid() {
         Random random = new Random();
+
         return rankVideoList.get(random.nextInt(rankVideoList.size()));
     }
 
