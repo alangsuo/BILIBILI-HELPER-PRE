@@ -133,7 +133,10 @@ public class DailyTask {
         int useCoin = expConfirm();
 
         int coinAddPriority = Config.getInstance().getCoinAddPriority();
-
+        
+        //暂时不引入该字段
+        //int coinAddToUpRecentVideo = Config.getInstance().getCoinAddToUpRecentVideo();
+        
         if (setCoin > maxNumberOfCoins) {
             logger.info("自定义投币数为: " + setCoin + "枚," + "为保护你的资产，自定义投币数重置为: " + maxNumberOfCoins + "枚");
             setCoin = maxNumberOfCoins;
@@ -170,7 +173,9 @@ public class DailyTask {
             String bvid = null;
 
             if (coinAddPriority == 1 && addCoinOperateCount < 10) {
-                bvid = getVideoId.getFollowUpVideoBvid();
+                bvid = getVideoId.getFollowUpRandomVideoBvid();
+           // }else if(coinAddPriority == 1 && coinAddToUpRecentVideo == 1){
+           //    bvid = getVideoId.getFollowUpRecentVideoBvid();
             } else {
                 bvid = getVideoId.getRegionRankingVideoBvid();
             }
