@@ -232,6 +232,14 @@ public class DailyTask {
             addCoinOperateCount++;
             boolean flag = coinAdd(aid, 1, Config.getInstance().getSelectLike());
             if (flag) {
+                try {
+                    Random random = new Random();
+                    int sleepTime = random.nextInt(1000) + 2000;
+                    logger.info("投币后随机暂停" + sleepTime / 1000 + "秒");
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 needCoins--;
             }
             if (addCoinOperateCount > 15) {
