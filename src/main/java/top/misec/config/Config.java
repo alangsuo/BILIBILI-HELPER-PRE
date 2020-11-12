@@ -15,7 +15,6 @@ public class Config {
 
     static Logger logger = (Logger) LogManager.getLogger(Config.class.getName());
 
-
     /**
      * 每日设定的投币数 [0,5]
      */
@@ -25,11 +24,6 @@ public class Config {
      * 投币时是否点赞 [0,1]
      */
     private int selectLike;
-
-    /**
-     * 观看时是否分享 [0,1]
-     */
-    private int watchAndShare;
 
     /**
      * 年度大会员自动充电[false,true]
@@ -46,14 +40,6 @@ public class Config {
      * 0：优先给热榜视频投币，1：优先给关注的up投币
      */
     private int coinAddPriority;
-
-    /**
-     * 硬币投给关注的UP最近发布 [0,1] 暂不引入
-     * coinAddPriority 为 1 时生效
-     * 0: 忽略
-     * 1: 生效
-     */
-    //private int coinAddToUpRecentVideo;
 
     private static Config CONFIG = new Config();
 
@@ -72,33 +58,14 @@ public class Config {
         return selectLike;
     }
 
-    public int getWatchAndShare() {
-        return watchAndShare;
-    }
-
 
     public int getCoinAddPriority() {
         return coinAddPriority;
     }
 
-//     public void setCoinAddPriority(int coinAddPriority) {
-//         this.coinAddPriority = coinAddPriority;
-//     }
-
-//     public int getCoinAddToUpRecentVideo() {
-//         return coinAddToUpRecentVideo;
-//     }
-
-//     public void setCoinAddToUpRecentVideo(int coinAddToUpRecentVideo) {
-//         this.coinAddToUpRecentVideo = coinAddToUpRecentVideo;
-//     }
 
     public boolean isMonthEndAutoCharge() {
         return monthEndAutoCharge;
-    }
-
-    public void setNumberOfCoins(int numberOfCoins) {
-        this.numberOfCoins = numberOfCoins;
     }
 
     public int getNumberOfCoins() {
@@ -111,7 +78,6 @@ public class Config {
         return "Config{" +
                 "numberOfCoins=" + numberOfCoins +
                 ", selectLike=" + selectLike +
-                ", watchAndShare=" + watchAndShare +
                 ", monthEndAutoCharge=" + monthEndAutoCharge +
                 ", devicePlatform='" + devicePlatform + '\'' +
                 ", coinAddPriority=" + coinAddPriority +
@@ -123,11 +89,7 @@ public class Config {
         outputConfig += numberOfCoins;
 
         if (coinAddPriority == 1) {
-           // if (coinAddToUpRecentVideo == 1) {
-                //outputConfig += " 优先给关注的up最近更新的视频投币";
-           // } else {
-                outputConfig += " 优先给关注的up投币";
-            //}
+            outputConfig += " 优先给关注的up投币";
         } else {
             outputConfig += " 优先给热榜视频投币";
         }
@@ -146,7 +108,7 @@ public class Config {
      * 读取配置文件 src/main/resources/config.json
      */
     public void configInit() {
-        String configJson = null;
+        String configJson;
         String outConfig = LoadFileResource.loadConfigJsonFromFile();
         if (outConfig != null) {
             configJson = outConfig;
