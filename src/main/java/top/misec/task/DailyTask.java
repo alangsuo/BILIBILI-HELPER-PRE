@@ -427,6 +427,7 @@ public class DailyTask {
     }
 
     public void userCheck() {
+        LogFormat.printTime();
         logger.debug("任务启动中");
         Config.getInstance().configInit();
         JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
