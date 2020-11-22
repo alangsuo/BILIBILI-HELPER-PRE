@@ -17,7 +17,7 @@ import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
 import static top.misec.task.TaskInfoHolder.statusCodeStr;
 
 /**
- * @author Junzhou Liu
+ * @author @JunzhouLiu @Kurenai
  * @create 2020/10/11 20:44
  */
 public class DailyTask {

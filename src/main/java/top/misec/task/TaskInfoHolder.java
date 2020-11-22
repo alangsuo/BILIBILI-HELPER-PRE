@@ -9,7 +9,8 @@ import top.misec.utils.HttpUtil;
 
 /**
  * 任务信息持有类
- * @author Kurenai
+ *
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:02
  */
 
