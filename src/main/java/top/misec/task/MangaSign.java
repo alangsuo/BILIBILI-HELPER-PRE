@@ -10,7 +10,7 @@ import top.misec.utils.HttpUtil;
 /**
  * 漫画签到
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:22
  */
 

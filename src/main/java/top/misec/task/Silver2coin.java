@@ -13,7 +13,7 @@ import static top.misec.task.TaskInfoHolder.userInfo;
 /**
  * 银瓜子换硬币
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:25
  */
 

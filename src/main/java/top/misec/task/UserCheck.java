@@ -17,7 +17,7 @@ import static top.misec.task.TaskInfoHolder.userInfo;
 /**
  * 登录检查
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 4:57
  */
 

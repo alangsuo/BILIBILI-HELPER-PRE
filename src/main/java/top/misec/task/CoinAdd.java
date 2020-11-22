@@ -17,7 +17,7 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
 /**
  * 投币任务
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:28
  */
 

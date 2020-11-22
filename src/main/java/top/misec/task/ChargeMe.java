@@ -18,7 +18,8 @@ import static top.misec.task.TaskInfoHolder.*;
  * 给自己充电
  * <p/>
  * 月底自动给自己充电。仅充会到期的B币券，低于2的时候不会充
- * @author Kurenai
+ *
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:43
  */
 

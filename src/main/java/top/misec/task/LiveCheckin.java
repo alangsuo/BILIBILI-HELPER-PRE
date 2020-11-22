@@ -11,7 +11,7 @@ import static top.misec.task.TaskInfoHolder.statusCodeStr;
 /**
  * 直播签到
  *
- * @author Kurenai
+ * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:42
  */
 
