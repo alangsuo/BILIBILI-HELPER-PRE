@@ -6,7 +6,6 @@ import org.apache.logging.log4j.core.Logger;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
 
-import javax.net.ssl.SSLContext;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,11 +33,8 @@ public class DailyTask {
             for (Task task : dailyTasks) {
                 logger.info("-----{}开始-----", task.getName());
                 task.run();
-                logger.info("-----任务结束-----\n");
-                Random random = new Random();
-                int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
-                logger.info("随机暂停{}ms", sleepTime);
-                Thread.sleep(sleepTime);
+                logger.info("-----任务结束-----");
+                taskSuspend();
             }
             logger.info("本日任务已全部执行完毕");
             calculateUpgradeDays();
@@ -72,6 +68,13 @@ public class DailyTask {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(d);
         logger.info(time);
+    }
+
+    private void taskSuspend() throws InterruptedException {
+        Random random = new Random();
+        int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
+        logger.info("随机暂停{}ms\n", sleepTime);
+        Thread.sleep(sleepTime);
     }
 
 }
