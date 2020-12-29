@@ -40,15 +40,16 @@ public class ChargeMe implements Task {
         //大会员类型
         int vipType = queryVipStatusType();
 
-        if (day == 1 && vipType == 2) {
-            oftenAPI.vipPrivilege(1);
-            oftenAPI.vipPrivilege(2);
-        }
-
         if (vipType == 0 || vipType == 1) {
             logger.info("普通会员和月度大会员每月不赠送B币券，所以没法给自己充电哦");
             return;
         }
+
+        if (day % 3 == 0 && vipType == 2) {
+            oftenAPI.vipPrivilege(1);
+            oftenAPI.vipPrivilege(2);
+        }
+
         if (!Config.getInstance().isMonthEndAutoCharge()) {
             logger.info("未开启月底给自己充电功能");
             return;
@@ -63,7 +64,7 @@ public class ChargeMe implements Task {
         /*
           判断条件 是月底&&是年大会员&&b币券余额大于2&&配置项允许自动充电
          */
-        if (day == 28 && couponBalance >= 2 &&
+        if (day >= 28 && couponBalance >= 2 &&
                 Config.getInstance().isMonthEndAutoCharge()) {
             String requestBody = "bp_num=" + couponBalance
                     + "&is_bp_remains_prior=true"
