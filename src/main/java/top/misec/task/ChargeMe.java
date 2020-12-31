@@ -112,10 +112,10 @@ public class ChargeMe implements Task {
                 logger.debug("充电失败了啊 原因: " + jsonObject);
             }
         } else {
-            if (day == 28) {
-                logger.info("B币券余额不足,充电至少需要2B币券");
-            } else {
+            if (day < 28) {
                 logger.info("今天是本月的第: " + day + "天，还没到充电日子呢");
+            } else {
+                logger.info("本月已经充过电了，睿总送咱的B币券已经没有啦，下月再充啦");
             }
 
         }
