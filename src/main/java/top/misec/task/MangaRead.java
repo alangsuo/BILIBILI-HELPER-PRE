@@ -21,12 +21,11 @@ public class MangaRead implements Task {
         String requestBody = "comic_id=27355" +
                 "&ep_id=381662";
         JsonObject result = HttpUtil.doPost(ApiList.mangaRead + urlParam, requestBody);
-
         int code = result.get(STATUS_CODE_STR).getAsInt();
         if (code == 0) {
             logger.info("本日漫画自动阅读1章节成功！，阅读漫画为：堀与宫村");
         } else {
-            logger.debug("阅读失败,错误信息为{}", result);
+            logger.debug("阅读失败,错误信息为\n```json\n{}\n```", result);
         }
 
     }
