@@ -84,7 +84,22 @@ public class Config {
             configJson = outConfig;
             logger.info("读取外部配置文件成功");
         } else {
-            configJson = LoadFileResource.loadJsonFromAsset("config.json");
+            String temp = LoadFileResource.loadJsonFromAsset("config.json");
+            /**
+             *兼容旧配置文件
+             * "skipDailyTask": 0 -> "skipDailyTask": false
+             * "skipDailyTask": 1 -> "skipDailyTask": true
+             */
+            String target0 = "\"skipDailyTask\": 0";
+            String target1 = "\"skipDailyTask\": 1";
+            if (temp.contains(target0)) {
+                logger.debug("兼容旧配置文件，skipDailyTask的值由0变更为false");
+                configJson = temp.replaceAll(target0, "\"skipDailyTask\": false");
+            } else {
+                logger.debug("兼容旧配置文件，skipDailyTask的值由1变更为true");
+                configJson = temp.replaceAll(target1, "\"skipDailyTask\": true");
+            }
+
             logger.info("读取配置文件成功");
         }
 
