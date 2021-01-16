@@ -35,10 +35,6 @@ public class HttpUtil {
     private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
             "(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36 Edg/85.0.564.70";
 
-    public static String getUserAgent() {
-        return userAgent;
-    }
-
     public static void setUserAgent(String userAgent) {
         HttpUtil.userAgent = userAgent;
     }
@@ -56,7 +52,8 @@ public class HttpUtil {
 
     static Verify verify = Verify.getInstance();
 
-    HttpUtil() {
+    public static JsonObject doPost(String url, JsonObject jsonObject) {
+        return doPost(url, jsonObject.toString());
 
     }
 
