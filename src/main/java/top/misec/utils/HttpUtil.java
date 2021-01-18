@@ -75,13 +75,12 @@ public class HttpUtil {
           setHeader：设置一个请求头字段，有则覆盖，无则添加。
           有什么好的方式判断key1=value和{"key1":"value"}
          */
-//        if (requestBody.startsWith("{")) {
-//            //java的正则表达式咋写......
-//            httpPost.setHeader("Content-Type", "application/json");
-//        } else {
-//            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-//        }
-        httpPost.setHeader("accept", "application/json, text/plain, */*");
+        if (requestBody.startsWith("{")) {
+            //java的正则表达式咋写......
+            httpPost.setHeader("Content-Type", "application/json");
+        } else {
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Referer", "https://www.bilibili.com/");
         httpPost.setHeader("Connection", "keep-alive");
