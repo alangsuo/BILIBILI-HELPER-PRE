@@ -3,8 +3,6 @@ package top.misec.config;
 import com.google.gson.Gson;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
