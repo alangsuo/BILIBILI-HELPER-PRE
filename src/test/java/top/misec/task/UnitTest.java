@@ -32,8 +32,7 @@ public class UnitTest {
         //初始化配置
         Config.getInstance().configInit();
         new UserCheck().run();
-        new ChargeMe().run();
-        new GetVipPrivilege().run();
+        new CoinAdd().run();
 
     }
 }
