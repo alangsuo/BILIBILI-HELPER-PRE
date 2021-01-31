@@ -55,6 +55,7 @@ public class Config {
     private String userAgent;
     private boolean skipDailyTask;
     private String chargeForLove;
+    private int reserveCoins;
 
 
     private static Config CONFIG = new Config();
