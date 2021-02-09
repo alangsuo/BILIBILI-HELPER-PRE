@@ -157,7 +157,7 @@ public class HttpUtil {
                 String result = EntityUtils.toString(entity);
                 resultJson = new JsonParser().parse(result).getAsJsonObject();
             } else if (responseStatusCode == 412) {
-                log.info("出了一些问题，请在自定义配置中更换UA");
+                log.info("出了一些问题，可能是账号状态异常，如果是账号状态异常，建议先停止使用本工具");
             } else {
                 log.debug(httpGetResponse.getStatusLine().toString());
             }
