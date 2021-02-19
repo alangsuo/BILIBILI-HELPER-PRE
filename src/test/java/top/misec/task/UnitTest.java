@@ -35,7 +35,8 @@ public class UnitTest {
         Config.getInstance().configInit();
 
         new UserCheck().run();
-        new CoinAdd().run();
+        ServerPush.doServerPush();
+        //new CoinAdd().run();
 
     }
 }
