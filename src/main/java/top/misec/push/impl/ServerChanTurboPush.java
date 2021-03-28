@@ -41,8 +41,8 @@ public class ServerChanTurboPush extends AbstractPush {
                 log.info("超过当天的发送次数限制[10]，请稍后再试");
                 return true;
             default:
+                return code.getAsInt() == 0;
         }
-        return code.getAsInt() == 0;
     }
 
     @Override
