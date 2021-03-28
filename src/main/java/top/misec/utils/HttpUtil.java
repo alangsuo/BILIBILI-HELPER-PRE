@@ -3,6 +3,7 @@ package top.misec.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -27,8 +28,8 @@ import java.util.Optional;
  */
 
 @Log4j2
+@Data
 public class HttpUtil {
-
     /**
      * 设置配置请求参数
      * 设置连接主机服务超时时间
@@ -40,7 +41,7 @@ public class HttpUtil {
             .setSocketTimeout(10000)
             .build();
     static Verify verify = Verify.getInstance();
-    private final static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) " +
+    private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) " +
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.54";
     private static CloseableHttpClient httpClient = null;
     private static CloseableHttpResponse httpResponse = null;
@@ -181,5 +182,9 @@ public class HttpUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void setUserAgent(String userAgent) {
+        HttpUtil.userAgent = userAgent;
     }
 }

@@ -42,7 +42,7 @@ public class ServerChanTurboPush extends AbstractPush {
                 return true;
             default:
         }
-        return code.getAsInt() == 0 ;
+        return code.getAsInt() == 0;
     }
 
     @Override
