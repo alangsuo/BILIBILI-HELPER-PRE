@@ -45,7 +45,7 @@ public class ServerPush {
             log.info("未配置Telegram,本次执行不推送日志到Telegram");
         }
         if (null != target) {
-            PushHelper.push(target, builder.build(), LoadFileResource.loadFile("logs/daily.log"));
+            PushHelper.push(target, builder.build(), LoadFileResource.loadFile("../../tmp/logs/daily.log"));
         }
     }
 }

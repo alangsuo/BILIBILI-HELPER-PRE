@@ -1,5 +1,6 @@
 package top.misec;
 
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.Config;
 import top.misec.login.ServerVerify;
@@ -35,6 +36,36 @@ public class BiliMain {
         VersionInfo.printVersionInfo();
         //每日任务65经验
         Config.getInstance().configInit();
+        if (!Config.getInstance().isSkipDailyTask()) {
+            DailyTask dailyTask = new DailyTask();
+            dailyTask.doDailyTask();
+        } else {
+            log.info("已开启了跳过本日任务，本日任务跳过（不会发起任何网络请求），如果需要取消跳过，请将skipDailyTask值改为false");
+            ServerPush.doServerPush();
+        }
+    }
+
+    /**
+     * 用于腾讯云函数触发
+     *
+     * @param kv 配置
+     */
+    public static void main(KeyValueClass kv) {
+        System.out.println("环境信息：");
+        System.out.println(kv);
+        //读取环境变量
+        Verify.verifyInit(kv.getDedeuserid(), kv.getSessdata(), kv.getBiliJct());
+
+        if (null != kv.getTelegrambottoken() && null != kv.getTelegramchatid()) {
+            ServerVerify.verifyInit(kv.getTelegrambottoken(), kv.getTelegramchatid());
+        } else if (null != kv.getServerpushkey()) {
+            ServerVerify.verifyInit(kv.getServerpushkey());
+        }
+
+
+        VersionInfo.printVersionInfo();
+        //每日任务65经验
+        Config.getInstance().configInit(new Gson().toJson(kv));
         if (!Config.getInstance().isSkipDailyTask()) {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
