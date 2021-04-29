@@ -73,6 +73,14 @@ public class Config {
                 '}';
     }
 
+    public void configInit(String json){
+        System.out.println("配置：");
+        System.out.println(json);
+        Config.CONFIG = new Gson().fromJson(json, Config.class);
+        HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
+        log.info(Config.getInstance().toString());
+    }
+
 
     /**
      * 优先从jar包同级目录读取
