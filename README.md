@@ -115,7 +115,7 @@ qq 群二维码
 
 执行方法：`top.misec.BiliMain::mainHandler`
 
-JAR包获取地址：
+JAR包获取地址：[v1.3.9-SCF](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/releases/tag/v1.3.9-SCF)
 
 ![图示](docs/IMG/a.jpg)
 
