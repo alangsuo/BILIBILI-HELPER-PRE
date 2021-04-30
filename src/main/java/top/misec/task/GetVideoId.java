@@ -3,7 +3,7 @@ package top.misec.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -17,7 +17,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @create 2020/11/12 13:17
  */
 
-@Log4j2
+@Slf4j
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
     private ArrayList<String> rankVideoList;

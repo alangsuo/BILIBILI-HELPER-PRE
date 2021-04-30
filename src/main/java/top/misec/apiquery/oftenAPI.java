@@ -1,7 +1,7 @@
 package top.misec.apiquery;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
@@ -11,7 +11,7 @@ import top.misec.utils.HttpUtil;
  * @author Junzhou Liu
  * @create 2020/10/14 14:27
  */
-@Log4j2
+@Slf4j
 public class oftenAPI {
 
     /**
