@@ -149,6 +149,30 @@ value配置文件：
 
 **不推送请把serverpushkey值改为null（上面示例就是null）**
 
+例子：
+
+```json
+{
+  "numberOfCoins": 5,
+  "reserveCoins": 50,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "giveGift": true,
+  "upLive": "0",
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
+  "dedeuserid": "",
+  "sessdata": "",
+  "biliJct": "",
+  "telegrambottoken": null,
+  "telegramchatid": null,
+  "serverpushkey": "https://oapi.dingtalk.com/robot/send?access_token=XXX"
+}
+```
+
 [具体推送配置请点这](#订阅执行结果)
 
 ![图示](docs/IMG/b.jpg)
