@@ -63,10 +63,14 @@ public class BiliMain {
 
     /**
      * 用于腾讯云函数触发
-     *
-     * @param kv 配置
      */
-    public static void mainHandler(KeyValueClass kv) {
+    public static void mainHandler(KeyValueClass ignored) {
+        String config = System.getProperty("config");
+        if (null == config) {
+            System.out.println("取config配置为空！！！");
+            return;
+        }
+        KeyValueClass kv = new Gson().fromJson(config, KeyValueClass.class);
         System.out.println("环境信息：");
         System.out.println(kv);
         //读取环境变量
