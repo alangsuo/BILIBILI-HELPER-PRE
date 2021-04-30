@@ -1,7 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
@@ -21,7 +21,7 @@ import static top.misec.task.TaskInfoHolder.getVideoId;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:28
  */
-@Log4j2
+@Slf4j
 public class CoinAdd implements Task {
 
     private final String taskName = "投币任务";

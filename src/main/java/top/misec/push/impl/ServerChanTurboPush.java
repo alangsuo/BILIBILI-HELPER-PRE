@@ -2,7 +2,7 @@ package top.misec.push.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;
@@ -13,7 +13,7 @@ import top.misec.push.model.PushMetaInfo;
  * @author itning
  * @since 2021/3/22 17:14
  */
-@Log4j2
+@Slf4j
 public class ServerChanTurboPush extends AbstractPush {
 
     @Override

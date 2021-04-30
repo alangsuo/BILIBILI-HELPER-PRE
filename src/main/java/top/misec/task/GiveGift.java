@@ -2,7 +2,7 @@ package top.misec.task;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -14,7 +14,7 @@ import top.misec.utils.HttpUtil;
  * @Time 2020-10-13
  */
 
-@Log4j2
+@Slf4j
 public class GiveGift implements Task {
 
     private final String taskName = "B站直播送出即将过期的礼物";
