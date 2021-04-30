@@ -2,7 +2,7 @@ package top.misec.config;
 
 import com.google.gson.Gson;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -12,7 +12,7 @@ import top.misec.utils.LoadFileResource;
  * @author Junzhou Liu
  * @create 2020/10/13 17:11
  */
-@Log4j2
+@Slf4j
 @Data
 public class Config {
 
@@ -73,9 +73,7 @@ public class Config {
                 '}';
     }
 
-    public void configInit(String json){
-        System.out.println("配置：");
-        System.out.println(json);
+    public void configInit(String json) {
         Config.CONFIG = new Gson().fromJson(json, Config.class);
         HttpUtil.setUserAgent(Config.getInstance().getUserAgent());
         log.info(Config.getInstance().toString());
