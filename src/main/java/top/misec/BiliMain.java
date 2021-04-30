@@ -1,7 +1,7 @@
 package top.misec;
 
 import com.google.gson.Gson;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.Config;
 import top.misec.login.ServerVerify;
 import top.misec.login.Verify;
@@ -9,19 +9,35 @@ import top.misec.task.DailyTask;
 import top.misec.task.ServerPush;
 import top.misec.utils.VersionInfo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 
 /**
  * @author Junzhou Liu
  * @create 2020/10/11 2:29
  */
 
-@Log4j2
+@Slf4j
 public class BiliMain {
+    static {
+        final InputStream inputStream = BiliMain.class.getResourceAsStream("/logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        } catch (final IOException e) {
+            Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+            Logger.getAnonymousLogger().severe(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
 
         if (args.length < 3) {
             log.info("任务启动失败");
             log.warn("Cookies参数缺失，请检查是否在Github Secrets中配置Cookies参数");
+            return;
         }
         //读取环境变量
         Verify.verifyInit(args[0], args[1], args[2]);
@@ -50,7 +66,7 @@ public class BiliMain {
      *
      * @param kv 配置
      */
-    public static void main(KeyValueClass kv) {
+    public static void mainHandler(KeyValueClass kv) {
         System.out.println("环境信息：");
         System.out.println(kv);
         //读取环境变量

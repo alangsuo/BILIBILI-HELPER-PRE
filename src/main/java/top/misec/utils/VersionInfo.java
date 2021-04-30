@@ -3,13 +3,13 @@ package top.misec.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Junzhou Liu
  * @create 2020/11/21 15:22
  */
-@Log4j2
+@Slf4j
 @Data
 public class VersionInfo {
     private static String releaseVersion = "";
