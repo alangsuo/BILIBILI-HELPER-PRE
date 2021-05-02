@@ -119,6 +119,8 @@ JAR包获取地址：[v1.3.9-SCF](https://github.com/JunzhouLiu/BILIBILI-HELPER-
 
 ![图示](docs/IMG/a.jpg)
 
+key:`scfFlag` value:`true`
+
 value配置文件：
 
 ```json
