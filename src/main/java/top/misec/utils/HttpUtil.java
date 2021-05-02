@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -27,7 +27,7 @@ import java.util.Optional;
  * @create 2020/10/11 4:03
  */
 
-@Log4j2
+@Slf4j
 @Data
 public class HttpUtil {
     /**
@@ -95,7 +95,7 @@ public class HttpUtil {
             httpResponse = httpClient.execute(httpPost);
             resultJson = processResult(httpResponse);
         } catch (Exception e) {
-            log.error(e);
+            log.error("", e);
             e.printStackTrace();
         } finally {
             httpResource(httpClient, httpResponse);
@@ -158,7 +158,7 @@ public class HttpUtil {
                 case 200:
                     break;
                 case 412:
-                    log.debug(httpResponse.getStatusLine());
+                    log.debug("{}", httpResponse.getStatusLine());
                     break;
                 default:
             }

@@ -1,7 +1,7 @@
 package top.misec.push;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.push.model.RetryContext;
@@ -13,7 +13,7 @@ import top.misec.utils.HttpUtil;
  * @author itning
  * @since 2021/3/22 16:36
  */
-@Log4j2
+@Slf4j
 public abstract class AbstractPush implements Push {
 
     @Override
@@ -46,7 +46,7 @@ public abstract class AbstractPush implements Push {
                 return PushResult.success();
             } else {
                 log.info("任务状态推送失败，开始第{}次重试", context.getRetryCount());
-                log.debug(jsonObject);
+                log.debug("{}", jsonObject);
             }
         }
         return PushResult.failed();
