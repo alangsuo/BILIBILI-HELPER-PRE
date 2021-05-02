@@ -1,7 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
@@ -22,7 +22,7 @@ import static top.misec.task.TaskInfoHolder.*;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:43
  */
-@Log4j2
+@Slf4j
 public class ChargeMe implements Task {
 
     private final String taskName = "大会员月底B币券充电和月初大会员权益领取";

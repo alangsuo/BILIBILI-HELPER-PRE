@@ -1,6 +1,6 @@
 package top.misec.task;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.login.ServerVerify;
 import top.misec.push.PushHelper;
 import top.misec.push.impl.PushPlusPush;
@@ -12,7 +12,7 @@ import top.misec.utils.LoadFileResource;
  * @create 2020/10/21 17:39
  */
 
-@Log4j2
+@Slf4j
 public class ServerPush {
 
     public static void doServerPush() {
@@ -45,7 +45,7 @@ public class ServerPush {
             log.info("未配置Telegram,本次执行不推送日志到Telegram");
         }
         if (null != target) {
-            PushHelper.push(target, builder.build(), LoadFileResource.loadFile("logs/daily.log"));
+            PushHelper.push(target, builder.build(), LoadFileResource.loadFile("/tmp/daily.log"));
         }
     }
 }

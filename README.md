@@ -66,8 +66,9 @@ qq 群二维码
 - [目录](#目录)
   - [使用说明](#使用说明)
     - [获取运行所需的 Cookies](#获取运行所需的-cookies)
-    - [一、使用 Docker](#一使用-docker)
-    - [二、使用 Linux Crontab 方式](#二使用-linux-crontab-方式)
+    - [一、使用 腾讯云函数](#一使用-腾讯云函数)
+    - [二、使用 Docker](#二使用-docker)
+    - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
     - [自定义功能配置](#自定义功能配置)
   - [订阅执行结果](#订阅执行结果)
     - [Server 酱 Turbo 版](#server-酱-turbo-版)
@@ -100,13 +101,129 @@ qq 群二维码
 
 **Please be sure to abide by the Github terms when using Actions. Do not abuse the Actions service.**
 
-### 一、使用 Docker
+### 一、使用 腾讯云函数
+
+关于腾讯云 云函数功能开通相关问题 请加群询问。
+
+腾讯云函数地址：[函数服务 - Serverless - 控制台 (tencent.com)](https://console.cloud.tencent.com/scf/list?rid=4&ns=default)
+
+1.新建
+
+![图示](docs/IMG/a0.jpg)
+
+2.按照图示填写信息
+
+执行方法：`top.misec.BiliMain::mainHandler`
+
+JAR包获取地址：[Release](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/releases)
+
+![图示](docs/IMG/a.jpg)
+
+key:`scfFlag` value:`true`
+
+value配置文件：
+
+```json
+{
+  "numberOfCoins": 5,
+  "reserveCoins": 50,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "giveGift": true,
+  "upLive": "0",
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
+  "dedeuserid": "",
+  "sessdata": "",
+  "biliJct": "",
+  "telegrambottoken": null,
+  "telegramchatid": null,
+  "serverpushkey": null
+}
+```
+
+**dedeuserid sessdata biliJct 必填**
+
+**不使用TG推送请把telegrambottoken和telegramchatid的值改为null（上面示例就是null）**
+
+**不推送请把serverpushkey值改为null（上面示例就是null）**
+
+例子：
+
+```json
+{
+  "numberOfCoins": 5,
+  "reserveCoins": 50,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "giveGift": true,
+  "upLive": "0",
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
+  "dedeuserid": "",
+  "sessdata": "",
+  "biliJct": "",
+  "telegrambottoken": null,
+  "telegramchatid": null,
+  "serverpushkey": "https://oapi.dingtalk.com/robot/send?access_token=XXX"
+}
+```
+SERVER酱：
+```json
+{
+  "numberOfCoins": 5,
+  "reserveCoins": 50,
+  "selectLike": 0,
+  "monthEndAutoCharge": true,
+  "giveGift": true,
+  "upLive": "0",
+  "chargeForLove": "0",
+  "devicePlatform": "ios",
+  "coinAddPriority": 1,
+  "skipDailyTask": true,
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
+  "dedeuserid": "",
+  "sessdata": "",
+  "biliJct": "",
+  "telegrambottoken": null,
+  "telegramchatid": null,
+  "serverpushkey": "申请的KEY"
+}
+```
+
+[具体推送配置请点这](#订阅执行结果)
+
+**日志配置 不需要像下边图里一样，直接默认就行**
+
+![图示](docs/IMG/b.jpg)
+
+3.点完成后，再点击立即跳转
+
+![图示](docs/IMG/c.jpg)
+
+4.创建个触发器
+
+点 触发管理->创建触发器
+
+CRON表达式：`30 09 * * *`
+
+![图示](docs/IMG/d.jpg)
+
+5.完成
+
+### 二、使用 Docker
 
 请自行参阅 [Issues/75#issuecomment-731705657][28] 和[基于本项目的衍生项目](#基于本项目的衍生项目)。
 
 [28]: https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657
 
-### 二、使用 Linux Crontab 方式
+### 三、使用 Linux Crontab 方式
 
 1. 在 linux shell 环境执行以下命令，并按照提示输入 SESSDATA，DEDEUSERID，BILI_JCT，SCKEY 四个参数
 
