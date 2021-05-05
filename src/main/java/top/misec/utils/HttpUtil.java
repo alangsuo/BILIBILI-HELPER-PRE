@@ -72,7 +72,6 @@ public class HttpUtil {
         } else {
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-        //httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
         httpPost.setHeader("Cookie", verify.getVerify());
