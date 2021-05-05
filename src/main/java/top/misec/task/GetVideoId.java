@@ -3,6 +3,7 @@ package top.misec.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
@@ -18,6 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 
 @Slf4j
+@Data
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
     private ArrayList<String> rankVideoList;
@@ -137,9 +139,11 @@ public class GetVideoId {
 
         if (jsonArray != null) {
             for (JsonElement videoInfo : jsonArray) {
-                JsonObject tempObject = videoInfo.getAsJsonObject();
-                this.rankVideoList.add(tempObject.get("bvid").getAsString());
-                this.followUpVideoList.add(tempObject.get("bvid").getAsString());
+                String bvid=videoInfo.getAsJsonObject().get("bvid").getAsString();
+                if(!CoinAdd.isCoin(bvid)){
+                    this.rankVideoList.add(bvid);
+                    this.followUpVideoList.add(bvid);
+                }
             }
         }
     }

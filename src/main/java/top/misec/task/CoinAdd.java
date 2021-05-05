@@ -152,7 +152,7 @@ public class CoinAdd implements Task {
      * @param bvid av号
      * @return 返回是否投过硬币了
      */
-    private boolean isCoin(String bvid) {
+    static boolean isCoin(String bvid) {
         String urlParam = "?bvid=" + bvid;
         JsonObject result = HttpUtil.doGet(ApiList.isCoin + urlParam);
 
