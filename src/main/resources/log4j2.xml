@@ -12,6 +12,8 @@
     </Appenders>
 
     <Loggers>
+        <logger name="org.apache.http" level="INFO"/>
+
         <Root level="all">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingFile"/>
