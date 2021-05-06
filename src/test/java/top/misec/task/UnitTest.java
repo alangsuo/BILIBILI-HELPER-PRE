@@ -38,5 +38,13 @@ public class UnitTest {
         ServerPush.doServerPush();
         //new CoinAdd().run();
 
+//        GetVideoId getVideoId=new GetVideoId();
+//        getVideoId.videoUpdate("14602398");
+//        System.out.println(getVideoId.getFollowUpVideoList());
+//        System.out.println(getVideoId.getRankVideoList());
+
+        GetVipPrivilege getVipPrivilege=new GetVipPrivilege();
+        getVipPrivilege.run();
+
     }
 }
