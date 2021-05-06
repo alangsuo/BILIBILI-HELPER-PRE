@@ -66,7 +66,7 @@
   "chargeForLove": "0",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
-  "skipDailyTask": true,
+  "skipDailyTask": false,
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
   "dedeuserid": "",
   "sessdata": "",
@@ -90,7 +90,7 @@
   "chargeForLove": "0",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
-  "skipDailyTask": true,
+  "skipDailyTask": false,
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
   "dedeuserid": "",
   "sessdata": "",
@@ -113,7 +113,7 @@
   "chargeForLove": "0",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
-  "skipDailyTask": true,
+  "skipDailyTask": false,
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15",
   "dedeuserid": "",
   "sessdata": "",
@@ -122,6 +122,11 @@
   "telegramchatid": null,
   "serverpushkey": "申请的KEY"
 }
+```
+样例3:用于测试的事件模版
+
+```json
+
 ```
 
 ### 触发器配置
@@ -141,6 +146,9 @@ Cron表达式：提供了几个可选的表达式。
 每天0点10分执行：10 0 * * *  
 ```
 
+### 更新部署
 
+![](IMG/scf/4.png)
+![](IMG/scf/5.png)
 
-5.完成
+点击函数列表函数名，进入已创建的函数，点击函数管理。选择函数代码，上传新版本的jar包，点击部署即可。
