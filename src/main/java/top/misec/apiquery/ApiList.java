@@ -79,7 +79,11 @@ public class ApiList {
     public static String videoView = "https://api.bilibili.com/x/web-interface/view";
 
     /**
-     *
+     * 漫画阅读
      */
     public static String mangaRead = "https://manga.bilibili.com/twirp/bookshelf.v1.Bookshelf/AddHistory";
+    /**
+     *
+     */
+    public static String getBvidByCreate = "https://api.bilibili.com/x/space/arc/search";
 }

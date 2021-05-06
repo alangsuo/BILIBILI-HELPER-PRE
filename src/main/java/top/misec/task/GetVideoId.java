@@ -3,6 +3,7 @@ package top.misec.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
@@ -18,6 +19,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 
 @Slf4j
+@Data
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
     private ArrayList<String> rankVideoList;
@@ -26,6 +28,7 @@ public class GetVideoId {
     public GetVideoId() {
         this.followUpVideoList = queryDynamicNew();
         this.rankVideoList = regionRanking();
+        videoUpdate("14602398");
         if (this.followUpVideoList.size() > 0) {
             this.followUpVideoQueue = new ArrayBlockingQueue<>(followUpVideoList.size());
             this.followUpVideoQueue.addAll(followUpVideoList);
@@ -128,5 +131,20 @@ public class GetVideoId {
             }
         }
         return videoList;
+    }
+    public void videoUpdate(String mid){
+        String urlParam = "?mid=" + mid + "&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp";
+        JsonObject resultJson = HttpUtil.doGet(ApiList.getBvidByCreate + urlParam);
+        JsonArray jsonArray=resultJson.getAsJsonObject("data").getAsJsonObject("list").getAsJsonArray("vlist");
+
+        if (jsonArray != null) {
+            for (JsonElement videoInfo : jsonArray) {
+                String bvid=videoInfo.getAsJsonObject().get("bvid").getAsString();
+                if(!CoinAdd.isCoin(bvid)){
+                    this.rankVideoList.add(bvid);
+                    this.followUpVideoList.add(bvid);
+                }
+            }
+        }
     }
 }
