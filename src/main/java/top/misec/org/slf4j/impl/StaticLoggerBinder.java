@@ -1,4 +1,4 @@
-package org.slf4j.impl;
+package top.misec.org.slf4j.impl;
 
 import org.apache.logging.slf4j.Log4jLoggerFactory;
 import org.slf4j.ILoggerFactory;

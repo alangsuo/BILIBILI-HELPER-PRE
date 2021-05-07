@@ -47,7 +47,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Package with Maven
-        run: mvn -B package assembly:single --file pom.xml -Dmaven.test.skip=true
+        run: mvn -B package --file pom.xml -Dmaven.test.skip=true
 
       - name: ZIP files
         run: |
@@ -55,6 +55,7 @@ jobs:
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           cp ./src/main/resources/config.json ./
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip config.json
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip docs/
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
 

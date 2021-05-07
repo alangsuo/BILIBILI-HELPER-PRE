@@ -8,6 +8,8 @@
     <artifactId>BILIBILI-HELPER</artifactId>
     <version>1.4.2</version>
     <properties>
+        <skipTests>true</skipTests>
+        <mainClass>top.misec.BiliMain</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -21,7 +23,6 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -46,8 +47,7 @@
                     </execution>
                 </executions>
             </plugin>
-
-        </plugins>
+    </plugins>
     </build>
 
 
