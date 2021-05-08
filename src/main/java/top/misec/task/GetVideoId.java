@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import top.misec.apiquery.ApiList;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -15,10 +15,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @author @JunzhouLiu
- * @create 2020/11/12 13:17
+ * @created 2020/11/12 13:17
  */
 
-@Slf4j
+@Log4j2
 @Data
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;
@@ -140,7 +140,8 @@ public class GetVideoId {
         if (jsonArray != null) {
             for (JsonElement videoInfo : jsonArray) {
                 String bvid=videoInfo.getAsJsonObject().get("bvid").getAsString();
-                if(!CoinAdd.isCoin(bvid)){
+                int play=videoInfo.getAsJsonObject().get("play").getAsInt();
+                if(!CoinAdd.isCoin(bvid)&&play>1000){
                     this.rankVideoList.add(bvid);
                     this.followUpVideoList.add(bvid);
                 }

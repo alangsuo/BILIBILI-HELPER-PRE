@@ -24,8 +24,6 @@ import static top.misec.task.TaskInfoHolder.getVideoId;
 @Slf4j
 public class CoinAdd implements Task {
 
-    private final String taskName = "投币任务";
-
     @Override
     public void run() {
 
@@ -85,7 +83,6 @@ public class CoinAdd implements Task {
          */
         while (needCoins > 0 && needCoins <= maxNumberOfCoins) {
             String bvid;
-
             if (coinAddPriority == 1 && addCoinOperateCount < 7) {
                 bvid = getVideoId.getFollowUpRandomVideoBvid();
             } else {
@@ -93,11 +90,12 @@ public class CoinAdd implements Task {
             }
 
             addCoinOperateCount++;
+            new VideoWatch().watchVideo(bvid);
             boolean flag = coinAdd(bvid, 1, Config.getInstance().getSelectLike());
             if (flag) {
                 try {
                     Random random = new Random();
-                    int sleepTime = (int) ((random.nextDouble() + 0.5) * 3000);
+                    int sleepTime = (int) ((random.nextDouble() + 0.5) * 5000);
                     log.info("投币后随机暂停{}毫秒", sleepTime);
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
@@ -128,7 +126,7 @@ public class CoinAdd implements Task {
         String videoTitle = oftenAPI.videoTitle(bvid);
         //判断曾经是否对此av投币过
         if (!isCoin(bvid)) {
-            Map<String, String> headers = new HashMap<>();
+            Map<String, String> headers = new HashMap<>(10);
             headers.put("Referer", "https://www.bilibili.com/video/" + bvid);
             headers.put("Origin", "https://www.bilibili.com");
             JsonObject jsonObject = HttpUtil.doPost(ApiList.CoinAdd, requestBody, headers);
@@ -167,6 +165,6 @@ public class CoinAdd implements Task {
 
     @Override
     public String getName() {
-        return taskName;
+        return "投币任务";
     }
 }

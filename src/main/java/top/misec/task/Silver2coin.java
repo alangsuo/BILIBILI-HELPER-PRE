@@ -28,7 +28,6 @@ public class Silver2coin implements Task {
 
         if (silverNum < exchangeRate) {
             log.info("当前银瓜子余额为:{},不足700,不进行兑换", silverNum);
-            return;
         } else {
             JsonObject resultJson = HttpUtil.doGet(ApiList.silver2coin);
             int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
@@ -48,7 +47,6 @@ public class Silver2coin implements Task {
                 log.info("银瓜子兑换硬币失败 原因是:{}", resultJson.get("msg").getAsString());
             }
         }
-
     }
 
     @Override

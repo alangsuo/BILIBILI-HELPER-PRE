@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
@@ -15,7 +16,7 @@ import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
  * @author @JunzhouLiu @Kurenai
  * @create 2020/10/11 20:44
  */
-@Slf4j
+@Log4j2
 public class DailyTask {
 
     private final List<Task> dailyTasks;

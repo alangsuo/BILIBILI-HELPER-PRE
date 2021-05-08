@@ -30,17 +30,7 @@ public class VideoWatch implements Task {
         JsonObject dailyTaskStatus = getDailyTaskStatus();
         String bvid = getVideoId.getRegionRankingVideoBvid();
         if (!dailyTaskStatus.get("watch").getAsBoolean()) {
-            int playedTime = new Random().nextInt(90) + 1;
-            String postBody = "bvid=" + bvid
-                    + "&played_time=" + playedTime;
-            JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
-            String videoTitle = oftenAPI.videoTitle(bvid);
-            int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
-            if (responseCode == 0) {
-                log.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
-            } else {
-                log.debug("视频: " + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
-            }
+            watchVideo(bvid);
         } else {
             log.info("本日观看视频任务已经完成了，不需要再观看视频了");
         }
@@ -57,10 +47,24 @@ public class VideoWatch implements Task {
         return taskName;
     }
 
+    public void watchVideo(String bvid) {
+        int playedTime = new Random().nextInt(90) + 1;
+        String postBody = "bvid=" + bvid
+                + "&played_time=" + playedTime;
+        JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
+        String videoTitle = oftenAPI.videoTitle(bvid);
+        int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
+        if (responseCode == 0) {
+            log.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
+        } else {
+            log.debug("视频: " + videoTitle + "播放失败,原因: " + resultJson.get("message").getAsString());
+        }
+    }
+
     /**
      * @param bvid 要分享的视频bvid
      */
-    private void dailyAvShare(String bvid) {
+    public void dailyAvShare(String bvid) {
         String requestBody = "bvid=" + bvid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUtil.doPost((ApiList.AvShare), requestBody);
 
