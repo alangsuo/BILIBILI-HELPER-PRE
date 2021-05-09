@@ -1,0 +1,30 @@
+app: bilibili-helper
+component: scf
+inputs:
+  description: BILIBILI-HELPER
+  eip: false
+  enableRoleAuth: true
+  environment:
+    variables:
+      config: ''
+      scfFlag: 'true'
+   # config变量的填写方式参考 https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/docs/scf.md#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE
+  
+  events: []
+  handler: top.misec.BiliMain::mainHandler
+  memorySize: 512
+  name: bilibili-helper
+  namespace: default
+  publicAccess: true
+  region: ap-shanghai
+  runtime: Java8
+  src: ./src
+  timeout: 900
+name: ap-shanghai_default_bilibili-helper
+org: '1251966354'
+stage: dev
+
+# 触发器未配置。
+
+# When using this configuration file for deployment, make sure the file name is "serverless.yml".
+# For more information: https://github.com/serverless-components/tencent-scf/blob/master/docs/configure.md
