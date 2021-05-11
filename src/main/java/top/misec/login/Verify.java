@@ -29,6 +29,12 @@ public class Verify {
         Verify.biliJct = biliJct;
     }
 
+    /**
+     * 合并cookies
+     */
+    public static void mergeUserCookies(){
+
+    }
 
     public static Verify getInstance() {
         return VERIFY;

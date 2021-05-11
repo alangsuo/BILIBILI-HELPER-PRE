@@ -1,4 +1,4 @@
-name: Auto_Package_BILIBILI-HELPER
+name: Build Release
 
 on:
   push:
@@ -55,7 +55,7 @@ jobs:
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip BILIBILI-HELPER-v${{steps.tag_latest.outputs.value}}.jar
           cp ./src/main/resources/config.json ./
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip config.json
-          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip docs/
+          zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip -r docs/
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip LICENSE
           zip BILIBILI-HELPER\ v${{steps.tag_latest.outputs.value}}.zip README.md
 
