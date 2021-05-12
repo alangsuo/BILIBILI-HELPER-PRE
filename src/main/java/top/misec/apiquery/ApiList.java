@@ -87,4 +87,5 @@ public class ApiList {
      *
      */
     public static String getBvidByCreate = "https://api.bilibili.com/x/space/arc/search";
+    public static String getCionLog="https://api.bilibili.com/x/member/web/coin/log?jsonp=jsonp";
 }
