@@ -1,5 +1,6 @@
 package top.misec.task;
 
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.login.ServerVerify;
 import top.misec.push.Push;
@@ -13,7 +14,7 @@ import top.misec.utils.LoadFileResource;
  * @create 2020/10/21 17:39
  */
 
-@Slf4j
+@Log4j2
 public class ServerPush {
 
     public static void doServerPush() {

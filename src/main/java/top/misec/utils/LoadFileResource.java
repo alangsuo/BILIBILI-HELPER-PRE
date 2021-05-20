@@ -1,5 +1,6 @@
 package top.misec.utils;
 
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -10,7 +11,7 @@ import java.nio.charset.StandardCharsets;
  * @create 2020/10/17 19:31
  * 工具类通过流的方式读取文件
  */
-@Slf4j
+@Log4j2
 public class LoadFileResource {
 
     /**

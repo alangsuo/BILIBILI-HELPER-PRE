@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
@@ -11,7 +12,7 @@ import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
  * @author Junzhou Liu
  * @create 2021/1/13 17:50
  */
-@Slf4j
+@Log4j2
 public class MangaRead implements Task {
 
     @Override

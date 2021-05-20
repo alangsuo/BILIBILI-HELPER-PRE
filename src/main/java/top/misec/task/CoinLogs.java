@@ -33,8 +33,6 @@ public class CoinLogs implements Task {
             }
             log.info("最近一周收入{}个硬币",income);
             log.info("最近一周支出{}个硬币",expend);
-
-
         }
 
     }

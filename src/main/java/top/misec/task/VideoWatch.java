@@ -1,6 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.apiquery.oftenAPI;
@@ -19,7 +20,7 @@ import static top.misec.task.TaskInfoHolder.getVideoId;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:13
  */
-@Slf4j
+@Log4j2
 public class VideoWatch implements Task {
 
     @Override

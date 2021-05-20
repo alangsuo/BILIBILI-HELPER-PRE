@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -27,7 +28,7 @@ import java.util.Optional;
  * @create 2020/10/11 4:03
  */
 
-@Slf4j
+@Log4j2
 @Data
 public class HttpUtil {
     /**

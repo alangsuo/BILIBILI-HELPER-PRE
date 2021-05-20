@@ -2,6 +2,7 @@ package top.misec.task;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.pojo.userinfobean.Data;
@@ -17,7 +18,7 @@ import static top.misec.task.TaskInfoHolder.userInfo;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 4:57
  */
-@Slf4j
+@Log4j2
 public class UserCheck implements Task {
 
     @Override
