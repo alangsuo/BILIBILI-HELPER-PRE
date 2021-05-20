@@ -78,8 +78,8 @@ public class BiliMain {
             return;
         }
         KeyValueClass kv = new Gson().fromJson(config, KeyValueClass.class);
-        System.out.println("环境信息：");
-        System.out.println(kv);
+//        System.out.println("环境信息：");
+//        System.out.println(kv.toString());
         //读取环境变量
         Verify.verifyInit(kv.getDedeuserid(), kv.getSessdata(), kv.getBiliJct());
 

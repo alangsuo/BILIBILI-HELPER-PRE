@@ -28,4 +28,30 @@ public class KeyValueClass {
     private int coinAddPriority;
     private boolean skipDailyTask;
     private String userAgent;
+
+    @Override
+    public String toString() {
+        StringBuilder sb_dedeuserid = new StringBuilder(dedeuserid);
+        StringBuilder sb_sessdata = new StringBuilder(sessdata);
+        StringBuilder sb_biliJct = new StringBuilder(biliJct);
+        return "KeyValueClass{" +
+                "dedeuserid='" + sb_dedeuserid.replace(2,4,"****") + '\'' +
+                ", sessdata='" + sb_sessdata.replace(3,15,"****") + '\'' +
+                ", biliJct='" + sb_biliJct.replace(3,15,"****") + '\'' +
+                ", serverpushkey='" + serverpushkey + '\'' +
+                ", telegrambottoken='" + telegrambottoken + '\'' +
+                ", telegramchatid='" + telegramchatid + '\'' +
+                ", numberOfCoins=" + numberOfCoins +
+                ", reserveCoins=" + reserveCoins +
+                ", selectLike=" + selectLike +
+                ", monthEndAutoCharge=" + monthEndAutoCharge +
+                ", giveGift=" + giveGift +
+                ", upLive='" + upLive + '\'' +
+                ", chargeForLove='" + chargeForLove + '\'' +
+                ", devicePlatform='" + devicePlatform + '\'' +
+                ", coinAddPriority=" + coinAddPriority +
+                ", skipDailyTask=" + skipDailyTask +
+                ", userAgent='" + userAgent + '\'' +
+                '}';
+    }
 }
