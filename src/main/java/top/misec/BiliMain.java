@@ -1,6 +1,7 @@
 package top.misec;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,14 @@ public class BiliMain {
             System.out.println("取config配置为空！！！");
             return;
         }
-        KeyValueClass kv = new Gson().fromJson(config, KeyValueClass.class);
+        KeyValueClass kv;
+        try {
+            kv = new Gson().fromJson(config, KeyValueClass.class);
+        } catch (JsonSyntaxException e) {
+            System.out.println("JSON配置反序列化失败，请检查");
+            e.printStackTrace();
+            return;
+        }
 //        System.out.println("环境信息：");
 //        System.out.println(kv.toString());
         //读取环境变量
