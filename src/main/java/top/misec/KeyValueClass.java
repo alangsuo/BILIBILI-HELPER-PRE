@@ -28,6 +28,7 @@ public class KeyValueClass {
     private int coinAddPriority;
     private boolean skipDailyTask;
     private String userAgent;
+    private int taskIntervalTime;
 
     @Override
     public String toString() {

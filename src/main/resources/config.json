@@ -1,4 +1,5 @@
 {
+  "taskIntervalTime": 10,
   "numberOfCoins": 5,
   "reserveCoins": 50,
   "selectLike": 0,

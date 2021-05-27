@@ -8,6 +8,7 @@ import top.misec.apiquery.oftenAPI;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
+import top.misec.utils.SleepTime;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,14 +95,7 @@ public class CoinAdd implements Task {
             new VideoWatch().watchVideo(bvid);
             boolean flag = coinAdd(bvid, 1, Config.getInstance().getSelectLike());
             if (flag) {
-                try {
-                    Random random = new Random();
-                    int sleepTime = (int) ((random.nextDouble() + 0.5) * 5000);
-                    log.info("投币后随机暂停{}毫秒", sleepTime);
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                new SleepTime().sleepDefault();
                 needCoins--;
             }
             if (addCoinOperateCount > 15) {

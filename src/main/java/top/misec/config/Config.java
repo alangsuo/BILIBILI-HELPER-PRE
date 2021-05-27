@@ -52,6 +52,7 @@ public class Config {
     private Boolean skipDailyTask;
     private String chargeForLove;
     private Integer reserveCoins;
+    private Integer taskIntervalTime;
 
     private Config() {
     }
@@ -70,6 +71,7 @@ public class Config {
                 "投币策略：" + coinAddPriority + "\n" +
                 "UA是：" + userAgent + "\n" +
                 "是否跳过每日任务：" + skipDailyTask +
+                "任务执行间隔时间"+ taskIntervalTime+
                 '}';
     }
 
@@ -159,6 +161,12 @@ public class Config {
         }
         if (config.getReserveCoins() != null) {
             reserveCoins = config.getReserveCoins();
+        }
+        if (config.getTaskIntervalTime() != null) {
+            taskIntervalTime = config.getTaskIntervalTime();
+            if(taskIntervalTime<=0){
+                taskIntervalTime=1;
+            }
         }
     }
 }

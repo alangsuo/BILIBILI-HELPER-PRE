@@ -158,6 +158,7 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 ```json
 {
+  "taskIntervalTime": 10,
   "numberOfCoins": 5,
   "reserveCoins": 50,
   "selectLike": 0,
@@ -167,7 +168,7 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
   "chargeForLove": "0",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
-  "skipDailyTask": true,
+  "skipDailyTask": false,
   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
 }
 ```
@@ -178,6 +179,7 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 | Key                | Value                | 说明                                                                     |
 | ------------------ | -------------------- | ------------------------------------------------------------------------ |
+| taskIntervalTime   | [1,无穷大]            | 任务之间的执行间隔,默认10秒,云函数用户不建议调整的太长，注意免费时长。 |
 | numberOfCoins      | [0,5]                | 每日投币数量,默认 5 ,为 0 时则不投币                                     |
 | reserveCoins       | [0,4000]             | 预留的硬币数，当硬币余额小于这个值时，不会进行投币任务，默认值为 50      |
 | selectLike         | [0,1]                | 投币时是否点赞，默认 0, 0：否 1：是                                      |

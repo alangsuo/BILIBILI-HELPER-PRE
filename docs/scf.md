@@ -43,7 +43,7 @@
 
 **内存：** 建议不低于128MB
 
-**执行超时时间：** 建议不低于200s
+**执行超时时间：** 建议不低于200s，如果调整了`taskIntervalTime`,建议按照`taskIntervalTime`的17倍填写。
 
 环境变量：
 
@@ -58,6 +58,7 @@
 
 ```json
 {
+  "taskIntervalTime": 10,
   "numberOfCoins": 5,
   "reserveCoins": 50,
   "selectLike": 0,
@@ -105,6 +106,7 @@
 
 ```json
 {
+  "taskIntervalTime": 10,
   "numberOfCoins": 5,
   "reserveCoins": 50,
   "selectLike": 0,
@@ -128,6 +130,7 @@
 样例3:使用钉钉推送。
 ```json
 {
+  "taskIntervalTime": 10,
   "numberOfCoins": 5,
   "reserveCoins": 50,
   "selectLike": 0,
