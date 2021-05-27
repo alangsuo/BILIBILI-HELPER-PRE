@@ -37,6 +37,7 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./src/main/resources/release.info
+          trim: false
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
