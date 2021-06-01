@@ -51,7 +51,7 @@ public class ServerPush {
         if (null != push) {
             PushHelper.push(push, builder.build(), LoadFileResource.loadFile("/tmp/daily.log"));
         } else {
-            log.warn("未配置正确的ftKey和chatId,本次执行将不推送日志");
+            log.info("未配置正确的ftKey和chatId,本次执行将不推送日志");
         }
     }
 }
