@@ -46,12 +46,12 @@ public class ServerPush {
             builder = builder.token(ftKey).chatId(chatId);
             push = new TelegramPush();
             log.info("本次执行推送日志到Telegram");
-        } else {
-            log.info("未配置server酱,本次执行不推送日志到微信");
-            log.info("未配置Telegram,本次执行不推送日志到Telegram");
-        }
+        } 
+        
         if (null != push) {
             PushHelper.push(push, builder.build(), LoadFileResource.loadFile("/tmp/daily.log"));
+        } else {
+            log.info("未配置正确的ftKey和chatId,本次执行将不推送日志");
         }
     }
 }
