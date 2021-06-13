@@ -173,6 +173,11 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 }
 ```
 
+
+**如果不知道自己的UA之类数据，以及看不懂每个值的含义，可以采用配置生成网页生成自己的配置，注意jar方式和docker方式运行无需填写cookies相关信息**
+
+**[点击进入配置自动生成页面](https://utils.misec.top/index)**
+
 **Windows/Linux 用户使用 jar 包时，`release`包中会包含一份`config.json`配置文件，只需将其和`BILIBILI-HELP.jar`放在同一目录即可，执行时优先加载外部配置文件**
 
 配置文件参数示意
@@ -278,7 +283,6 @@ _特别注意：需要先与机器人之间创建会话，机器人才能下发�
 6. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，如果你给我投币，充电了，咱们之间也不构成任何雇佣，购买关系的交易。
 7. 本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯 UP 主/B 站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。
 8. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE)，请各位知悉。
-9. 
 
 ## API 参考列表
 

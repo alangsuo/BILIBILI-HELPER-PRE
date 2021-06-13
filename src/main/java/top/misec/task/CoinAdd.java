@@ -2,9 +2,8 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
-import top.misec.apiquery.oftenAPI;
+import top.misec.apiquery.OftenApi;
 import top.misec.config.Config;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
@@ -12,7 +11,6 @@ import top.misec.utils.SleepTime;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 import static top.misec.task.TaskInfoHolder.getVideoId;
@@ -54,7 +52,7 @@ public class CoinAdd implements Task {
         int needCoins = setCoin - useCoin;
 
         //投币前硬币余额
-        Double beforeAddCoinBalance = oftenAPI.getCoinBalance();
+        Double beforeAddCoinBalance = OftenApi.getCoinBalance();
         int coinBalance = (int) Math.floor(beforeAddCoinBalance);
 
 
@@ -103,7 +101,7 @@ public class CoinAdd implements Task {
                 break;
             }
         }
-        log.info("投币任务完成后余额为: " + oftenAPI.getCoinBalance());
+        log.info("投币任务完成后余额为: " + OftenApi.getCoinBalance());
     }
 
     /**
@@ -113,7 +111,7 @@ public class CoinAdd implements Task {
      * @return 是否投币成功
      */
     private boolean coinAdd(String bvid, int multiply, int selectLike) {
-        String videoTitle = oftenAPI.videoTitle(bvid);
+        String videoTitle = OftenApi.getVideoTitle(bvid);
         //判断曾经是否对此av投币过
         if (!isCoinAdded(bvid)) {
             Map<String, String> headers = new HashMap<>(10);

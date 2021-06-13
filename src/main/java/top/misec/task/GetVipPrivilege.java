@@ -3,9 +3,8 @@ package top.misec.task;
 import com.google.gson.JsonObject;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
-import top.misec.apiquery.oftenAPI;
+import top.misec.apiquery.OftenApi;
 import top.misec.utils.HttpUtil;
 
 import java.util.Calendar;
@@ -74,8 +73,8 @@ public class GetVipPrivilege implements Task {
 
         if (day == 1 || day % 7 == 0 && vipType == 2) {
             log.info("开始领取年度大会员权益");
-            oftenAPI.vipPrivilege(1);
-            oftenAPI.vipPrivilege(2);
+            OftenApi.getVipPrivilege(1);
+            OftenApi.getVipPrivilege(2);
         } else {
             log.info("本日非领取年度大会员权益执行日期");
         }

@@ -52,6 +52,21 @@
 | `scfFlag`  |`true` |
 | `config`  | `参照样例` |
 
+**如果不知道自己的UA之类数据，以及看不懂每个值的含义，可以采用配置生成网页生成自己的配置**
+
+**[点击进入配置自动生成页面](https://utils.misec.top/index)**
+
+生成的文件目前需要手动补上cookie相关字段和`taskIntervalTime`字段，各个字段值的含义参考项目readme。
+
+```json
+{
+  "taskIntervalTime": 10,
+  "dedeuserid": "",
+  "sessdata": "",
+  "biliJct": "", 
+}
+```
+
 **config value样例**
 
 **dedeuserid sessdata biliJct 必填 获取方式见项目README**

@@ -22,7 +22,7 @@ public class LoadFileResource {
     public static String loadConfigJsonFromFile() {
         String config = null;
         try {
-            String outPath = System.getProperty("user.dir") + File.separator + "config.json" + File.separator;
+            String outPath = System.getProperty("user.dir") + File.separator + "config.json"  ;
             InputStream is = new FileInputStream(outPath);
             int size = is.available();
             byte[] buffer = new byte[size];

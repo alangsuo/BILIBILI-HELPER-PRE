@@ -2,9 +2,8 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
-import top.misec.apiquery.oftenAPI;
+import top.misec.apiquery.OftenApi;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
@@ -51,7 +50,7 @@ public class VideoWatch implements Task {
         String postBody = "bvid=" + bvid
                 + "&played_time=" + playedTime;
         JsonObject resultJson = HttpUtil.doPost(ApiList.videoHeartbeat, postBody);
-        String videoTitle = oftenAPI.videoTitle(bvid);
+        String videoTitle = OftenApi.getVideoTitle(bvid);
         int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
         if (responseCode == 0) {
             log.info("视频: " + videoTitle + "播放成功,已观看到第" + playedTime + "秒");
@@ -67,7 +66,7 @@ public class VideoWatch implements Task {
         String requestBody = "bvid=" + bvid + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject result = HttpUtil.doPost((ApiList.AvShare), requestBody);
 
-        String videoTitle = oftenAPI.videoTitle(bvid);
+        String videoTitle = OftenApi.getVideoTitle(bvid);
 
         if (result.get(STATUS_CODE_STR).getAsInt() == 0) {
             log.info("视频: " + videoTitle + " 分享成功");

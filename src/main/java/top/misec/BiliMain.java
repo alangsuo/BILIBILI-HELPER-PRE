@@ -87,9 +87,9 @@ public class BiliMain {
             e.printStackTrace();
             return;
         }
-//        System.out.println("环境信息：");
-//        System.out.println(kv.toString());
-        //读取环境变量
+        /**
+         *   读取环境变量
+         */
         Verify.verifyInit(kv.getDedeuserid(), kv.getSessdata(), kv.getBiliJct());
 
         if (null != kv.getTelegrambottoken() && null != kv.getTelegramchatid()) {

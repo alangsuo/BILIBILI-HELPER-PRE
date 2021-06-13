@@ -12,7 +12,7 @@ import top.misec.utils.HttpUtil;
  * @create 2020/10/14 14:27
  */
 @Slf4j
-public class oftenAPI {
+public class OftenApi {
 
     /**
      * @return 返回主站查询到的硬币余额，查询失败返回0.0
@@ -38,7 +38,7 @@ public class oftenAPI {
     /**
      * @param type 1大会员B币券  2 大会员福利
      */
-    public static void vipPrivilege(int type) {
+    public static void getVipPrivilege(int type) {
         String requestBody = "type=" + type
                 + "&csrf=" + Verify.getInstance().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.vipPrivilegeReceive, requestBody);
@@ -49,7 +49,6 @@ public class oftenAPI {
             } else if (type == 2) {
                 log.info("领取大会员福利/权益成功");
             }
-
         } else {
             log.debug("领取年度大会员每月赠送的B币券/大会员福利失败，原因: " + jsonObject.get("message").getAsString());
         }
@@ -60,7 +59,7 @@ public class oftenAPI {
      *
      * @return title
      */
-    public static String videoTitle(String bvid) {
+    public static String getVideoTitle(String bvid) {
         String title;
         String urlParameter = "?bvid=" + bvid;
         JsonObject jsonObject = HttpUtil.doGet(ApiList.videoView + urlParameter);
@@ -81,7 +80,7 @@ public class oftenAPI {
      * @param uid 用户uid
      * @return userName 查询到的用户名，为1则未查询到用户
      */
-    public static String queryUserName(String uid) {
+    public static String queryUserNameByUid(String uid) {
         String urlParameter = "?mid=" + uid + "&jsonp=jsonp";
         String userName = "1";
         JsonObject jsonObject = HttpUtil.doGet(ApiList.queryUserName + urlParameter);
@@ -92,6 +91,5 @@ public class oftenAPI {
         }
         return userName;
     }
-
 
 }
