@@ -14,7 +14,7 @@ import top.misec.utils.HttpUtil;
 public class CoinLogs implements Task {
     @Override
     public void run() {
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.getCionLog);
+        JsonObject jsonObject = HttpUtil.doGet(ApiList.getCoinLog);
         if (jsonObject.get("code").getAsInt() == 0) {
             JsonObject data = jsonObject.getAsJsonObject("data");
             log.info("最近一周共计{}条硬币记录", data.get("count").getAsInt());

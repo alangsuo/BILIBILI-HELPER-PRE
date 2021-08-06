@@ -73,7 +73,7 @@ public class ApiList {
     /**
      * 直播签到
      */
-    public static String liveCheckin = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
+    public static final String LIVE_CHECKING = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
 
     public static String queryDynamicNew = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new";
 
@@ -87,5 +87,5 @@ public class ApiList {
      *
      */
     public static String getBvidByCreate = "https://api.bilibili.com/x/space/arc/search";
-    public static String getCionLog="https://api.bilibili.com/x/member/web/coin/log?jsonp=jsonp";
+    public static String getCoinLog ="https://api.bilibili.com/x/member/web/coin/log?jsonp=jsonp";
 }

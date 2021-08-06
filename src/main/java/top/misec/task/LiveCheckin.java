@@ -2,7 +2,6 @@ package top.misec.task;
 
 import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.apiquery.ApiList;
 import top.misec.utils.HttpUtil;
 
@@ -20,7 +19,7 @@ public class LiveCheckin implements Task {
 
     @Override
     public void run() {
-        JsonObject liveCheckinResponse = HttpUtil.doGet(ApiList.liveCheckin);
+        JsonObject liveCheckinResponse = HttpUtil.doGet(ApiList.LIVE_CHECKING);
         int code = liveCheckinResponse.get(STATUS_CODE_STR).getAsInt();
         if (code == 0) {
             JsonObject data = liveCheckinResponse.get("data").getAsJsonObject();

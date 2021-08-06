@@ -3,7 +3,6 @@ package top.misec.config;
 import com.google.gson.Gson;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.LoadFileResource;
 
@@ -71,7 +70,7 @@ public class Config {
                 "投币策略：" + coinAddPriority + "\n" +
                 "UA是：" + userAgent + "\n" +
                 "是否跳过每日任务：" + skipDailyTask +
-                "任务执行间隔时间"+ taskIntervalTime+
+                "任务执行间隔时间" + taskIntervalTime +
                 '}';
     }
 
@@ -108,7 +107,7 @@ public class Config {
         if (originConfig == null) {
             return null;
         }
-        /**
+        /*
          *兼容旧配置文件
          * "skipDailyTask": 0 -> "skipDailyTask": false
          * "skipDailyTask": 1 -> "skipDailyTask": true
@@ -164,8 +163,8 @@ public class Config {
         }
         if (config.getTaskIntervalTime() != null) {
             taskIntervalTime = config.getTaskIntervalTime();
-            if(taskIntervalTime<=0){
-                taskIntervalTime=1;
+            if (taskIntervalTime <= 0) {
+                taskIntervalTime = 1;
             }
         }
     }
