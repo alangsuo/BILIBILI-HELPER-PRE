@@ -62,15 +62,15 @@ public class Config {
 
     @Override
     public String toString() {
-        return "配置信息{" +
-                "每日投币数为：" + numberOfCoins +
-                "分享时是否点赞：" + selectLike +
-                "月底是否充电：" + monthEndAutoCharge +
-                "执行app客户端操作的系统是：" + devicePlatform +
+        return "配置信息{" + "\n" +
+                "是否跳过每日任务：" + skipDailyTask + "\n" +
                 "投币策略：" + coinAddPriority + "\n" +
-                "UA是：" + userAgent + "\n" +
-                "是否跳过每日任务：" + skipDailyTask +
-                "任务执行间隔时间" + taskIntervalTime +
+                "月底是否充电：" + monthEndAutoCharge + "\n" +
+                "每日投币数为：" + numberOfCoins + "\n" +
+                "分享时是否点赞：" + selectLike + "\n" +
+                "任务执行间隔时间：" + taskIntervalTime + "\n" +
+                "执行app客户端操作的系统是：" + devicePlatform + "\n" +
+                "UA是：" + userAgent +
                 '}';
     }
 
@@ -88,14 +88,14 @@ public class Config {
         String configJson = LoadFileResource.loadJsonFromAsset("config.json");
         configJson = resolveOriginConfig(configJson);
         if (configJson != null) {
-            log.info("读取初始化配置文件成功");
+            log.debug("读取初始化配置文件成功");
             Config.CONFIG.merge(new Gson().fromJson(configJson, Config.class));
         }
 
         configJson = LoadFileResource.loadConfigJsonFromFile();
         configJson = resolveOriginConfig(configJson);
         if (configJson != null) {
-            log.info("读取外部配置文件成功");
+            log.debug("读取外部配置文件成功");
             Config.CONFIG.merge(new Gson().fromJson(configJson, Config.class));
         }
 

@@ -1,7 +1,6 @@
 package top.misec.utils;
 
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +21,7 @@ public class LoadFileResource {
     public static String loadConfigJsonFromFile() {
         String config = null;
         try {
-            String outPath = System.getProperty("user.dir") + File.separator + "config.json"  ;
+            String outPath = System.getProperty("user.dir") + File.separator + "config.json";
             InputStream is = new FileInputStream(outPath);
             int size = is.available();
             byte[] buffer = new byte[size];

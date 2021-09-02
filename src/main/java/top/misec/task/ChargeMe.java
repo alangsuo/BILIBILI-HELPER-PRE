@@ -12,9 +12,7 @@ import top.misec.utils.HttpUtil;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.queryVipStatusType;
-import static top.misec.task.TaskInfoHolder.userInfo;
+import static top.misec.task.TaskInfoHolder.*;
 
 /**
  * 给自己充电

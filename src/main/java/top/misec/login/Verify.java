@@ -32,7 +32,7 @@ public class Verify {
     /**
      * 合并cookies
      */
-    public static void mergeUserCookies(){
+    public static void mergeUserCookies() {
 
     }
 

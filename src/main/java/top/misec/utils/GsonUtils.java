@@ -141,33 +141,9 @@ public class GsonUtils {
     }
 
     /**
-     * 中国标准时间格式的Date转换适配器
-     * 可用于#{@link com.google.gson.annotations.JsonAdapter}覆盖默认的序列化/反序列化
-     */
-    public static class StandardDateTypeAdapter extends TypeAdapter<Date> {
-
-        @Override
-        public void write(JsonWriter out, Date value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-            } else {
-                out.value(LocalDateTimeUtils.formatDateTime(value));
-            }
-        }
-
-        @Override
-        public Date read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return null;
-            }
-            return LocalDateTimeUtils.parse(in.nextString());
-        }
-    }
-
-    /**
      * 创建一个泛型参数type
-     * @param raw 外层对象（List<T>/Map<K,V>/Result<T>等）
+     *
+     * @param raw  外层对象（List<T>/Map<K,V>/Result<T>等）
      * @param args 泛型对应的type
      * @return ParameterizedType
      */
@@ -192,6 +168,7 @@ public class GsonUtils {
 
     /**
      * 序列化对象成JSON字符串
+     *
      * @param source 对象
      * @return JSON字符串
      */
@@ -201,6 +178,7 @@ public class GsonUtils {
 
     /**
      * 序列化对象成格式化的JSON字符串
+     *
      * @param source 对象
      * @return 格式化的JSON字符串
      */
@@ -210,7 +188,8 @@ public class GsonUtils {
 
     /**
      * 序列化对象成JSON字符串并过滤指定字段
-     * @param source 对象
+     *
+     * @param source        对象
      * @param excludeFields 不需要序列化的字段
      * @return JSON字符串
      */
@@ -225,7 +204,8 @@ public class GsonUtils {
 
     /**
      * 序列化对象指定的字段成JSON字符串
-     * @param source 对象
+     *
+     * @param source        对象
      * @param includeFields 需要被序列化的字段
      * @return JSON字符串
      */
@@ -240,9 +220,10 @@ public class GsonUtils {
 
     /**
      * 把JSON字符串反序列化成对象
-     * @param json JSON字符串
+     *
+     * @param json   JSON字符串
      * @param tClass 反序列化对象的实体类
-     * @param <T> 反序列化对象的实体类
+     * @param <T>    反序列化对象的实体类
      * @return 对象
      */
     public static <T> T fromJson(String json, Class<T> tClass) {
@@ -251,9 +232,10 @@ public class GsonUtils {
 
     /**
      * 把JSON字符串反序列化成对象
+     *
      * @param json JSON字符串
      * @param type 反序列化对象的映射{@link com.google.gson.reflect.TypeToken}
-     * @param <T> 反序列化对象的实体类
+     * @param <T>  反序列化对象的实体类
      * @return 对象
      */
     public static <T> T fromJson(String json, Type type) {
@@ -262,9 +244,10 @@ public class GsonUtils {
 
     /**
      * 把JSON字符串反序列化成对象ArrayList
-     * @param json JSON字符串
+     *
+     * @param json   JSON字符串
      * @param tClass 反序列化对象的实体类
-     * @param <T> 反序列化对象的实体类
+     * @param <T>    反序列化对象的实体类
      * @return 对象ArrayList
      */
     public static <T> List<T> fromArrayJson(String json, Class<T> tClass) {
@@ -274,15 +257,41 @@ public class GsonUtils {
     /**
      * 把JSON字符串反序列化成HashMap对象（适合简单的kv Map使用）
      * 复杂对象请定义一个class并使用{@link GsonUtils#fromJson(java.lang.String, java.lang.Class)}反序列化
-     * @param json JSON字符串
+     *
+     * @param json   JSON字符串
      * @param kClass key实体类
      * @param vClass value实体类
-     * @param <K> key实体类
-     * @param <V> value实体类
+     * @param <K>    key实体类
+     * @param <V>    value实体类
      * @return 简单KV HashMap
      */
     public static <K, V> Map<K, V> fromMapJson(String json, Class<K> kClass, Class<V> vClass) {
         return DEFAULT_GSON.fromJson(json, make(HashMap.class, new Class[]{kClass, vClass}));
+    }
+
+    /**
+     * 中国标准时间格式的Date转换适配器
+     * 可用于#{@link com.google.gson.annotations.JsonAdapter}覆盖默认的序列化/反序列化
+     */
+    public static class StandardDateTypeAdapter extends TypeAdapter<Date> {
+
+        @Override
+        public void write(JsonWriter out, Date value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(LocalDateTimeUtils.formatDateTime(value));
+            }
+        }
+
+        @Override
+        public Date read(JsonReader in) throws IOException {
+            if (in.peek() == JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return LocalDateTimeUtils.parse(in.nextString());
+        }
     }
 
 }

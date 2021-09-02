@@ -24,6 +24,25 @@ import static top.misec.task.TaskInfoHolder.getVideoId;
 @Log4j2
 public class CoinAdd implements Task {
 
+    /**
+     * 检查是否投币
+     *
+     * @param bvid av号
+     * @return 返回是否投过硬币了
+     */
+    static boolean isCoinAdded(String bvid) {
+        String urlParam = "?bvid=" + bvid;
+        JsonObject result = HttpUtil.doGet(ApiList.isCoin + urlParam);
+
+        int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
+        if (multiply > 0) {
+            log.info("之前已经为av" + bvid + "投过" + multiply + "枚硬币啦");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void run() {
 
@@ -132,25 +151,6 @@ public class CoinAdd implements Task {
             }
         } else {
             log.debug("已经为" + videoTitle + "投过币了");
-            return false;
-        }
-    }
-
-    /**
-     * 检查是否投币
-     *
-     * @param bvid av号
-     * @return 返回是否投过硬币了
-     */
-    static boolean isCoinAdded(String bvid) {
-        String urlParam = "?bvid=" + bvid;
-        JsonObject result = HttpUtil.doGet(ApiList.isCoin + urlParam);
-
-        int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
-        if (multiply > 0) {
-            log.info("之前已经为av" + bvid + "投过" + multiply + "枚硬币啦");
-            return true;
-        } else {
             return false;
         }
     }

@@ -62,9 +62,9 @@ public class DailyTask {
             printTime();
             log.debug("任务启动中");
             for (Task task : dailyTasks) {
-                log.info("------{}开始------", task.getName());
+                log.debug("------{}开始------", task.getName());
                 task.run();
-                log.info("------{}结束------\n", task.getName());
+                log.debug("------{}结束------\n", task.getName());
                 new SleepTime().sleepDefault();
             }
             log.info("本日任务已全部执行完毕");

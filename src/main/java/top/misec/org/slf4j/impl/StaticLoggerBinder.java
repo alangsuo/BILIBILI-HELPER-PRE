@@ -10,15 +10,11 @@ import org.slf4j.spi.LoggerFactoryBinder;
  */
 public class StaticLoggerBinder implements LoggerFactoryBinder {
 
-    public static String REQUESTED_API_VERSION = "1.7";
-
-    public static LogImpl LOG_IMPL = LogImpl.LOG4J2;
-
     private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
-
     private static final String JUL_LOGGER_FACTORY_CLASS_STR = org.slf4j.impl.JDK14LoggerFactory.class.getName();
-
     private static final String LOG_4_J_LOGGER_FACTORY_CLASS_STR = Log4jLoggerFactory.class.getName();
+    public static String REQUESTED_API_VERSION = "1.7";
+    public static LogImpl LOG_IMPL = LogImpl.LOG4J2;
 
     public static StaticLoggerBinder getSingleton() {
         return SINGLETON;

@@ -1,7 +1,6 @@
 package top.misec.task;
 
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.login.ServerVerify;
 import top.misec.push.Push;
 import top.misec.push.PushHelper;
@@ -38,7 +37,7 @@ public class ServerPush {
             } else if (ftKey.length() == PushPlusPush.PUSH_PLUS_CHANNEL_TOKEN_DEFAULT_LENGTH) {
                 push = new PushPlusPush();
                 log.info("本次执行推送日志到Push Plus");
-            }else if (ftKey.length() == WeiXinPush.WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH) {
+            } else if (ftKey.length() == WeiXinPush.WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH) {
                 push = new WeiXinPush();
                 log.info("本次执行推送日志到企业微信");
             }
@@ -46,10 +45,10 @@ public class ServerPush {
             builder = builder.token(ftKey).chatId(chatId);
             push = new TelegramPush();
             log.info("本次执行推送日志到Telegram");
-        } 
-        
+        }
+
         if (null != push) {
-            PushHelper.push(push, builder.build(), LoadFileResource.loadFile("/tmp/daily.log"));
+            PushHelper.push(push, builder.build(), LoadFileResource.loadFile("/tmp/bili-helper.log"));
         } else {
             log.info("未配置正确的ftKey和chatId,本次执行将不推送日志");
         }

@@ -132,16 +132,17 @@ public class GetVideoId {
         }
         return videoList;
     }
-    public void videoUpdate(String mid){
+
+    public void videoUpdate(String mid) {
         String urlParam = "?mid=" + mid + "&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp";
         JsonObject resultJson = HttpUtil.doGet(ApiList.getBvidByCreate + urlParam);
-        JsonArray jsonArray=resultJson.getAsJsonObject("data").getAsJsonObject("list").getAsJsonArray("vlist");
+        JsonArray jsonArray = resultJson.getAsJsonObject("data").getAsJsonObject("list").getAsJsonArray("vlist");
 
         if (jsonArray != null) {
             for (JsonElement videoInfo : jsonArray) {
-                String bvid=videoInfo.getAsJsonObject().get("bvid").getAsString();
-                int play=videoInfo.getAsJsonObject().get("play").getAsInt();
-                if(!CoinAdd.isCoinAdded(bvid)){
+                String bvid = videoInfo.getAsJsonObject().get("bvid").getAsString();
+                int play = videoInfo.getAsJsonObject().get("play").getAsInt();
+                if (!CoinAdd.isCoinAdded(bvid)) {
                     this.rankVideoList.add(bvid);
                     this.followUpVideoList.add(bvid);
                 }

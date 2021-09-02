@@ -36,9 +36,9 @@ public class KeyValueClass {
         StringBuilder sb_sessdata = new StringBuilder(sessdata);
         StringBuilder sb_biliJct = new StringBuilder(biliJct);
         return "KeyValueClass{" +
-                "dedeuserid='" + sb_dedeuserid.replace(2,4,"****") + '\'' +
-                ", sessdata='" + sb_sessdata.replace(3,15,"****") + '\'' +
-                ", biliJct='" + sb_biliJct.replace(3,15,"****") + '\'' +
+                "dedeuserid='" + sb_dedeuserid.replace(2, 4, "****") + '\'' +
+                ", sessdata='" + sb_sessdata.replace(3, 15, "****") + '\'' +
+                ", biliJct='" + sb_biliJct.replace(3, 15, "****") + '\'' +
                 ", serverpushkey='" + serverpushkey + '\'' +
                 ", telegrambottoken='" + telegrambottoken + '\'' +
                 ", telegramchatid='" + telegramchatid + '\'' +

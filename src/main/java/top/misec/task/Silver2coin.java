@@ -7,6 +7,8 @@ import top.misec.apiquery.OftenApi;
 import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 
+import java.util.Objects;
+
 import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 import static top.misec.task.TaskInfoHolder.userInfo;
 
@@ -22,7 +24,12 @@ public class Silver2coin implements Task {
     @Override
     public void run() {
 
-        JsonObject queryStatus = HttpUtil.doGet(ApiList.getSilver2coinStatus).get("data").getAsJsonObject();
+        JsonObject queryStatus = HttpUtil.doGet(ApiList.getSilver2coinStatus);
+        if (queryStatus == null || Objects.isNull(queryStatus.get("data"))) {
+            log.error("获取银瓜子状态失败");
+            return;
+        }
+        queryStatus = queryStatus.get("data").getAsJsonObject();
         //银瓜子兑换硬币汇率
         final int exchangeRate = 700;
         int silverNum = queryStatus.get("silver").getAsInt();

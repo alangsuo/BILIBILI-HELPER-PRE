@@ -13,7 +13,7 @@ public final class PushHelper {
     /**
      * 推送
      *
-     * @param push   推送实例
+     * @param push     推送实例
      * @param metaInfo 元信息
      * @param content  内容
      * @return 推送结果

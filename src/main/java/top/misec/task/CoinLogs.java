@@ -27,12 +27,12 @@ public class CoinLogs implements Task {
                 String reason = jsonElement.getAsJsonObject().get("reason").getAsString();
                 if (delta > 0) {
                     income += delta;
-                }else {
-                    expend+=delta;
+                } else {
+                    expend += delta;
                 }
             }
-            log.info("最近一周收入{}个硬币",income);
-            log.info("最近一周支出{}个硬币",expend);
+            log.info("最近一周收入{}个硬币", income);
+            log.info("最近一周支出{}个硬币", expend);
         }
 
     }

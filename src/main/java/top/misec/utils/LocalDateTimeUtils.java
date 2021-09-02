@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class LocalDateTimeUtils {
 
-    public final static DateTimeFormatter FORMATTER_DATE_TIME =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public final static DateTimeFormatter FORMATTER_DATE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public final static DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public final static DateTimeFormatter FORMATTER_DATE_HH_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -78,7 +78,8 @@ public class LocalDateTimeUtils {
 
     /**
      * 解析日期字符串并转换为Date对象
-     * @param dateStr 日期字符串
+     *
+     * @param dateStr         日期字符串
      * @param zoneOffsetHours 时区（GMT时区）
      * @return Date对象
      */
@@ -97,9 +98,10 @@ public class LocalDateTimeUtils {
 
     /**
      * 格式化Date对象为日期字符串
-     * @param date Date日期对象
+     *
+     * @param date            Date日期对象
      * @param zoneOffsetHours 时区（GMT时区）
-     * @param formatter 日期格式化formatter
+     * @param formatter       日期格式化formatter
      * @return 格式化日期字符串
      */
     private static String format(Date date, int zoneOffsetHours, DateTimeFormatter formatter) {
