@@ -15,6 +15,11 @@ import top.misec.push.model.PushMetaInfo;
  **/
 public class WeiXinPush extends AbstractPush {
 
+    /**
+     * WeiXinPush 默认TOKEN长度
+     */
+    public static final int WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH = 36;
+
     @Override
     protected String generatePushUrl(PushMetaInfo metaInfo) {
         return ApiList.weixingPush + metaInfo.getToken();

@@ -30,9 +30,9 @@ public class Silver2coin implements Task {
         if (silverNum < exchangeRate) {
             log.info("当前银瓜子余额为:{},不足700,不进行兑换", silverNum);
         } else {
-            String requsetBody = "csrf_token=" + Verify.getInstance().getBiliJct() +
+            String requestBody = "csrf_token=" + Verify.getInstance().getBiliJct() +
                     "&csrf=" + Verify.getInstance().getBiliJct();
-            JsonObject resultJson = HttpUtil.doPost(ApiList.silver2coin, requsetBody);
+            JsonObject resultJson = HttpUtil.doPost(ApiList.silver2coin, requestBody);
 
             int responseCode = resultJson.get(STATUS_CODE_STR).getAsInt();
             if (responseCode == 0) {
