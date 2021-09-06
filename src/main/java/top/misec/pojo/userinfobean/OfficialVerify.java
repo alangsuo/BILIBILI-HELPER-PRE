@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class OfficialVerify {
 
-    private int type;
-    private String desc;
+	private int type;
+	private String desc;
 
 
 }

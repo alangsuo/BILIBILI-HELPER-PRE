@@ -16,28 +16,28 @@ import top.misec.push.model.PushMetaInfo;
 @Deprecated
 public class ServerChanPush extends AbstractPush {
 
-    @Override
-    protected String generatePushUrl(PushMetaInfo metaInfo) {
-        return ApiList.ServerPush + metaInfo.getToken() + ".send";
-    }
+	@Override
+	protected String generatePushUrl(PushMetaInfo metaInfo) {
+		return ApiList.ServerPush + metaInfo.getToken() + ".send";
+	}
 
-    @Override
-    protected boolean checkPushStatus(JsonObject jsonObject) {
-        if (null == jsonObject) {
-            return false;
-        }
+	@Override
+	protected boolean checkPushStatus(JsonObject jsonObject) {
+		if (null == jsonObject) {
+			return false;
+		}
 
-        JsonElement code = jsonObject.get("code");
+		JsonElement code = jsonObject.get("code");
 
-        if (null == code) {
-            return false;
-        }
+		if (null == code) {
+			return false;
+		}
 
-        return code.getAsInt() == 0;
-    }
+		return code.getAsInt() == 0;
+	}
 
-    @Override
-    protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        return "text=BILIBILI-HELPER任务简报&desp=" + content;
-    }
+	@Override
+	protected String generatePushBody(PushMetaInfo metaInfo, String content) {
+		return "text=BILIBILI-HELPER任务简报&desp=" + content;
+	}
 }

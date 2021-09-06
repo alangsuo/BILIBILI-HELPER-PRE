@@ -10,9 +10,9 @@ package top.misec.pojo.userinfobean;
 @lombok.Data
 public class JsonRootBean {
 
-    private int code;
-    private String message;
-    private int ttl;
-    private Data data;
+	private int code;
+	private String message;
+	private int ttl;
+	private Data data;
 
 }

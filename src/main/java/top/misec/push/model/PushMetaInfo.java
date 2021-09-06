@@ -13,24 +13,24 @@ import lombok.Getter;
 @Builder
 public class PushMetaInfo {
 
-    /**
-     * TOKEN
-     */
-    private final String token;
+	/**
+	 * TOKEN
+	 */
+	private final String token;
 
-    /**
-     * Telegram Chat Id
-     */
-    private final String chatId;
+	/**
+	 * Telegram Chat Id
+	 */
+	private final String chatId;
 
-    /**
-     * 失败后重试次数
-     */
-    private final int numberOfRetries;
+	/**
+	 * 失败后重试次数
+	 */
+	private final int numberOfRetries;
 
-    /**
-     * 失败后重试间隔
-     */
-    private final long retryInterval;
+	/**
+	 * 失败后重试间隔
+	 */
+	private final long retryInterval;
 
 }

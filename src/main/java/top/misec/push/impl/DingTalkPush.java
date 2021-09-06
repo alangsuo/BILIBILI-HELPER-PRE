@@ -15,46 +15,46 @@ import top.misec.push.model.PushMetaInfo;
  */
 public class DingTalkPush extends AbstractPush {
 
-    @Override
-    protected String generatePushUrl(PushMetaInfo metaInfo) {
-        return metaInfo.getToken();
-    }
+	@Override
+	protected String generatePushUrl(PushMetaInfo metaInfo) {
+		return metaInfo.getToken();
+	}
 
-    @Override
-    protected boolean checkPushStatus(JsonObject jsonObject) {
-        if (jsonObject == null) {
-            return false;
-        }
-        JsonElement errcode = jsonObject.get("errcode");
-        JsonElement errmsg = jsonObject.get("errmsg");
-        if (null == errcode || null == errmsg) {
-            return false;
-        }
-        return errcode.getAsInt() == 0 && "ok".equals(errmsg.getAsString());
-    }
+	@Override
+	protected boolean checkPushStatus(JsonObject jsonObject) {
+		if (jsonObject == null) {
+			return false;
+		}
+		JsonElement errcode = jsonObject.get("errcode");
+		JsonElement errmsg = jsonObject.get("errmsg");
+		if (null == errcode || null == errmsg) {
+			return false;
+		}
+		return errcode.getAsInt() == 0 && "ok".equals(errmsg.getAsString());
+	}
 
-    @Override
-    protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        return new Gson().toJson(new MessageModel(content));
-    }
+	@Override
+	protected String generatePushBody(PushMetaInfo metaInfo, String content) {
+		return new Gson().toJson(new MessageModel(content));
+	}
 
-    @Getter
-    static class MessageModel {
-        private final String msgtype = "text";
-        private final String title = "BILIBILI-HELPER任务简报";
-        private final Text text;
+	@Getter
+	static class MessageModel {
+		private final String msgtype = "text";
+		private final String title = "BILIBILI-HELPER任务简报";
+		private final Text text;
 
-        public MessageModel(String content) {
-            this.text = new Text(content);
-        }
-    }
+		public MessageModel(String content) {
+			this.text = new Text(content);
+		}
+	}
 
-    @Getter
-    static class Text {
-        private final String content;
+	@Getter
+	static class Text {
+		private final String content;
 
-        public Text(String content) {
-            this.content = content.replaceAll("\r\n\r", "");
-        }
-    }
+		public Text(String content) {
+			this.content = content.replaceAll("\r\n\r", "");
+		}
+	}
 }

@@ -15,50 +15,50 @@ import top.misec.push.model.PushMetaInfo;
  **/
 public class WeiXinPush extends AbstractPush {
 
-    /**
-     * WeiXinPush 默认TOKEN长度
-     */
-    public static final int WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH = 36;
+	/**
+	 * WeiXinPush 默认TOKEN长度
+	 */
+	public static final int WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH = 36;
 
-    @Override
-    protected String generatePushUrl(PushMetaInfo metaInfo) {
-        return ApiList.weixingPush + metaInfo.getToken();
-    }
+	@Override
+	protected String generatePushUrl(PushMetaInfo metaInfo) {
+		return ApiList.weixingPush + metaInfo.getToken();
+	}
 
-    @Override
-    protected boolean checkPushStatus(JsonObject jsonObject) {
-        if (jsonObject == null) {
-            return false;
-        }
-        JsonElement errcode = jsonObject.get("errcode");
-        JsonElement errmsg = jsonObject.get("errmsg");
-        if (null == errcode || null == errmsg) {
-            return false;
-        }
-        return errcode.getAsInt() == 0 && "ok".equals(errmsg.getAsString());
-    }
+	@Override
+	protected boolean checkPushStatus(JsonObject jsonObject) {
+		if (jsonObject == null) {
+			return false;
+		}
+		JsonElement errcode = jsonObject.get("errcode");
+		JsonElement errmsg = jsonObject.get("errmsg");
+		if (null == errcode || null == errmsg) {
+			return false;
+		}
+		return errcode.getAsInt() == 0 && "ok".equals(errmsg.getAsString());
+	}
 
-    @Override
-    protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        return new Gson().toJson(new MessageModel(content));
-    }
+	@Override
+	protected String generatePushBody(PushMetaInfo metaInfo, String content) {
+		return new Gson().toJson(new MessageModel(content));
+	}
 
-    @Getter
-    static class MessageModel {
-        private final String msgtype = "markdown";
-        private final Markdown markdown;
+	@Getter
+	static class MessageModel {
+		private final String msgtype = "markdown";
+		private final Markdown markdown;
 
-        public MessageModel(String content) {
-            this.markdown = new Markdown(content);
-        }
-    }
+		public MessageModel(String content) {
+			this.markdown = new Markdown(content);
+		}
+	}
 
-    @Getter
-    static class Markdown {
-        private final String content;
+	@Getter
+	static class Markdown {
+		private final String content;
 
-        public Markdown(String content) {
-            this.content = content.replaceAll("\r\n\r", "");
-        }
-    }
+		public Markdown(String content) {
+			this.content = content.replaceAll("\r\n\r", "");
+		}
+	}
 }

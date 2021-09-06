@@ -9,21 +9,21 @@ import lombok.Getter;
 @Getter
 public class PushResult {
 
-    private final boolean success;
+	private final boolean success;
 
-    public PushResult(boolean success) {
-        this.success = success;
-    }
+	public PushResult(boolean success) {
+		this.success = success;
+	}
 
-    public static PushResult success() {
-        return new PushResult(true);
-    }
+	public static PushResult success() {
+		return new PushResult(true);
+	}
 
-    public static PushResult failed() {
-        return new PushResult(false);
-    }
+	public static PushResult failed() {
+		return new PushResult(false);
+	}
 
-    public static boolean checkSuccess(PushResult pushResult) {
-        return null != pushResult && pushResult.isSuccess();
-    }
+	public static boolean checkSuccess(PushResult pushResult) {
+		return null != pushResult && pushResult.isSuccess();
+	}
 }

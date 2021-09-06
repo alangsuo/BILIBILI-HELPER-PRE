@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 public class Vip_label {
 
-    private String path;
-    private String text;
-    private String label_theme;
+	private String path;
+	private String text;
+	private String label_theme;
 
 }

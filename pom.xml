@@ -6,7 +6,7 @@
 
     <groupId>top.misec</groupId>
     <artifactId>BILIBILI-HELPER</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <properties>
         <skipTests>true</skipTests>
         <mainClass>top.misec.BiliMain</mainClass>
@@ -21,6 +21,7 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+
                 </configuration>
             </plugin>
             <plugin>

@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class Wallet {
 
-    private long mid;
-    private int bcoin_balance;
-    private int coupon_balance;
-    private int coupon_due_time;
+	private long mid;
+	private int bcoin_balance;
+	private int coupon_balance;
+	private int coupon_due_time;
 
 }

@@ -17,22 +17,22 @@ import top.misec.utils.HttpUtil;
 public class MangaSign implements Task {
 
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        String platform = Config.getInstance().getDevicePlatform();
-        String requestBody = "platform=" + platform;
-        JsonObject result = HttpUtil.doPost(ApiList.Manga, requestBody);
+		String platform = Config.getInstance().getDevicePlatform();
+		String requestBody = "platform=" + platform;
+		JsonObject result = HttpUtil.doPost(ApiList.Manga, requestBody);
 
-        if (result == null) {
-            log.info("哔哩哔哩漫画已经签到过了");
-        } else {
-            log.info("完成漫画签到");
-        }
-    }
+		if (result == null) {
+			log.info("哔哩哔哩漫画已经签到过了");
+		} else {
+			log.info("完成漫画签到");
+		}
+	}
 
-    @Override
-    public String getName() {
-        return "漫画签到";
-    }
+	@Override
+	public String getName() {
+		return "漫画签到";
+	}
 }

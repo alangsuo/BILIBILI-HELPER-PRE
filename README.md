@@ -22,17 +22,13 @@ Lv6 吧\~\~\~\~
 
 **如果觉得好用，顺手点个 Star 吧 ❤**
 
-**仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)**
+**仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)**
 
 **B 站赛事预测助手已发布，每天自动参与 KPL，LPL 赛事预测，赚取硬币。**
 
 **仓库地址：[JunzhouLiu/bilibili-match-prediction](https://github.com/JunzhouLiu/bilibili-match-prediction)**
 
 **请不要滥用相关 API，让我们一起爱护 B 站 ❤**
-
-**请各位务必遵守 Github 服务条款。不要滥用 Actions 工作流。**
-
-**Please be sure to abide by the Github terms of service. Don’t abuse the Actions workflow.**
 
 
 <div align="center">
@@ -100,20 +96,23 @@ qq 群二维码
 
 ### 一、使用 腾讯云函数
 
-请参考[腾讯云函数部署](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/docs/scf.md)
+请参考[腾讯云函数部署](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/docs/scf.md)
 
 ### 二、使用 Docker
 
-请自行参阅 [Issues/75#issuecomment-731705657][28] 和[基于本项目的衍生项目](#基于本项目的衍生项目)。
+请自行参阅 [基于本项目的衍生项目](#基于本项目的衍生项目)。
 
-[28]: https://github.com/JunzhouLiu/BILIBILI-HELPER/issues/75#issuecomment-731705657
+- **基于本项目的 docker 封装项目：[SuperNG6/docker-bilibili-helper](https://github.com/SuperNG6/docker-bilibili-helper)**
+
+- **基于本项目的 docker 镜像：[superng6/bilibili-helper](https://hub.docker.com/r/superng6/bilibili-helper)**
+
 
 ### 三、使用 Linux Crontab 方式
 
 1. 在 linux shell 环境执行以下命令，并按照提示输入 SESSDATA，DEDEUSERID，BILI_JCT，SCKEY 四个参数
 
 ```
-wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
+wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER-PRE/main/setup.sh && chmod +x ./setup.sh && sudo ./setup.sh
 ```
 
 **ps：注意，如果使用自定义配置，请将`config.json`和 jar 包放置在同一目录(使用 setup.sh 安装则需要将`config.json`放置到`{HOME}/BILIBILI-HELPER`)，`v1.2.2`
@@ -134,7 +133,7 @@ wget https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER/main/setup.sh 
 | 30 10 \* \* \*    | `crontab` 定时时间 |
 | sh /home/start.sh | `start.sh`的路径   |
 
-```shell
+```bash
 #!/bin/bash
 source /etc/profile
 source ~/.bashrc
@@ -146,7 +145,7 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 **命令示例：**
 
-```shell
+```bash
 # *如果Cookies参数中包含特殊字符，例如`%`请使用`\`转义*,如果不执行可在命令前增加 source /etc/profile
 # m h  dom mon dow   command
 30 10 * * * java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT >/var/log/cron.log &
@@ -158,18 +157,22 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 ```json
 {
-  "taskIntervalTime": 10,
+  "matchGame": false,
+  "predictNumberOfCoins": 15,
+  "minimumNumberOfCoins": 30,
+  "taskIntervalTime": 20,
   "numberOfCoins": 5,
-  "reserveCoins": 50,
+  "reserveCoins": 10,
   "selectLike": 0,
   "monthEndAutoCharge": true,
   "giveGift": true,
   "upLive": "0",
-  "chargeForLove": "0",
+  "chargeForLove": "14602398",
+  "chargeDay": "28",
   "devicePlatform": "ios",
   "coinAddPriority": 1,
   "skipDailyTask": false,
-  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36 Edg/91.0.864.54"
 }
 ```
 
@@ -184,24 +187,28 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 
 | Key                | Value                | 说明                                                                     |
 | ------------------ | -------------------- | ------------------------------------------------------------------------ |
+| matchGame   |  [false,true]            | 是否开启赛事预测。 |
+| showHandModel   |  [false,true]            | true ：压赔率高的，false：压赔率低的 |
+| predictNumberOfCoins   | 1-10           | 单次预测的硬币数量 |
+| minimumNumberOfCoins   | [1,无穷大]            | 预留的硬币数，低于此数量不执行赛事预测。 |
 | taskIntervalTime   | [1,无穷大]            | 任务之间的执行间隔,默认10秒,云函数用户不建议调整的太长，注意免费时长。 |
 | numberOfCoins      | [0,5]                | 每日投币数量,默认 5 ,为 0 时则不投币                                     |
 | reserveCoins       | [0,4000]             | 预留的硬币数，当硬币余额小于这个值时，不会进行投币任务，默认值为 50      |
 | selectLike         | [0,1]                | 投币时是否点赞，默认 0, 0：否 1：是                                      |
-| monthEndAutoCharge | [false,true]         | 年度大会员月底是否用 B 币券给自己充电，默认 `true`，即充电对象是你本人。 |
+| monthEndAutoCharge | [false,true]         | 年度大会员月底是否用 B 币券自动充电，默认 `true`。 |
 | giveGift           | [false,true]         | 直播送出即将过期的礼物，默认开启，如需关闭请改为 false                   |
 | upLive             | [0,送礼 up 主的 uid] | 直播送出即将过期的礼物，指定 up 主，为 0 时则随随机选取一个 up 主        |
-| chargeForLove      | [0,充电对象的 uid]   | 给指定 up 主充电，值为 0 或者充电对象的 uid，默认为 0，即给自己充电。    |
+| chargeForLove      | [充电对象的 uid]   | 给指定 up 主充电，值为充电对象的 uid ,默认为14602398  |
+| chargeDay      | [1，28]   | 默认为每月28号  |
 | devicePlatform     | [ios,android]        | 手机端漫画签到时的平台，建议选择你设备的平台 ，默认 `ios`                |
 | coinAddPriority    | [0,1]                | 0：优先给热榜视频投币，1：优先给关注的 up 投币                           |
 | userAgent          | 浏览器 UA            | 用户可根据部署平台配置，可根据 userAgent 参数列表自由选取                |
 | skipDailyTask      | [false,true]         | 是否跳过每日任务，默认`true`,如果关闭跳过每日任务，请改为`false`         |
 
-**tips:如果你没有上传过视频并开启充电计划，充电会失败，B 币券会浪费。此时建议配置为给指定的 up 主充电。欢迎给即将秃头的我充电 uid：[14602398][32]**
-
-[32]: https://space.bilibili.com/14602398
-
-userAgent 可选参数列表
+- **tips:从1.0.0版本开始，随机视频投币有一定的概率会将硬币投给本项目的开发者。**
+- **默认配置文件是给开发者充电，给自己充电或者给其他up充电，请改为对应的uid**
+- 
+  userAgent 可选参数列表
 
 | 平台      | 浏览器         | userAgent                                                                                                                           |
 | --------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -214,7 +221,6 @@ userAgent 可选参数列表
 _ps：如果尝试给关注的 up 投币十次后（保不准你关注的是年更 up 主），还没完成每日投币任务，则切换成热榜模式，给热榜视频投币_
 
 _投币数量代码做了处理，如果本日投币不能获得经验了，则不会投币，每天只投能获得经验的硬币。假设你设置每日投币 3 个，早上 7 点你自己投了 2 个硬币，则十点半时，程序只会投 1 个）_
-tips:从1.4.1版本开始，随机视频投币有一定的概率会将硬币投给本项目的核心开发者。
 
 ## 订阅执行结果
 
@@ -277,12 +283,11 @@ _特别注意：需要先与机器人之间创建会话，机器人才能下发�
 
 1. 本工具不会记录你的任何敏感信息，也不会上传到任何服务器上。（例如用户的 cookies 数据，cookies 数据均存在用户自己的设备上）
 2. 本工具不会记录任何执行过程中来自 b 站的数据信息，也不会上传到任何服务器上。（例如 av 号，bv 号，用户 uid 等）。
-3. 本工具执行过程中产生的日志，仅会在使用者自行配置推送渠道后进行推送。日志中不包含任何用户敏感信息。
-4. 如果你使用了第三方修改的，打包的本工具代码，请注意甄别，有可能会对你账号造成损失，同时也不要把自己的敏感信息（账号，cookies等）提供给他人。（**网络安全教育普及任重而道远**）
-5. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)开源，其余的地方的代码均不是我提交的。如果有人修改了本项目（或者直接使用本项目）盈利恰饭，或者给你造成了损失，和本人无关，我开源的目的单纯是技术分享，所有代码细节都公开。
-6. 我开源本工具的代码仅仅是技术分享，没有任何丝毫的盈利赚钱目的，如果你给我投币，充电了，咱们之间也不构成任何雇佣，购买关系的交易。
-7. 本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯 UP 主/B 站权益的功能，开发这个应用的目的是单纯的技术分享。下游分支开发者/使用者也请不要滥用相关功能。
-8. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER/blob/main/LICENSE)，请各位知悉。
+3. 请不要把自己的敏感信息（账号，cookies等）提供给他人。（**网络安全教育普及任重而道远**）
+4. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER-PRE](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)开源。
+5. 开源的目的单纯是技术分享，所有代码细节都公开。
+6. 本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯 UP 主/B 站权益的功能。
+7. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/LICENSE)，因使用造成的任何损失，纠纷等，和开发者无关，请各位知悉。
 
 ## API 参考列表
 
