@@ -1,5 +1,5 @@
 #!/bin/bash
-version="1.0.5"
+version="1.1.4"
 
 function installJava(){
   command -v apt >/dev/null 2>&1 && (apt-get update; apt-get install openjdk-8-jdk -y; return;)
@@ -12,7 +12,7 @@ function installUnzip(){
 }
 
 function download(){
-  wget -O "/tmp/BILIBILI-HELPER.zip" "https://glare.now.sh/JunzhouLiu/BILIBILI-HELPER/BILIBILI-HELPER-v${1}.zip"
+  wget -O "/tmp/BILIBILI-HELPER.zip" "https://glare.now.sh/JunzhouLiu/BILIBILI-HELPER-PRE/BILIBILI-HELPER-v${1}.zip"
   mkdir "${HOME}/BILIBILI-HELPER"
   command -v unzip >/dev/null 2>&1 || installUnzip
   unzip -o "/tmp/BILIBILI-HELPER.zip" -d "${HOME}/BILIBILI-HELPER"

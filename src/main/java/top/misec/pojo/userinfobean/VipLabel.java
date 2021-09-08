@@ -9,11 +9,10 @@ import lombok.Data;
  * @since 2020/10/11 4:21
  */
 @Data
-public class Official {
+public class VipLabel {
 
-    private int role;
-    private String title;
-    private String desc;
-    private int type;
+    private String path;
+    private String text;
+    private String label_theme;
 
 }
