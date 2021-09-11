@@ -15,7 +15,7 @@ import top.misec.push.model.PushMetaInfo;
  * @author liming
  * @since 2021-05-06 18:10
  **/
-public class WeiXinPush extends AbstractPush {
+public class WeComPush extends AbstractPush {
 
     /**
      * WeiXinPush 默认TOKEN长度.
