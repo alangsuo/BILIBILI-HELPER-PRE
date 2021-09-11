@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import top.misec.utils.GsonUtils;
 import top.misec.utils.HttpUtil;
-import top.misec.utils.LoadFileResource;
+import top.misec.utils.ReadFileUtils;
 
 /**
  * Auto-generated: 2020-10-13 17:10:40.
@@ -21,17 +21,17 @@ public class ConfigLoader {
     private static String defaultHelperConfig;
 
     static {
-        defaultHelperConfig = LoadFileResource.loadJsonFromAsset("config.json");
+        defaultHelperConfig = ReadFileUtils.loadJsonFromAsset("config.json");
         helperConfig = buildHelperConfig(defaultHelperConfig);
     }
 
     /**
      * 云函数初始化配置 .
      *
-     * @param json config json
+     * @param helperConfigJson config json
      */
-    public static void configInit(String json, boolean isSCF) {
-        helperConfig = buildHelperConfig(json);
+    public static void serverlessConfigInit(String helperConfigJson) {
+        helperConfig = buildHelperConfig(helperConfigJson);
         HttpUtil.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
         log.info(helperConfig.getPushConfig().toString());
     }
@@ -39,14 +39,16 @@ public class ConfigLoader {
     /**
      * 优先从jar包同级目录读取.
      */
-    public static void configInit(String filename) {
-        String customConfig = LoadFileResource.loadConfigFile(filename);
+    public static void configInit(String filePath) {
+        String customConfig = ReadFileUtils.readFile(filePath);
         if (customConfig != null) {
             mergeConfig(GsonUtils.fromJson(customConfig, HelperConfig.class));
             log.info("读取外部自定义配置文件成功,若部分配置项不存在则会采用默认配置,合并后的配置为\n{}", helperConfig.toString());
+        } else {
+            log.info("未在 ：{} 目录读取到配置文件", filePath);
         }
         validationConfig();
-        helperConfig.initCookiesMap();
+        helperConfig.getBiliVerify().initCookiesMap();
         HttpUtil.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
     }
 
@@ -55,7 +57,7 @@ public class ConfigLoader {
      */
     private static void validationConfig() {
 
-        if (helperConfig.getBiliCookies().length() < 1) {
+        if (helperConfig.getBiliVerify().getBiliCookies().length() < 1) {
             log.info("未在config.json中配置ck");
             return;
         }

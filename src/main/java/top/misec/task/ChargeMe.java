@@ -80,7 +80,7 @@ public class ChargeMe implements Task {
                     + "&up_mid=" + userId
                     + "&otype=up"
                     + "&oid=" + userId
-                    + "&csrf=" + ConfigLoader.helperConfig.getBiliJct();
+                    + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
 
             JsonObject jsonObject = HttpUtil.doPost(ApiList.AUTO_CHARGE, requestBody);
 
@@ -108,7 +108,7 @@ public class ChargeMe implements Task {
 
         String requestBody = "order_id=" + token
                 + "&message=" + "期待up主的新作品！"
-                + "&csrf=" + ConfigLoader.helperConfig.getBiliJct();
+                + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.CHARGE_COMMENT, requestBody);
 
         if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {

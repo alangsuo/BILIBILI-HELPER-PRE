@@ -149,8 +149,8 @@ public class GiveGift implements Task {
      * @since 2020-10-13
      */
     public JsonObject xliveBagSend(String requestBody) {
-        requestBody += "&uid=" + ConfigLoader.helperConfig.getDedeUserId()
-                + "&csrf=" + ConfigLoader.helperConfig.getBiliJct()
+        requestBody += "&uid=" + ConfigLoader.helperConfig.getBiliVerify().getDedeUserId()
+                + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct()
                 + "&send_ruid=" + "0"
                 + "&storm_beat_id=" + "0"
                 + "&price=" + "0"

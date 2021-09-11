@@ -63,7 +63,7 @@ public class VideoWatch implements Task {
      * @param bvid 要分享的视频bvid.
      */
     public void dailyAvShare(String bvid) {
-        String requestBody = "bvid=" + bvid + "&csrf=" + ConfigLoader.helperConfig.getBiliJct();
+        String requestBody = "bvid=" + bvid + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
         JsonObject result = HttpUtil.doPost((ApiList.AV_SHARE), requestBody);
 
         String videoTitle = OftenApi.getVideoTitle(bvid);

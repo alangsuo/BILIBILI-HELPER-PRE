@@ -13,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
-import top.misec.login.Verify;
 import top.misec.utils.HttpUtil;
 import top.misec.utils.SleepTime;
 
@@ -125,7 +124,7 @@ public class MatchGame implements Task {
                 + "&detail_id=" + detail_id
                 + "&count=" + count
                 + "&is_fav=0"
-                + "&csrf=" + ConfigLoader.helperConfig.getBiliJct();
+                + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
 
         JsonObject result = HttpUtil.doPost(ApiList.DO_ADD, requestbody);
 

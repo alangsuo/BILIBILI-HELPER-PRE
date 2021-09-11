@@ -77,7 +77,7 @@ public class GetVideoId {
 
     public ArrayList<String> queryDynamicNew() {
         ArrayList<String> arrayList = new ArrayList<>();
-        String urlParameter = "?uid=" + ConfigLoader.helperConfig.getDedeUserId()
+        String urlParameter = "?uid=" + ConfigLoader.helperConfig.getBiliVerify().getDedeUserId()
                 + "&type_list=8"
                 + "&from="
                 + "&platform=web";
@@ -145,7 +145,7 @@ public class GetVideoId {
             for (JsonElement videoInfo : jsonArray) {
                 String bvid = videoInfo.getAsJsonObject().get("bvid").getAsString();
                 // int play = videoInfo.getAsJsonObject().get("play").getAsInt();
-                if (!CoinAdd.isCoinAdded(bvid)) {
+                if (CoinAdd.isCoinAdded(bvid)) {
                     this.rankVideoList.add(bvid);
                     this.followUpVideoList.add(bvid);
                 }

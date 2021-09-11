@@ -1,10 +1,13 @@
 {
-  "biliCookies": "",
+  "biliVerify": {
+    "biliCookies": ""
+  },
   "taskConfig": {
+    "skipDailyTask": false,
     "matchGame": false,
     "showHandModel": false,
     "predictNumberOfCoins": 1,
-    "minimumNumberOfCoins": 1000,
+    "minimumNumberOfCoins": 100,
     "taskIntervalTime": 20,
     "numberOfCoins": 5,
     "reserveCoins": 10,
@@ -13,15 +16,20 @@
     "giveGift": true,
     "upLive": "0",
     "chargeForLove": "14602398",
-    "chargeDay": 28,
+    "chargeDay": 8,
     "devicePlatform": "ios",
     "coinAddPriority": 1,
-    "skipDailyTask": false,
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38"
   },
   "pushConfig": {
+    "SC_KEY": "",
     "SCT_KEY": "",
     "TG_BOT_TOKEN": "",
-    "TG_USER_ID": ""
+    "TG_USER_ID": "",
+    "DING_TALK_URL": "",
+    "DING_TALK_SECRET": "",
+    "PUSH_PLUS_TOKEN": "",
+    "WE_COM_GROUP_TOKEN": "",
+    "WE_COM_APP_TOKEN_CONF": ""
   }
 }

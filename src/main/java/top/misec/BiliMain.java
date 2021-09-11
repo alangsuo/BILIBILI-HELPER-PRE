@@ -1,5 +1,6 @@
 package top.misec;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.LogManager;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonSyntaxException;
 
+import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
 import top.misec.org.slf4j.impl.StaticLoggerBinder;
 import top.misec.task.DailyTask;
@@ -21,14 +23,16 @@ import top.misec.utils.VersionInfo;
  * @author JunzhouLiu
  * @since 2020/10/11 2:29
  */
+
+@Log4j2
 public class BiliMain {
-    private static final Logger log;
+    private static final Logger logger;
 
     static {
         // 如果此标记为true，则为腾讯云函数，使用JUL作为日志输出。
         boolean scfFlag = Boolean.getBoolean("scfFlag");
         StaticLoggerBinder.setLOG_IMPL(scfFlag ? StaticLoggerBinder.LogImpl.JUL : StaticLoggerBinder.LogImpl.LOG4J2);
-        log = LoggerFactory.getLogger(BiliMain.class);
+        logger = LoggerFactory.getLogger(BiliMain.class);
         InputStream inputStream = BiliMain.class.getResourceAsStream("/logging.properties");
         try {
             LogManager.getLogManager().readConfiguration(inputStream);
@@ -44,11 +48,12 @@ public class BiliMain {
         //每日任务65经验
 
         if (args.length > 0) {
-            log.info("使用自定义位置名称的配置文件");
+            log.info("使用自定义目录的配置文件");
             ConfigLoader.configInit(args[0]);
         } else {
             log.info("使用同目录下的config.json文件");
-            ConfigLoader.configInit("config.json");
+            String currentPath = System.getProperty("user.dir") + File.separator + "config.json";
+            ConfigLoader.configInit(currentPath);
         }
 
         if (!Boolean.TRUE.equals(ConfigLoader.helperConfig.getTaskConfig().getSkipDailyTask())) {
@@ -63,17 +68,16 @@ public class BiliMain {
     /**
      * 用于腾讯云函数触发.
      */
-    public static void mainHandler(KeyValueClass ignored) {
+    public static void mainHandler() {
         StaticLoggerBinder.setLOG_IMPL(StaticLoggerBinder.LogImpl.JUL);
         String config = System.getProperty("config");
         if (null == config) {
-            System.out.println("取config配置为空！！！");
-            log.error("取config配置为空！！！");
+            log.error("云函数配置的config参数为空。");
             return;
         }
 
         try {
-            ConfigLoader.configInit(config);
+            ConfigLoader.serverlessConfigInit(config);
         } catch (JsonSyntaxException e) {
             log.error("配置json格式有误，请检查是否是合法的json串", e);
             return;
@@ -87,7 +91,7 @@ public class BiliMain {
             DailyTask dailyTask = new DailyTask();
             dailyTask.doDailyTask();
         } else {
-            log.info("已开启了跳过本日任务，本日任务跳过（不会发起任何网络请求），如果需要取消跳过，请将skipDailyTask值改为false");
+            log.info("已开启了跳过本日任务，（不会发起任何网络请求），如果需要取消跳过，请将skipDailyTask值改为false");
             ServerPush.doServerPush();
         }
     }

@@ -16,9 +16,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +44,6 @@ public class HttpUtil {
             .setConnectionRequestTimeout(5000)
             .setSocketTimeout(10000)
             .build();
-    //  private static Verify verify = Verify.getInstance();
     private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) "
             + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.54";
     private static CloseableHttpClient httpClient = null;
@@ -78,7 +77,7 @@ public class HttpUtil {
         }
         httpPost.setHeader("Connection", "keep-alive");
         httpPost.setHeader("User-Agent", userAgent);
-        httpPost.setHeader("cookie", ConfigLoader.helperConfig.getBiliCookies());
+        httpPost.setHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies());
 
         if (null != headers && !headers.isEmpty()) {
             for (String key : headers.keySet()) {
@@ -128,7 +127,7 @@ public class HttpUtil {
             // 设置请求头信息，鉴权
             httpGet.setHeader("Connection", "keep-alive");
             httpGet.setHeader("User-Agent", userAgent);
-            httpGet.setHeader("cookie", ConfigLoader.helperConfig.getBiliCookies());
+            httpGet.setHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies());
             for (NameValuePair pair : getPairList(pJson)) {
                 httpGet.setHeader(pair.getName(), pair.getValue());
             }
@@ -157,7 +156,7 @@ public class HttpUtil {
             // 通过EntityUtils中的toString方法将结果转换为字符串
             String result = EntityUtils.toString(entity);
             try {
-                resultJson = new JsonParser().parse(result).getAsJsonObject();
+                resultJson = new Gson().fromJson(result, JsonObject.class);
             } catch (Exception e) {
                 log.debug("HttpUtil parse json error: {}", result.substring(0, 100));
             }

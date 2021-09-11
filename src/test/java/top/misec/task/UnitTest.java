@@ -1,9 +1,9 @@
 package top.misec.task;
 
+import java.io.File;
+
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
-import top.misec.login.ServerVerify;
-import top.misec.login.Verify;
 import top.misec.utils.VersionInfo;
 
 /**
@@ -18,13 +18,18 @@ public class UnitTest {
     public static void main(String[] args) {
 
         VersionInfo.printVersionInfo();
-        //每日任务65经验
-        //初始化配置
-        log.info(args[0]);
-        ConfigLoader.configInit(args[0]);
+
+        if (args.length > 0) {
+            log.info("使用自定义目录的配置文件");
+            ConfigLoader.configInit(args[0]);
+        } else {
+            log.info("使用同目录下的config.json文件");
+            String currentPath = System.getProperty("user.dir") + File.separator + "config.json";
+            ConfigLoader.configInit(currentPath);
+        }
         new UserCheck().run();
-        new GiveGift().run();
-        ServerPush.doServerPush();
+
+      //  new MatchGame().run();
 
 
     }

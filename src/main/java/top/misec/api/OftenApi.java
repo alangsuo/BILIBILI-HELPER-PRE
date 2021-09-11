@@ -39,7 +39,7 @@ public class OftenApi {
      */
     public static void getVipPrivilege(int type) {
         String requestBody = "type=" + type
-                + "&csrf=" + ConfigLoader.helperConfig.getBiliJct();
+                + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
         JsonObject jsonObject = HttpUtil.doPost(ApiList.VIP_PRIVILEGE_RECEIVE, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {

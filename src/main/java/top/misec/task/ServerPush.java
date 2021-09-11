@@ -3,7 +3,7 @@ package top.misec.task;
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
 import top.misec.config.PushConfig;
-import top.misec.utils.LoadFileResource;
+import top.misec.utils.ReadFileUtils;
 
 /**
  * 消息推送 .
@@ -19,7 +19,7 @@ public class ServerPush {
         PushConfig.PushInfo pushInfo = ConfigLoader.helperConfig.getPushConfig().getPushInfo();
 
         if (null != pushInfo) {
-            pushInfo.getTarget().doPush(pushInfo.getMetaInfo(), LoadFileResource.loadFile("/tmp/bili-helper.log"));
+            pushInfo.getTarget().doPush(pushInfo.getMetaInfo(), ReadFileUtils.readFile("/tmp/bili-helper.log"));
         } else {
             log.info("未配置正确的ftKey和chatId,本次执行将不推送日志");
         }

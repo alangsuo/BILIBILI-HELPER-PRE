@@ -47,7 +47,7 @@ public abstract class AbstractPush implements Push {
                 return PushResult.success();
             } else {
                 log.info("任务状态推送失败，开始第{}次重试", context.getRetryCount());
-                log.debug("{}", jsonObject);
+                log.info("错误信息: {}", jsonObject);
             }
         }
         return PushResult.failed();

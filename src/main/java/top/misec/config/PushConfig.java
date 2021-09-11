@@ -1,14 +1,21 @@
 package top.misec.config;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Data;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import top.misec.push.Push;
-import top.misec.push.impl.*;
+import top.misec.push.impl.DingTalkPush;
+import top.misec.push.impl.PushPlusPush;
+import top.misec.push.impl.ServerChanTurboPush;
+import top.misec.push.impl.TelegramPush;
+import top.misec.push.impl.WeComPush;
 import top.misec.push.model.PushMetaInfo;
 
 /**
- * @author JunzhouLiu
+ * pushconfig ddd
+ *
+ * @author JunzhouLiu itning
  */
 @SuppressWarnings("all")
 @Data
@@ -37,10 +44,10 @@ public class PushConfig {
     /**
      * Server酱
      */
-    private String SERVER_CHAN_TURBO_SCT_KEY;
+    private String SCT_KEY;
 
     /**
-     * 企业微信
+     * 企业微信，群消息非应用消息
      */
     private String WE_COM_TOKEN;
 
@@ -51,8 +58,8 @@ public class PushConfig {
             return new PushInfo(new DingTalkPush(), DING_TALK_URL);
         } else if (StringUtils.isNotBlank(PUSH_PLUS_TOKEN)) {
             return new PushInfo(new PushPlusPush(), PUSH_PLUS_TOKEN);
-        } else if (StringUtils.isNotBlank(SERVER_CHAN_TURBO_SCT_KEY)) {
-            return new PushInfo(new ServerChanTurboPush(), SERVER_CHAN_TURBO_SCT_KEY);
+        } else if (StringUtils.isNotBlank(SCT_KEY)) {
+            return new PushInfo(new ServerChanTurboPush(), SCT_KEY);
         } else if (StringUtils.isNotBlank(WE_COM_TOKEN)) {
             return new PushInfo(new WeComPush(), WE_COM_TOKEN);
         } else {
