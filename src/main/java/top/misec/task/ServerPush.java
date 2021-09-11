@@ -16,7 +16,7 @@ import top.misec.utils.LoadFileResource;
 public class ServerPush {
 
     public static void doServerPush() {
-        PushConfig.PushInfo pushInfo = ConfigLoader.helperConfig.getPushConfig().getTarget();
+        PushConfig.PushInfo pushInfo = ConfigLoader.helperConfig.getPushConfig().getPushInfo();
 
         if (null != pushInfo) {
             pushInfo.getTarget().doPush(pushInfo.getMetaInfo(), LoadFileResource.loadFile("/tmp/bili-helper.log"));

@@ -44,7 +44,7 @@ public class PushConfig {
      */
     private String WE_COM_TOKEN;
 
-    public PushInfo getTarget() {
+    public PushInfo getPushInfo() {
         if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID)) {
             return new PushInfo(new TelegramPush(), TG_BOT_TOKEN, TG_USER_ID);
         } else if (StringUtils.isNotBlank(DING_TALK_URL)) {
