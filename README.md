@@ -62,26 +62,26 @@ qq 群二维码
 # 目录
 
 - [目录](#目录)
-  - [使用说明](#使用说明)
-    - [获取运行所需的 Cookies](#获取运行所需的-cookies)
-    - [一、使用 腾讯云函数](#一使用-腾讯云函数)
-    - [二、使用 Docker](#二使用-docker)
-    - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
-      - [使用bash](#使用bash)
-      - [使用 `java -jar `](#使用-java--jar-)
-    - [自定义功能配置](#自定义功能配置)
-  - [订阅执行结果](#订阅执行结果)
-    - [Server 酱 Turbo 版](#server-酱-turbo-版)
-    - [Telegram 订阅执行结果](#telegram-订阅执行结果)
-    - [企业微信](#企业微信)
-    - [钉钉机器人](#钉钉机器人)
-    - [PushPlus(Push+)](#pushpluspush)
-  - [免责声明](#免责声明)
-  - [API 参考列表](#api-参考列表)
-  - [基于本项目的衍生项目](#基于本项目的衍生项目)
-  - [致谢](#致谢)
-  - [License](#license)
-  - [Stargazers over time](#stargazers-over-time)
+    - [使用说明](#使用说明)
+        - [获取运行所需的 Cookies](#获取运行所需的-cookies)
+        - [一、使用 腾讯云函数](#一使用-腾讯云函数)
+        - [二、使用 Docker](#二使用-docker)
+        - [三、使用 Linux Crontab 方式](#三使用-linux-crontab-方式)
+            - [使用bash](#使用bash)
+            - [使用 `java -jar `](#使用-java--jar-)
+        - [自定义功能配置](#自定义功能配置)
+    - [订阅执行结果](#订阅执行结果)
+        - [Server 酱 Turbo 版](#server-酱-turbo-版)
+        - [Telegram 订阅执行结果](#telegram-订阅执行结果)
+        - [企业微信](#企业微信)
+        - [钉钉机器人](#钉钉机器人)
+        - [PushPlus(Push+)](#pushpluspush)
+    - [免责声明](#免责声明)
+    - [API 参考列表](#api-参考列表)
+    - [基于本项目的衍生项目](#基于本项目的衍生项目)
+    - [致谢](#致谢)
+    - [License](#license)
+    - [Stargazers over time](#stargazers-over-time)
 
 ## 使用说明
 
@@ -108,7 +108,6 @@ qq 群二维码
 - **基于本项目的 docker 镜像：[superng6/bilibili-helper](https://hub.docker.com/r/superng6/bilibili-helper)**
 
 ### 三、使用 Linux Crontab 方式
-
 
 #### 使用bash
 
@@ -141,16 +140,6 @@ java -jar /home/BILIBILI-HELPER.jar DEDEUSERID SESSDATA BILI_JCT SCKEY >> /var/l
 #### 使用 `java -jar `
 
 **jar命令参数列表**
-
-参数顺序指的是`java -jar /home/BILIBILI-HELP.jar `命令后所跟的参数列表顺序。
-
-| 参数顺序 | 参数          | 说明｜                                      |
-| -------- | ------------- | ------------------------------------------- |
-| 1        | DEDEUSERID    | 哔哩哔哩Cookies                             |
-| 2        | SESSDATA      | 哔哩哔哩Cookies                             |
-| 3        | BILI_JCT      | 哔哩哔哩Cookies                             |
-| 4        | 推送渠道的Key | 单个参数的推送渠道，程序自动判断是哪个渠道，比如钉钉，企业微信，server酱    |
-| 5        | 推送渠道的ID之类的 | 某些渠道的推送除了key还有id，id请跟在第五位（例如tg） |
 
 **crontab任务示例：**
 
@@ -280,7 +269,6 @@ java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT Telegram_Token ch
 
 4. 将机器人的 Webhook 放在执行参数的第四位。
 
-
 **执行示例**
 
 ```bash
@@ -293,8 +281,6 @@ java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `https://oapi.din
 1. [前往 PushPlus 获取 Token](https://www.pushplus.plus/push1.html)
 
 2. 将获取到的 Token 放在执行命令的第四位。
-
-
 
 ## 免责声明
 
@@ -331,4 +317,4 @@ java -jar /home/BILIBILI-HELP.jar DEDEUSERID SESSDATA BILI_JCT `https://oapi.din
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER.svg)](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER)
+[![Stargazers over time](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER.svg)](https://starchart.cc/JunzhouLiu/BILIBILI-HELPER-PRE)

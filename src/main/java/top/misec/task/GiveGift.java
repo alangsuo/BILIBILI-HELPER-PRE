@@ -5,10 +5,10 @@ import com.google.gson.JsonObject;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
- * B站直播送出即将过期的礼物
+ * B站直播送出即将过期的礼物.
  *
  * @author srcrs
  * @since 2020-10-13
@@ -82,7 +82,7 @@ public class GiveGift implements Task {
      * @since 2020-10-13
      */
     public String xliveGetRecommend() {
-        return HttpUtil.doGet("https://api.live.bilibili.com/relation/v1/AppWeb/getRecommendList")
+        return HttpUtils.doGet("https://api.live.bilibili.com/relation/v1/AppWeb/getRecommendList")
                 .get("data").getAsJsonObject()
                 .get("list").getAsJsonArray()
                 .get(6).getAsJsonObject()
@@ -101,7 +101,7 @@ public class GiveGift implements Task {
         JsonObject pJson = new JsonObject();
         pJson.addProperty("room_id", roomId);
         String urlPram = "?room_id=" + roomId;
-        return HttpUtil.doGet("https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom" + urlPram)
+        return HttpUtils.doGet("https://api.live.bilibili.com/xlive/web-room/v1/index/getInfoByRoom" + urlPram)
                 .get("data").getAsJsonObject()
                 .get("room_info").getAsJsonObject()
                 .get("uid").getAsString();
@@ -119,7 +119,7 @@ public class GiveGift implements Task {
         JsonObject pJson = new JsonObject();
         pJson.addProperty("mid", Integer.parseInt(mid));
         String urlPram = "?mid=" + mid;
-        return HttpUtil.doGet("http://api.live.bilibili.com/room/v1/Room/getRoomInfoOld" + urlPram)
+        return HttpUtils.doGet("http://api.live.bilibili.com/room/v1/Room/getRoomInfoOld" + urlPram)
                 .get("data").getAsJsonObject()
                 .get("roomid").getAsString();
     }
@@ -132,7 +132,7 @@ public class GiveGift implements Task {
      * @since 2020-10-13
      */
     public JsonArray xliveGiftBagList() {
-        JsonObject obj = HttpUtil.doGet("https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list")
+        JsonObject obj = HttpUtils.doGet("https://api.live.bilibili.com/xlive/web-room/v1/gift/bag_list")
                 .get("data").getAsJsonObject();
         if (obj.get("list").isJsonArray()) {
             return obj.get("list").getAsJsonArray();
@@ -156,7 +156,7 @@ public class GiveGift implements Task {
                 + "&price=" + "0"
                 + "&platform=" + "pc"
                 + "&biz_code=" + "live";
-        return HttpUtil.doPost("https://api.live.bilibili.com/gift/v2/live/bag_send", requestBody);
+        return HttpUtils.doPost("https://api.live.bilibili.com/gift/v2/live/bag_send", requestBody);
     }
 
     /**

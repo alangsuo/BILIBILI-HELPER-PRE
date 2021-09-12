@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.push.model.RetryContext;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 推送抽象类；公共模板方法封装.
@@ -22,7 +22,7 @@ public abstract class AbstractPush implements Push {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
         String pushContent = generatePushBody(metaInfo, content);
-        JsonObject jsonObject = HttpUtil.doPost(url, pushContent);
+        JsonObject jsonObject = HttpUtils.doPost(url, pushContent);
         boolean pushStatus = checkPushStatus(jsonObject);
         if (pushStatus) {
             log.info("任务状态推送成功");
@@ -40,7 +40,7 @@ public abstract class AbstractPush implements Push {
      */
     private PushResult retryPush(RetryContext context) {
         while (context.next()) {
-            JsonObject jsonObject = HttpUtil.doPost(context.getUrl(), context.getBody());
+            JsonObject jsonObject = HttpUtils.doPost(context.getUrl(), context.getBody());
             boolean pushStatus = checkPushStatus(jsonObject);
             if (pushStatus) {
                 log.info("任务状态推送成功");

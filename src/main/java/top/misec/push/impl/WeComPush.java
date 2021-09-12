@@ -12,15 +12,10 @@ import top.misec.push.model.PushMetaInfo;
 /**
  * WeiXinPush .
  *
- * @author liming
+ * @author itning
  * @since 2021-05-06 18:10
  **/
 public class WeComPush extends AbstractPush {
-
-    /**
-     * WeiXinPush 默认TOKEN长度.
-     */
-    public static final int WEIXIN_CHANNEL_TOKEN_DEFAULT_LENGTH = 36;
 
     @Override
     protected String generatePushUrl(PushMetaInfo metaInfo) {

@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
 
 /**
@@ -115,7 +115,7 @@ public class MatchGame implements Task {
                 + "&ps=" + ps
                 + "&stime=" + today + "+00:00:00"
                 + "&etime=" + today + "+23:59:59";
-        return HttpUtil.doGet(ApiList.QUERY_QUESTIONS + urlParam);
+        return HttpUtils.doGet(ApiList.QUERY_QUESTIONS + urlParam);
     }
 
     private void doPrediction(int oid, int main_id, int detail_id, int count) {
@@ -126,7 +126,7 @@ public class MatchGame implements Task {
                 + "&is_fav=0"
                 + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
 
-        JsonObject result = HttpUtil.doPost(ApiList.DO_ADD, requestbody);
+        JsonObject result = HttpUtils.doPost(ApiList.DO_ADD, requestbody);
 
         if (result.get("code").getAsInt() != 0) {
             log.info(result.get("message").getAsString());

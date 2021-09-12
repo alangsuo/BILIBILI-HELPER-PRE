@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 硬币日志.
@@ -19,7 +19,7 @@ public class CoinLogs implements Task {
     @Override
     public void run() {
 
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.GET_COIN_LOG);
+        JsonObject jsonObject = HttpUtils.doGet(ApiList.GET_COIN_LOG);
 
         if (jsonObject.get("code").getAsInt() == 0) {
             JsonObject data = jsonObject.getAsJsonObject("data");

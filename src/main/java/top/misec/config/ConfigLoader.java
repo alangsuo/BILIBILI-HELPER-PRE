@@ -5,7 +5,7 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import top.misec.utils.GsonUtils;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 import top.misec.utils.ReadFileUtils;
 
 /**
@@ -32,7 +32,7 @@ public class ConfigLoader {
      */
     public static void serverlessConfigInit(String helperConfigJson) {
         helperConfig = buildHelperConfig(helperConfigJson);
-        HttpUtil.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
+        HttpUtils.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
         log.info(helperConfig.getPushConfig().toString());
     }
 
@@ -49,7 +49,7 @@ public class ConfigLoader {
         }
         validationConfig();
         helperConfig.getBiliVerify().initCookiesMap();
-        HttpUtil.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
+        HttpUtils.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
     }
 
     /**

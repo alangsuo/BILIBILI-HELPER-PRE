@@ -2,18 +2,18 @@ package top.misec.push.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import top.misec.api.ApiList;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;
 
 /**
- * server酱推送
+ * server酱推送 .
+ * Server酱旧版推送渠道即将下线，使用Turbo版本{@link ServerChanTurboPush}替代 .
  *
  * @author itning
  * @since 2021/3/22 16:37
- * @deprecated Server酱旧版推送渠道即将下线，使用Turbo版本{@link ServerChanTurboPush}替代
  */
-@Deprecated
 public class ServerChanPush extends AbstractPush {
 
     @Override

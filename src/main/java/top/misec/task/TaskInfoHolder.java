@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
 import top.misec.pojo.userinfobean.Data;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 任务信息持有类.
@@ -45,7 +45,7 @@ public class TaskInfoHolder {
      * @return 本日已经投了几个币
      */
     public static int expConfirm() {
-        JsonObject resultJson = HttpUtil.doGet(ApiList.NEED_COIN_NEW);
+        JsonObject resultJson = HttpUtils.doGet(ApiList.NEED_COIN_NEW);
         int getCoinExp = resultJson.get("data").getAsInt();
         return getCoinExp / 10;
     }

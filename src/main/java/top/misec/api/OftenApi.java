@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 部分API简单封装.
@@ -19,7 +19,7 @@ public class OftenApi {
      * 返回主站查询到的硬币余额，查询失败返回0.0.
      */
     public static Double getCoinBalance() {
-        JsonObject responseJson = HttpUtil.doGet(ApiList.GET_COIN_BALANCE);
+        JsonObject responseJson = HttpUtils.doGet(ApiList.GET_COIN_BALANCE);
         int responseCode = responseJson.get("code").getAsInt();
         JsonObject dataObject = responseJson.get("data").getAsJsonObject();
         if (responseCode == 0) {
@@ -40,7 +40,7 @@ public class OftenApi {
     public static void getVipPrivilege(int type) {
         String requestBody = "type=" + type
                 + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
-        JsonObject jsonObject = HttpUtil.doPost(ApiList.VIP_PRIVILEGE_RECEIVE, requestBody);
+        JsonObject jsonObject = HttpUtils.doPost(ApiList.VIP_PRIVILEGE_RECEIVE, requestBody);
         int responseCode = jsonObject.get("code").getAsInt();
         if (responseCode == 0) {
             if (type == 1) {
@@ -61,7 +61,7 @@ public class OftenApi {
     public static String getVideoTitle(String bvid) {
         String title;
         String urlParameter = "?bvid=" + bvid;
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.VIDEO_VIEW + urlParameter);
+        JsonObject jsonObject = HttpUtils.doGet(ApiList.VIDEO_VIEW + urlParameter);
 
         if (jsonObject.get("code").getAsInt() == 0) {
             title = jsonObject.getAsJsonObject("data").getAsJsonObject("owner").get("name").getAsString() + ": ";
@@ -84,7 +84,7 @@ public class OftenApi {
     public static String queryUserNameByUid(String uid) {
         String urlParameter = "?mid=" + uid + "&jsonp=jsonp";
         String userName = "1";
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.QUERY_USER_NAME + urlParameter);
+        JsonObject jsonObject = HttpUtils.doGet(ApiList.QUERY_USER_NAME + urlParameter);
         if (jsonObject.get("code").getAsInt() == 0) {
             userName = jsonObject.getAsJsonObject("data").get("name").getAsString();
         } else {

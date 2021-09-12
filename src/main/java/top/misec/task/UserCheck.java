@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HelpUtil;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 登录检查.
@@ -23,11 +23,11 @@ public class UserCheck implements Task {
 
     @Override
     public void run() {
-        JsonObject userJson = HttpUtil.doGet(ApiList.LOGIN);
+        JsonObject userJson = HttpUtils.doGet(ApiList.LOGIN);
         if (userJson == null) {
             log.info("用户信息请求失败，如果是412错误，请在config.json中更换UA，412问题仅影响用户信息确认，不影响任务");
         } else {
-            userJson = HttpUtil.doGet(ApiList.LOGIN);
+            userJson = HttpUtils.doGet(ApiList.LOGIN);
             //判断Cookies是否有效
             if (userJson.get(STATUS_CODE_STR).getAsInt() == 0
                     && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {

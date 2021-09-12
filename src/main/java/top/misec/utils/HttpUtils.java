@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -33,19 +34,19 @@ import top.misec.config.ConfigLoader;
 
 @Log4j2
 @Data
-public class HttpUtil {
+public class HttpUtils {
     /**
      * 设置配置请求参数.
      * 设置连接主机服务超时时间.
      * 设置连接请求超时时间.
      * 设置读取数据连接超时时间.
      */
-    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom().setConnectTimeout(5000)
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectTimeout(5000)
             .setConnectionRequestTimeout(5000)
             .setSocketTimeout(10000)
             .build();
-    private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) "
-            + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36 Edg/89.0.774.54";
+    private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38";
     private static CloseableHttpClient httpClient = null;
     private static CloseableHttpResponse httpResponse = null;
 
@@ -99,19 +100,11 @@ public class HttpUtil {
         } catch (Exception e) {
             log.error("", e);
         } finally {
-            httpResource(httpClient, httpResponse);
+            closeResource(httpClient, httpResponse);
         }
         return resultJson;
     }
 
-
-    private static NameValuePair getNameValuePair(Map.Entry<String, JsonElement> entry) {
-        return new BasicNameValuePair(entry.getKey(), Optional.ofNullable(entry.getValue()).map(Object::toString).orElse(null));
-    }
-
-    public static NameValuePair[] getPairList(JsonObject pJson) {
-        return pJson.entrySet().parallelStream().map(HttpUtil::getNameValuePair).toArray(NameValuePair[]::new);
-    }
 
     public static JsonObject doGet(String url) {
         return doGet(url, new JsonObject());
@@ -139,58 +132,53 @@ public class HttpUtil {
         } catch (Exception e) {
             log.error(e);
         } finally {
-            // 关闭资源
-            httpResource(httpClient, httpResponse);
+            closeResource(httpClient, httpResponse);
         }
-        return resultJson;
 
+        return resultJson;
     }
 
-    public static JsonObject processResult(CloseableHttpResponse httpResponse) throws IOException {
+    public static JsonObject processResult(CloseableHttpResponse httpResponse) {
         JsonObject resultJson = null;
+
         if (httpResponse != null) {
             int responseStatusCode = httpResponse.getStatusLine().getStatusCode();
             // 从响应对象中获取响应内容
             // 通过返回对象获取返回数据
             HttpEntity entity = httpResponse.getEntity();
-            // 通过EntityUtils中的toString方法将结果转换为字符串
-            String result = EntityUtils.toString(entity);
+
+            String result = null;
             try {
+                // 通过EntityUtils中的toString方法将结果转换为字符串
+                result = EntityUtils.toString(entity);
                 resultJson = new Gson().fromJson(result, JsonObject.class);
             } catch (Exception e) {
-                log.debug("HttpUtil parse json error: {}", result.substring(0, 100));
-            }
-            switch (responseStatusCode) {
-                case 200:
-                    break;
-                case 412:
-                    log.debug("{}", httpResponse.getStatusLine());
-                    break;
-                default:
+                log.debug("HttpUtils parse json error: {}", result.substring(0, 100));
             }
         }
         return resultJson;
     }
 
+    private static NameValuePair getNameValuePair(Map.Entry<String, JsonElement> entry) {
+        return new BasicNameValuePair(entry.getKey(), Optional.ofNullable(entry.getValue()).map(Object::toString).orElse(null));
+    }
 
-    private static void httpResource(CloseableHttpClient httpClient, CloseableHttpResponse response) {
-        if (null != response) {
-            try {
-                response.close();
-            } catch (IOException e) {
-                log.error(e);
-            }
-        }
-        if (null != httpClient) {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                log.error(e);
-            }
+    public static NameValuePair[] getPairList(JsonObject pJson) {
+        return pJson.entrySet().parallelStream().map(HttpUtils::getNameValuePair).toArray(NameValuePair[]::new);
+    }
+
+    private static void closeResource(CloseableHttpClient httpClient, CloseableHttpResponse response) {
+        try {
+            httpClient.close();
+            response.close();
+        } catch (IOException e) {
+            log.info("释放资源失败", e);
         }
     }
 
     public static void setUserAgent(String userAgent) {
-        HttpUtil.userAgent = userAgent;
+        if (StringUtils.isNotBlank(userAgent)) {
+            HttpUtils.userAgent = userAgent;
+        }
     }
 }

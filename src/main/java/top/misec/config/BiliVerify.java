@@ -2,7 +2,7 @@ package top.misec.config;
 
 import java.util.HashMap;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
@@ -11,10 +11,10 @@ import lombok.extern.log4j.Log4j2;
  */
 @Log4j2
 @ToString
+@Data
 public class BiliVerify {
 
     private HashMap<String, Object> cookieMap = new HashMap<>();
-    @Getter
     private String biliCookies;
 
     public void initCookiesMap() {

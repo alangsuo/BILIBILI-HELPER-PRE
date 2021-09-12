@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
 import top.misec.utils.GsonUtils;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 漫画阅读.
@@ -29,7 +29,7 @@ public class MangaRead implements Task {
         map.put("comic_id", "27355");
         map.put("ep_id", "381662");
 
-        JsonObject result = HttpUtil.doPost(ApiList.MANGA_READ, GsonUtils.toJson(map));
+        JsonObject result = HttpUtils.doPost(ApiList.MANGA_READ, GsonUtils.toJson(map));
         int code = result.get(STATUS_CODE_STR).getAsInt();
 
         if (code == 0) {

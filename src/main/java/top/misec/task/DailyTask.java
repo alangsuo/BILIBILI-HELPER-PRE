@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
 
 /**
@@ -50,14 +50,14 @@ public class DailyTask {
      * @author @srcrs
      */
     public static JsonObject getDailyTaskStatus() {
-        JsonObject jsonObject = HttpUtil.doGet(ApiList.REWARD);
+        JsonObject jsonObject = HttpUtils.doGet(ApiList.REWARD);
         int responseCode = jsonObject.get(STATUS_CODE_STR).getAsInt();
         if (responseCode == 0) {
             log.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
             log.debug(jsonObject.get("message").getAsString());
-            return HttpUtil.doGet(ApiList.REWARD).get("data").getAsJsonObject();
+            return HttpUtils.doGet(ApiList.REWARD).get("data").getAsJsonObject();
             //偶发性请求失败，再请求一次。
         }
     }

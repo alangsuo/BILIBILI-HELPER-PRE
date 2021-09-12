@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.api.ApiList;
-import top.misec.utils.HttpUtil;
+import top.misec.utils.HttpUtils;
 
 /**
  * 直播签到.
@@ -18,7 +18,7 @@ import top.misec.utils.HttpUtil;
 public class LiveChecking implements Task {
     @Override
     public void run() {
-        JsonObject liveCheckInResponse = HttpUtil.doGet(ApiList.LIVE_CHECKING);
+        JsonObject liveCheckInResponse = HttpUtils.doGet(ApiList.LIVE_CHECKING);
         int code = liveCheckInResponse.get(STATUS_CODE_STR).getAsInt();
         if (code == 0) {
             JsonObject data = liveCheckInResponse.get("data").getAsJsonObject();
