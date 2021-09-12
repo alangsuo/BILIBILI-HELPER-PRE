@@ -13,6 +13,7 @@ public class ApiList {
      */
     public static final String LIVE_CHECKING = "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign";
     public static final String PUSH_PLUS = "https://www.pushplus.plus/send";
+    public static final String SERVER_PUSH = "https://sc.ftqq.com/";
     public static final String SERVER_PUSH_V2 = "https://sctapi.ftqq.com/";
     public static final String SERVER_PUSH_TELEGRAM = "https://api.telegram.org/bot";
     public static final String LOGIN = "https://api.bilibili.com/x/web-interface/nav";
