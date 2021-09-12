@@ -29,7 +29,8 @@ public class UnitTest {
         }
         new UserCheck().run();
 
-      //  new MatchGame().run();
+        new CoinAdd().run();
+
 
 
     }

@@ -43,7 +43,7 @@ public class ConfigLoader {
         String customConfig = ReadFileUtils.readFile(filePath);
         if (customConfig != null) {
             mergeConfig(GsonUtils.fromJson(customConfig, HelperConfig.class));
-            log.info("读取外部自定义配置文件成功,若部分配置项不存在则会采用默认配置,合并后的配置为\n{}", helperConfig.toString());
+            log.info("读取自定义配置文件成功,若部分配置项不存在则会采用默认配置,合并后的配置为\n{}", helperConfig.toString());
         } else {
             log.info("未在 ：{} 目录读取到配置文件", filePath);
         }
@@ -58,7 +58,7 @@ public class ConfigLoader {
     private static void validationConfig() {
 
         if (helperConfig.getBiliVerify().getBiliCookies().length() < 1) {
-            log.info("未在config.json中配置ck");
+            log.info("未在配置文件中配置cookies");
             return;
         }
 

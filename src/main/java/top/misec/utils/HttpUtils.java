@@ -35,12 +35,6 @@ import top.misec.config.ConfigLoader;
 @Log4j2
 @Data
 public class HttpUtils {
-    /**
-     * 设置配置请求参数.
-     * 设置连接主机服务超时时间.
-     * 设置连接请求超时时间.
-     * 设置读取数据连接超时时间.
-     */
     private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
             .setConnectTimeout(5000)
             .setConnectionRequestTimeout(5000)
@@ -81,14 +75,11 @@ public class HttpUtils {
         httpPost.setHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies());
 
         if (null != headers && !headers.isEmpty()) {
-            for (String key : headers.keySet()) {
-                httpPost.setHeader(key, headers.get(key));
-            }
+            headers.forEach(httpPost::setHeader);
         } else {
             httpPost.setHeader("Referer", "https://www.bilibili.com/");
         }
         // 封装post请求参数
-
         StringEntity stringEntity = new StringEntity(requestBody, "utf-8");
 
         httpPost.setEntity(stringEntity);
