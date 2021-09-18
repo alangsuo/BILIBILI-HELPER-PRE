@@ -1,3 +1,4 @@
+0. 全新的配置文件格式（务必升级）。
 1. 支持在config.json中配置完整的cookie串。
 2. 取消使用jar参数传递ck，直接将新版config.json文件放在jar包同一目录即可。
 3. 可在 java -jar hlper.jar 后指定config.json的目录。

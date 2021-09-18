@@ -27,11 +27,9 @@ public class UnitTest {
             String currentPath = System.getProperty("user.dir") + File.separator + "config.json";
             ConfigLoader.configInit(currentPath);
         }
-        new UserCheck().run();
-
-        new CoinAdd().run();
-
-
+//        new UserCheck().run();
+//
+//        new CoinAdd().run();
 
     }
 }
