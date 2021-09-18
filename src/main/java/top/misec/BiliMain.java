@@ -12,6 +12,7 @@ import com.google.gson.JsonSyntaxException;
 
 import lombok.extern.log4j.Log4j2;
 import top.misec.config.ConfigLoader;
+import top.misec.config.HelperConfig;
 import top.misec.org.slf4j.impl.StaticLoggerBinder;
 import top.misec.task.DailyTask;
 import top.misec.task.ServerPush;
@@ -68,7 +69,7 @@ public class BiliMain {
     /**
      * 用于腾讯云函数触发.
      */
-    public static void mainHandler() {
+    public static void mainHandler(HelperConfig helperConfig) {
         StaticLoggerBinder.setLOG_IMPL(StaticLoggerBinder.LogImpl.JUL);
         String config = System.getProperty("config");
         if (null == config) {

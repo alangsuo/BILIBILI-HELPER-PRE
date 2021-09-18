@@ -32,6 +32,7 @@ public class ConfigLoader {
      */
     public static void serverlessConfigInit(String helperConfigJson) {
         helperConfig = buildHelperConfig(helperConfigJson);
+        helperConfig.getBiliVerify().initCookiesMap();
         HttpUtils.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
         log.info(helperConfig.getPushConfig().toString());
     }
