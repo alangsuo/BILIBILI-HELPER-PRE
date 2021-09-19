@@ -26,6 +26,7 @@
     "SCT_KEY": "",
     "TG_BOT_TOKEN": "",
     "TG_USER_ID": "",
+    "TG_USE_CUSTOM_URL": false,
     "DING_TALK_URL": "",
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",

@@ -30,6 +30,17 @@ public class PushConfig {
     private String TG_USER_ID;
 
     /**
+     * 电报 推送URL使用自定义URL（例如实现反向代理）
+     * <p>默认false
+     * <p>如果设置为true则TG_BOT_TOKEN写成反向代理URL
+     * <p>例如
+     * <p><code>
+     * https://api.telegram-proxy.org/bot?token=xxx
+     * </code>
+     */
+    private Boolean TG_USE_CUSTOM_URL;
+
+    /**
      * 钉钉
      */
     private String DING_TALK_URL;
@@ -75,7 +86,9 @@ public class PushConfig {
     private Integer PROXY_PORT;
 
     public PushInfo getPushInfo() {
-        if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID)) {
+        if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID) && Boolean.TRUE.equals(TG_USE_CUSTOM_URL)) {
+            return new PushInfo(new TelegramCustomUrlPush(), TG_BOT_TOKEN, TG_USER_ID);
+        } else if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID)) {
             return new PushInfo(new TelegramPush(), TG_BOT_TOKEN, TG_USER_ID);
         } else if (StringUtils.isNoneBlank(DING_TALK_URL, DING_TALK_SECRET)) {
             return new PushInfo(new DingTalkSecretPush(), DING_TALK_URL, null, DING_TALK_SECRET);
