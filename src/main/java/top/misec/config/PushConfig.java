@@ -104,7 +104,7 @@ public class PushConfig {
         }
 
         if (StringUtils.isNotBlank(PROXY_SOCKET_HOST)) {
-            InetSocketAddress address = new InetSocketAddress(PROXY_HTTP_HOST, PROXY_PORT);
+            InetSocketAddress address = new InetSocketAddress(PROXY_SOCKET_HOST, PROXY_PORT);
             return new Proxy(Proxy.Type.SOCKS, address);
         }
 
