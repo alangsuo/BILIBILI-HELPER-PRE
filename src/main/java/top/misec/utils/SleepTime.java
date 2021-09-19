@@ -1,16 +1,16 @@
 package top.misec.utils;
 
-import java.util.Random;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
+
+import java.util.Random;
 
 /**
  * sleep.
  *
  * @author junzhou
  */
-@Log4j2
+@Slf4j
 public class SleepTime {
 
     public void sleepDefault() {

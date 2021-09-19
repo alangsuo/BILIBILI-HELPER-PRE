@@ -1,19 +1,18 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.getVideoId;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 投币任务.
@@ -22,7 +21,7 @@ import top.misec.utils.SleepTime;
  * @since 2020-11-22 5:28
  */
 @SuppressWarnings("StringConcatenationArgumentToLogCall")
-@Log4j2
+@Slf4j
 public class CoinAdd implements Task {
 
     /**

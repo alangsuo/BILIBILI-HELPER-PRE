@@ -1,8 +1,7 @@
 package top.misec.push;
 
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.push.model.RetryContext;
@@ -14,7 +13,7 @@ import top.misec.utils.HttpUtils;
  * @author itning
  * @since 2021/3/22 16:36
  */
-@Log4j2
+@Slf4j
 public abstract class AbstractPush implements Push {
 
     @Override

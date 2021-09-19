@@ -1,10 +1,10 @@
 package top.misec.task;
 
-import java.io.File;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.VersionInfo;
+
+import java.io.File;
 
 /**
  * util test.
@@ -12,7 +12,7 @@ import top.misec.utils.VersionInfo;
  * @author Junzhou Liu
  * @create 2021/1/15 23:16
  */
-@Log4j2
+@Slf4j
 public class UnitTest {
 
     public static void main(String[] args) {

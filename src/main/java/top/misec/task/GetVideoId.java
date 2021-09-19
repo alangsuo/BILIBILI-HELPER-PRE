@@ -1,18 +1,17 @@
 package top.misec.task;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * GetVideoId .
@@ -20,7 +19,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu
  * @since 2020/11/12 13:17
  */
-@Log4j2
+@Slf4j
 @Data
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;

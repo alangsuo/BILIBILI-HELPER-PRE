@@ -3,7 +3,7 @@ package top.misec.config;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.utils.GsonUtils;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.ReadFileUtils;
@@ -14,7 +14,7 @@ import top.misec.utils.ReadFileUtils;
  * @author Junzhou Liu
  * @since 2020/10/13 17:11
  */
-@Log4j2
+@Slf4j
 @Data
 public class ConfigLoader {
     public static HelperConfig helperConfig;

@@ -1,8 +1,7 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.pojo.userinfobean.Data;
 import top.misec.utils.HttpUtils;
@@ -13,7 +12,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:02
  */
-@Log4j2
+@Slf4j
 public class TaskInfoHolder {
 
     public static final String STATUS_CODE_STR = "code";

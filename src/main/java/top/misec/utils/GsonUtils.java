@@ -1,35 +1,17 @@
 package top.misec.utils;
 
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.Sets;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * gson utils.
@@ -203,38 +185,6 @@ public class GsonUtils {
      */
     public static String toPrettyJson(Object source) {
         return PRETTY_GSON.toJson(source);
-    }
-
-    /**
-     * 序列化对象成JSON字符串并过滤指定字段.
-     *
-     * @param source        对象
-     * @param excludeFields 不需要序列化的字段
-     * @return JSON字符串
-     */
-    public static String toJsonExclude(Object source, String... excludeFields) {
-        try {
-            THREAD_LOCAL.set(Sets.newHashSet(excludeFields));
-            return GSON_WITH_EXCLUDE.toJson(source);
-        } finally {
-            THREAD_LOCAL.remove();
-        }
-    }
-
-    /**
-     * 序列化对象指定的字段成JSON字符串.
-     *
-     * @param source        对象
-     * @param includeFields 需要被序列化的字段
-     * @return JSON字符串
-     */
-    public static String toJsonInclude(Object source, String... includeFields) {
-        try {
-            THREAD_LOCAL.set(Sets.newHashSet(includeFields));
-            return GSON_WITH_INCLUDE.toJson(source);
-        } finally {
-            THREAD_LOCAL.remove();
-        }
     }
 
     /**

@@ -1,22 +1,13 @@
 package top.misec;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.LogManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.JsonSyntaxException;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
-import top.misec.config.HelperConfig;
-import top.misec.org.slf4j.impl.StaticLoggerBinder;
 import top.misec.task.DailyTask;
 import top.misec.task.ServerPush;
 import top.misec.utils.VersionInfo;
+
+import java.io.File;
 
 /**
  * 入口类 .
@@ -25,23 +16,8 @@ import top.misec.utils.VersionInfo;
  * @since 2020/10/11 2:29
  */
 
-@Log4j2
+@Slf4j
 public class BiliMain {
-    private static final Logger logger;
-
-    static {
-        // 如果此标记为true，则为腾讯云函数，使用JUL作为日志输出。
-        boolean scfFlag = Boolean.getBoolean("scfFlag");
-        StaticLoggerBinder.setLOG_IMPL(scfFlag ? StaticLoggerBinder.LogImpl.JUL : StaticLoggerBinder.LogImpl.LOG4J2);
-        logger = LoggerFactory.getLogger(BiliMain.class);
-        InputStream inputStream = BiliMain.class.getResourceAsStream("/logging.properties");
-        try {
-            LogManager.getLogManager().readConfiguration(inputStream);
-        } catch (IOException e) {
-            java.util.logging.Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
-            java.util.logging.Logger.getAnonymousLogger().severe(e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
 
@@ -69,8 +45,7 @@ public class BiliMain {
     /**
      * 用于腾讯云函数触发.
      */
-    public static void mainHandler(HelperConfig helperConfig) {
-        StaticLoggerBinder.setLOG_IMPL(StaticLoggerBinder.LogImpl.JUL);
+    public static void mainHandler() {
         String config = System.getProperty("config");
         if (null == config) {
             log.error("云函数配置的config参数为空。");

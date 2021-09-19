@@ -1,18 +1,17 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.queryVipStatusType;
+import com.google.gson.JsonObject;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import top.misec.api.ApiList;
+import top.misec.api.OftenApi;
+import top.misec.utils.HttpUtils;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import com.google.gson.JsonObject;
-
-import lombok.Data;
-import lombok.extern.log4j.Log4j2;
-import top.misec.api.ApiList;
-import top.misec.api.OftenApi;
-import top.misec.utils.HttpUtils;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.queryVipStatusType;
 
 /**
  * 漫画权益领取.
@@ -20,7 +19,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu @Kurenai @happy888888
  * @since 2020-11-22 5:48
  */
-@Log4j2
+@Slf4j
 @Data
 public class GetVipPrivilege implements Task {
 

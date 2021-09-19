@@ -2,7 +2,7 @@ package top.misec.config;
 
 
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * HelperConfig.
@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
  * @author JunzhouLiu
  */
 @Data
-@Log4j2
+@Slf4j
 public class HelperConfig {
     private TaskConfig taskConfig;
     private PushConfig pushConfig;

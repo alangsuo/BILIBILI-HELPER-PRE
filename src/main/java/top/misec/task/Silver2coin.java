@@ -1,17 +1,16 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.userInfo;
-
-import java.util.Objects;
-
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
+
+import java.util.Objects;
+
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.userInfo;
 
 /**
  * 银瓜子换硬币.
@@ -19,7 +18,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:25
  */
-@Log4j2
+@Slf4j
 public class Silver2coin implements Task {
 
     @Override

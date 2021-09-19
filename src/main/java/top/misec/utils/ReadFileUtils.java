@@ -1,12 +1,12 @@
 package top.misec.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-
-import lombok.extern.log4j.Log4j2;
 
 /**
  * 工具类通过流的方式读取文件.
@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j2;
  * @author Junzhou Liu
  * @since 2020/10/17 19:31
  */
-@Log4j2
+@Slf4j
 public class ReadFileUtils {
 
     /**
@@ -34,7 +34,7 @@ public class ReadFileUtils {
         } catch (FileNotFoundException e) {
             log.debug("file not found", e);
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
         }
         return fileContentStr;
     }

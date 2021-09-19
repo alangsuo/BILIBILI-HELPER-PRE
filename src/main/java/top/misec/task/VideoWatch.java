@@ -1,18 +1,17 @@
 package top.misec.task;
 
-import static top.misec.task.DailyTask.getDailyTaskStatus;
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.getVideoId;
-
-import java.util.Random;
-
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
+
+import java.util.Random;
+
+import static top.misec.task.DailyTask.getDailyTaskStatus;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 观看分享视频.
@@ -20,7 +19,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:13
  */
-@Log4j2
+@Slf4j
 public class VideoWatch implements Task {
 
     @Override

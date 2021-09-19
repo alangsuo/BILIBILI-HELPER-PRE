@@ -1,12 +1,11 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.utils.HttpUtils;
+
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 直播签到.
@@ -14,7 +13,7 @@ import top.misec.utils.HttpUtils;
  * @author @JunzhouLiu @Kurenai
  * @since 2020-11-22 5:42
  */
-@Log4j2
+@Slf4j
 public class LiveChecking implements Task {
     @Override
     public void run() {

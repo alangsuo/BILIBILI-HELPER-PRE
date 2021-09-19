@@ -3,7 +3,6 @@ package top.misec.push.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import lombok.Getter;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;

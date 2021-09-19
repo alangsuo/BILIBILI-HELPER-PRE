@@ -2,8 +2,7 @@ package top.misec.task;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 
@@ -14,7 +13,7 @@ import top.misec.utils.HttpUtils;
  * @since 2020-10-13
  */
 
-@Log4j2
+@Slf4j
 public class GiveGift implements Task {
 
     @Override

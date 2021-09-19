@@ -1,16 +1,15 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import com.google.gson.JsonObject;
+import lombok.extern.slf4j.Slf4j;
+import top.misec.api.ApiList;
+import top.misec.utils.GsonUtils;
+import top.misec.utils.HttpUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
-import top.misec.api.ApiList;
-import top.misec.utils.GsonUtils;
-import top.misec.utils.HttpUtils;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
 
 /**
  * 漫画阅读.
@@ -18,7 +17,7 @@ import top.misec.utils.HttpUtils;
  * @author Junzhou Liu
  * @since 2021/1/13 17:50
  */
-@Log4j2
+@Slf4j
 public class MangaRead implements Task {
 
     @Override

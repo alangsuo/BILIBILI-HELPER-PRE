@@ -1,8 +1,7 @@
 package top.misec.api;
 
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 
@@ -12,7 +11,7 @@ import top.misec.utils.HttpUtils;
  * @author Junzhou Liu
  * @since 2020/10/14 14:27
  */
-@Log4j2
+@Slf4j
 public class OftenApi {
 
     /**

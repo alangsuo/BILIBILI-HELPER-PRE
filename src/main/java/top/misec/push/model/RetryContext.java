@@ -1,15 +1,15 @@
 package top.misec.push.model;
 
-import java.util.concurrent.TimeUnit;
-
 import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author itning
  * @since 2021/3/22 17:25
  */
-@Log4j2
+@Slf4j
 @Getter
 public class RetryContext {
 
@@ -56,7 +56,7 @@ public class RetryContext {
             try {
                 TimeUnit.MILLISECONDS.sleep(retryInterval);
             } catch (InterruptedException e) {
-                log.debug(e);
+                log.debug("", e);
             }
         }
         return true;

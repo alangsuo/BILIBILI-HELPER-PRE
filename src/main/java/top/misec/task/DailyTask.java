@@ -1,18 +1,17 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
+import com.google.gson.JsonObject;
+import lombok.extern.slf4j.Slf4j;
+import top.misec.api.ApiList;
+import top.misec.utils.HttpUtils;
+import top.misec.utils.SleepTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
-import top.misec.api.ApiList;
-import top.misec.utils.HttpUtils;
-import top.misec.utils.SleepTime;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
 
 /**
  * 日常任务 .
@@ -20,7 +19,7 @@ import top.misec.utils.SleepTime;
  * @author @JunzhouLiu @Kurenai
  * @since 2020/10/11 20:44
  */
-@Log4j2
+@Slf4j
 public class DailyTask {
 
     private final List<Task> dailyTasks;
@@ -73,7 +72,7 @@ public class DailyTask {
             log.info("本日任务已全部执行完毕");
             calculateUpgradeDays();
         } catch (Exception e) {
-            log.debug(e);
+            log.debug("", e);
         } finally {
             ServerPush.doServerPush();
         }

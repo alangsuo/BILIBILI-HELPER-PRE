@@ -2,9 +2,8 @@ package top.misec.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * version info.
@@ -12,7 +11,7 @@ import lombok.extern.log4j.Log4j2;
  * @author Junzhou Liu
  * @since 2020/11/21 15:22
  */
-@Log4j2
+@Slf4j
 @Data
 public class VersionInfo {
     private static String releaseVersion = "";

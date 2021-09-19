@@ -1,6 +1,6 @@
 package top.misec.task;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
 import top.misec.config.PushConfig;
 import top.misec.utils.ReadFileUtils;
@@ -12,7 +12,7 @@ import top.misec.utils.ReadFileUtils;
  * @since 2020/10/21 17:39
  */
 
-@Log4j2
+@Slf4j
 public class ServerPush {
 
     public static void doServerPush() {

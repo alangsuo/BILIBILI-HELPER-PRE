@@ -1,27 +1,26 @@
 package top.misec.task;
 
 
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
 
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 赛事预测.
  *
  * @author junzhou
  */
-@Log4j2
+@Slf4j
 public class MatchGame implements Task {
 
     @Override
