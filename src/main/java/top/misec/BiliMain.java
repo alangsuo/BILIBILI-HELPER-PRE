@@ -1,13 +1,15 @@
 package top.misec;
 
+import java.io.File;
+
 import com.google.gson.JsonSyntaxException;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
+import top.misec.config.HelperConfig;
 import top.misec.task.DailyTask;
 import top.misec.task.ServerPush;
 import top.misec.utils.VersionInfo;
-
-import java.io.File;
 
 /**
  * 入口类 .
@@ -45,7 +47,7 @@ public class BiliMain {
     /**
      * 用于腾讯云函数触发.
      */
-    public static void mainHandler() {
+    public static void mainHandler(HelperConfig helperConfig) {
         String config = System.getProperty("config");
         if (null == config) {
             log.error("云函数配置的config参数为空。");
