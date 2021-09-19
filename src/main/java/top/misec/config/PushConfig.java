@@ -1,10 +1,16 @@
 package top.misec.config;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Data;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import top.misec.push.Push;
-import top.misec.push.impl.*;
+import top.misec.push.impl.DingTalkPush;
+import top.misec.push.impl.PushPlusPush;
+import top.misec.push.impl.ServerChanPush;
+import top.misec.push.impl.ServerChanTurboPush;
+import top.misec.push.impl.TelegramPush;
+import top.misec.push.impl.WeComPush;
 import top.misec.push.model.PushMetaInfo;
 
 /**
@@ -44,7 +50,7 @@ public class PushConfig {
     /**
      * Server酱
      */
-    private String SCU_KEY;
+    private String SC_KEY;
 
     /**
      * 企业微信，群消息非应用消息
@@ -62,8 +68,8 @@ public class PushConfig {
             return new PushInfo(new ServerChanTurboPush(), SCT_KEY);
         } else if (StringUtils.isNotBlank(WE_COM_TOKEN)) {
             return new PushInfo(new WeComPush(), WE_COM_TOKEN);
-        } else if (StringUtils.isNotBlank(SCU_KEY)) {
-            return new PushInfo(new ServerChanPush(), SCU_KEY);
+        } else if (StringUtils.isNotBlank(SC_KEY)) {
+            return new PushInfo(new ServerChanPush(), SC_KEY);
         } else {
             return null;
         }
