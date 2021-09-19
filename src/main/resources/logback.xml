@@ -15,7 +15,7 @@
             <maxFileSize>${MAX_SIZE}</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>%msg%n</pattern>
+            <pattern>%msg%n%n</pattern>
         </encoder>
     </appender>
 
