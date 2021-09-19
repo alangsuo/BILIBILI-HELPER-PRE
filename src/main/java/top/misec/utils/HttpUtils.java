@@ -34,8 +34,8 @@ import top.misec.config.ConfigLoader;
 public class HttpUtils {
 
     private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38";
-    private static final MediaType JSON = MediaType.parse("application/json");
-    private static OkHttpClient client;
+    public static final MediaType JSON = MediaType.parse("application/json");
+    public static OkHttpClient client;
 
     static {
         client = new OkHttpClient.Builder()

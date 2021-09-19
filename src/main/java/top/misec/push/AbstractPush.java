@@ -1,11 +1,16 @@
 package top.misec.push;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
+import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.push.model.RetryContext;
 import top.misec.utils.HttpUtils;
+
+import java.net.Proxy;
 
 /**
  * 推送抽象类；公共模板方法封装.
@@ -21,7 +26,7 @@ public abstract class AbstractPush implements Push {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
         String pushContent = generatePushBody(metaInfo, content);
-        JsonObject jsonObject = HttpUtils.doPost(url, pushContent);
+        JsonObject jsonObject = post(url, pushContent);
         boolean pushStatus = checkPushStatus(jsonObject);
         if (pushStatus) {
             log.info("任务状态推送成功");
@@ -29,6 +34,30 @@ public abstract class AbstractPush implements Push {
         } else {
             log.info("任务状态推送失败，开始重试");
             return retryPush(new RetryContext(url, pushContent, metaInfo.getNumberOfRetries(), metaInfo.getRetryInterval()));
+        }
+    }
+
+    private JsonObject post(String url, String content) {
+        Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
+        OkHttpClient client = HttpUtils.client.newBuilder()
+                .proxy(proxy)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(RequestBody.create(content, HttpUtils.JSON))
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            ResponseBody responseBody = response.body();
+            if (null == responseBody) {
+                return null;
+            }
+            String result = responseBody.string();
+            return new Gson().fromJson(result, JsonObject.class);
+        } catch (Exception e) {
+            log.error("", e);
+            return null;
         }
     }
 

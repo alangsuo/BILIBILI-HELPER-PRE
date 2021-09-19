@@ -30,6 +30,9 @@
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",
     "WE_COM_GROUP_TOKEN": "",
-    "WE_COM_APP_TOKEN_CONF": ""
+    "WE_COM_APP_TOKEN_CONF": "",
+    "PROXY_HTTP_HOST": "",
+    "PROXY_SOCKET_HOST": "",
+    "PROXY_PORT": 0
   }
 }

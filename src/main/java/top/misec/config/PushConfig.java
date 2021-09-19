@@ -13,6 +13,9 @@ import top.misec.push.impl.TelegramPush;
 import top.misec.push.impl.WeComPush;
 import top.misec.push.model.PushMetaInfo;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 /**
  * pushconfig ddd
  *
@@ -57,6 +60,21 @@ public class PushConfig {
      */
     private String WE_COM_TOKEN;
 
+    /**
+     * 推送代理 代表高级协议（如 HTTP 或 FTP）的代理。
+     */
+    private String PROXY_HTTP_HOST;
+
+    /**
+     * 推送代理 代表 SOCKS（V4 或 V5）代理。
+     */
+    private String PROXY_SOCKET_HOST;
+
+    /**
+     * 推送代理 代表 端口
+     */
+    private Integer PROXY_PORT;
+
     public PushInfo getPushInfo() {
         if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID)) {
             return new PushInfo(new TelegramPush(), TG_BOT_TOKEN, TG_USER_ID);
@@ -73,6 +91,24 @@ public class PushConfig {
         } else {
             return null;
         }
+    }
+
+    public Proxy getProxy() {
+        if (null == PROXY_PORT || PROXY_PORT.equals(0)) {
+            return Proxy.NO_PROXY;
+        }
+
+        if (StringUtils.isNotBlank(PROXY_HTTP_HOST)) {
+            InetSocketAddress address = new InetSocketAddress(PROXY_HTTP_HOST, PROXY_PORT);
+            return new Proxy(Proxy.Type.HTTP, address);
+        }
+
+        if (StringUtils.isNotBlank(PROXY_SOCKET_HOST)) {
+            InetSocketAddress address = new InetSocketAddress(PROXY_HTTP_HOST, PROXY_PORT);
+            return new Proxy(Proxy.Type.SOCKS, address);
+        }
+
+        return Proxy.NO_PROXY;
     }
 
     @Getter
