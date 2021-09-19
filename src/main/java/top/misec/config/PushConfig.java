@@ -1,16 +1,10 @@
 package top.misec.config;
 
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.Data;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import top.misec.push.Push;
-import top.misec.push.impl.DingTalkPush;
-import top.misec.push.impl.PushPlusPush;
-import top.misec.push.impl.ServerChanPush;
-import top.misec.push.impl.ServerChanTurboPush;
-import top.misec.push.impl.TelegramPush;
-import top.misec.push.impl.WeComPush;
+import top.misec.push.impl.*;
 import top.misec.push.model.PushMetaInfo;
 
 import java.net.InetSocketAddress;
@@ -39,6 +33,11 @@ public class PushConfig {
      * 钉钉
      */
     private String DING_TALK_URL;
+
+    /**
+     * 钉钉密钥
+     */
+    private String DING_TALK_SECRET;
 
     /**
      * push plus++
@@ -78,6 +77,8 @@ public class PushConfig {
     public PushInfo getPushInfo() {
         if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID)) {
             return new PushInfo(new TelegramPush(), TG_BOT_TOKEN, TG_USER_ID);
+        } else if (StringUtils.isNoneBlank(DING_TALK_URL, DING_TALK_SECRET)) {
+            return new PushInfo(new DingTalkSecretPush(), DING_TALK_URL, null, DING_TALK_SECRET);
         } else if (StringUtils.isNotBlank(DING_TALK_URL)) {
             return new PushInfo(new DingTalkPush(), DING_TALK_URL);
         } else if (StringUtils.isNotBlank(PUSH_PLUS_TOKEN)) {
@@ -124,6 +125,11 @@ public class PushConfig {
         public PushInfo(Push target, String token, String chatId) {
             this.target = target;
             this.metaInfo = PushMetaInfo.builder().numberOfRetries(3).token(token).chatId(chatId).build();
+        }
+
+        public PushInfo(Push target, String token, String chatId, String secret) {
+            this.target = target;
+            this.metaInfo = PushMetaInfo.builder().numberOfRetries(3).token(token).chatId(chatId).secret(secret).build();
         }
     }
 }

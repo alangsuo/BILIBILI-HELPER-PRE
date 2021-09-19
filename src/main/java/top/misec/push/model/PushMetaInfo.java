@@ -24,6 +24,11 @@ public class PushMetaInfo {
     private final String chatId;
 
     /**
+     * 密钥
+     */
+    private final String secret;
+
+    /**
      * 失败后重试次数 .
      */
     private final int numberOfRetries;
