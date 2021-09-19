@@ -34,7 +34,7 @@ public class ConfigLoader {
         helperConfig = buildHelperConfig(helperConfigJson);
         helperConfig.getBiliVerify().initCookiesMap();
         HttpUtils.setUserAgent(helperConfig.getTaskConfig().getUserAgent());
-        log.info(helperConfig.getPushConfig().toString());
+        log.info("云函数配置初始化成功\n{}", helperConfig.toString());
     }
 
     /**
