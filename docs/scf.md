@@ -53,7 +53,7 @@
 
 | key      | value                                                        |
 | -------- | ------------------------------------------------------------ |
-| `config` | `复制下方完整的config样例，填好对应的值，直接复制粘贴即可。` |
+| `config` | `复制下方完整的config样例，填好对应的值，直接复制粘贴即可，值的具体含义可在项目READEME查看。` |
 
 **config样例**
 
@@ -82,7 +82,7 @@
     "userAgent": "你的默认UA"
   },
   "pushConfig": {
-    "SC_KEY": "如果使用推送，请将推送的key填写在指定位置。",
+    "SC_KEY": "",
     "SCT_KEY": "",
     "TG_BOT_TOKEN": "",
     "TG_USER_ID": "",
@@ -90,7 +90,10 @@
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",
     "WE_COM_GROUP_TOKEN": "",
-    "WE_COM_APP_TOKEN_CONF": ""
+    "WE_COM_APP_TOKEN_CONF": "",
+    "PROXY_HTTP_HOST": "",
+    "PROXY_SOCKET_HOST": "",
+    "PROXY_PORT": 0
   }
 }
 ```
@@ -161,6 +164,9 @@
 			"PUSH_PLUS_TOKEN": "",
 			"WE_COM_GROUP_TOKEN": "",
 			"WE_COM_APP_TOKEN_CONF": ""
+      "PROXY_HTTP_HOST": "",
+      "PROXY_SOCKET_HOST": "",
+      "PROXY_PORT": 0
 		}
 	}
 }

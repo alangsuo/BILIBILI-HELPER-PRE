@@ -141,7 +141,10 @@ ps ：需要本地有java8执行环境。
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",
     "WE_COM_GROUP_TOKEN": "",
-    "WE_COM_APP_TOKEN_CONF": ""
+    "WE_COM_APP_TOKEN_CONF": "",
+    "PROXY_HTTP_HOST": "",
+    "PROXY_SOCKET_HOST": "",
+    "PROXY_PORT": 0
   }
 }
 
@@ -186,12 +189,17 @@ ps ：需要本地有java8执行环境。
 
  **pushConfig**
 
-| Key(字段)    | Value(值) | 说明                            |
-| ------------ | --------- | ------------------------------- |
-| SC_KEY       | str       | Server酱老版本key，SCU开头的    |
-| SCT_KEY      | str       | Server酱Turbo版本key，SCT开头的 |
-| TG_BOT_TOKEN | str       | tg推送token                     |
-| TG_USER_ID   | str       | tg推送id                        |
+| Key(字段)         | Value(值) | 说明                                            |
+| ----------------- | --------- | ----------------------------------------------- |
+| SC_KEY            | str       | Server酱老版本key，SCU开头的                    |
+| SCT_KEY           | str       | Server酱Turbo版本key，SCT开头的                 |
+| TG_BOT_TOKEN      | str       | tg推送token                                     |
+| TG_USER_ID        | str       | tg推送id                                        |
+| PUSH_PLUS_TOKEN   | str       | push plus++                                     |
+| DING_TALK_URL     | str       | 钉钉                                            |
+| PROXY_HTTP_HOST   | str       | 推送代理 代表高级协议（如 HTTP 或 FTP）的代理。 |
+| PROXY_SOCKET_HOST | str       | 推送代理 代表 SOCKS（V4 或 V5）代理。           |
+| PROXY_PORT        | int       | 推送代理 代表 端口                              |
 
 ## 免责声明
 
