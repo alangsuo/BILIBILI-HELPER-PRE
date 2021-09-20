@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
+import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
 
@@ -136,11 +137,13 @@ public class CoinAdd implements Task {
             Map<String, String> headers = new HashMap<>(10);
             headers.put("Referer", "https://www.bilibili.com/video/" + bvid);
             headers.put("Origin", "https://www.bilibili.com");
-            String requestBody = "bvid=" + bvid
+
+            String requestBody = "aid=" + HelpUtil.bv2av(bvid)
                     + "&multiply=" + multiply
                     + "&select_like=" + selectLike
                     + "&cross_domain=" + "true"
                     + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
+
             new VideoWatch().watchVideo(bvid);
             JsonObject jsonObject = HttpUtils.doPost(ApiList.COIN_ADD, requestBody, headers);
             if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {

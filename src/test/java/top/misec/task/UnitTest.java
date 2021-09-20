@@ -33,7 +33,7 @@ public class UnitTest {
 //
 //        new CoinAdd().run();
         calculateUpgradeDays();
-        new MatchGame().run();
+        new CoinAdd().run();
 
 
     }

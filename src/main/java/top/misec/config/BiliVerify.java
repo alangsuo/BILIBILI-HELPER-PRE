@@ -1,10 +1,10 @@
 package top.misec.config;
 
+import java.util.HashMap;
+
 import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashMap;
 
 /**
  * @author JunzhouLiu
@@ -23,14 +23,14 @@ public class BiliVerify {
             String[] target = s.split("=");
             cookieMap.put(target[0].trim(), target[1].trim());
         }
-        log.info("inti cookies map ");
+        log.info("init cookies successfully");
     }
 
     public String getBiliJct() {
-        return cookieMap.get("bili_jct").toString();
+        return cookieMap.get(Constant.BILI_JCT).toString();
     }
 
     public String getDedeUserId() {
-        return cookieMap.get("DedeUserID").toString();
+        return cookieMap.get(Constant.BILI_USER_ID).toString();
     }
 }
