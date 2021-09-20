@@ -1,16 +1,17 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.userInfo;
+
+import java.util.Objects;
+
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
-
-import java.util.Objects;
-
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.userInfo;
 
 /**
  * 银瓜子换硬币.
@@ -19,10 +20,15 @@ import static top.misec.task.TaskInfoHolder.userInfo;
  * @since 2020-11-22 5:25
  */
 @Slf4j
-public class Silver2coin implements Task {
+public class Silver2Coin implements Task {
 
     @Override
     public void run() {
+
+        if (!ConfigLoader.helperConfig.getTaskConfig().silver2Coin) {
+            log.info("未开启银瓜子兑换硬币功能");
+            return;
+        }
         JsonObject queryStatus = HttpUtils.doGet(ApiList.GET_SILVER_2_COIN_STATUS);
         if (queryStatus == null || Objects.isNull(queryStatus.get("data"))) {
             log.error("获取银瓜子状态失败");

@@ -16,6 +16,7 @@ public class TaskConfig {
     public Boolean giveGift;
     public Boolean matchGame;
     public Boolean showHandModel;
+    public Boolean silver2Coin;
     public Integer predictNumberOfCoins;
     public Integer minimumNumberOfCoins;
     public Integer numberOfCoins;

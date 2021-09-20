@@ -29,7 +29,7 @@ public class DailyTask {
         dailyTasks.add(new VideoWatch());
         dailyTasks.add(new MangaSign());
         dailyTasks.add(new CoinAdd());
-        dailyTasks.add(new Silver2coin());
+        dailyTasks.add(new Silver2Coin());
         dailyTasks.add(new LiveChecking());
         dailyTasks.add(new GiveGift());
         dailyTasks.add(new ChargeMe());

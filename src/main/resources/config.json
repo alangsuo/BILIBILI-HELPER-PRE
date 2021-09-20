@@ -10,15 +10,16 @@
     "minimumNumberOfCoins": 100,
     "taskIntervalTime": 20,
     "numberOfCoins": 5,
+    "coinAddPriority": 1,
     "reserveCoins": 10,
     "selectLike": 0,
     "monthEndAutoCharge": true,
     "giveGift": true,
+    "silver2Coin": true,
     "upLive": "0",
     "chargeForLove": "14602398",
     "chargeDay": 8,
     "devicePlatform": "ios",
-    "coinAddPriority": 1,
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38"
   },
   "pushConfig": {

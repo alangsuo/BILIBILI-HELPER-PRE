@@ -33,8 +33,8 @@ public class UnitTest {
 //
 //        new CoinAdd().run();
         calculateUpgradeDays();
-        new CoinAdd().run();
+//        new CoinAdd().run();
 
-
+        new Silver2Coin().run();
     }
 }
