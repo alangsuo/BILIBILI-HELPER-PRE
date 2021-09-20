@@ -1,9 +1,10 @@
 package top.misec.task;
 
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
-import top.misec.pojo.userinfobean.Data;
+import top.misec.pojo.userinfobean.UserData;
 import top.misec.utils.HttpUtils;
 
 /**
@@ -16,7 +17,7 @@ import top.misec.utils.HttpUtils;
 public class TaskInfoHolder {
 
     public static final String STATUS_CODE_STR = "code";
-    public static Data userInfo = null;
+    public static UserData userInfo = null;
     public static GetVideoId getVideoId = new GetVideoId();
 
     public static void calculateUpgradeDays() {
@@ -29,12 +30,12 @@ public class TaskInfoHolder {
         todayExp += expConfirm() * 10;
         log.info("今日获得的总经验值为: {}", todayExp);
 
-        int needExp = userInfo.getLevelInfo().getNext_exp_asInt() - userInfo.getLevelInfo().getCurrent_exp();
+        int needExp = userInfo.getLevel_info().getNextExpAsInt() - userInfo.getLevel_info().getCurrent_exp();
 
-        if (userInfo.getLevelInfo().getCurrent_level() < 6) {
-            log.info("按照当前进度，升级到升级到Lv{}还需要: {}天", userInfo.getLevelInfo().getCurrent_level() + 1, needExp / todayExp);
+        if (userInfo.getLevel_info().getCurrent_level() < 6) {
+            log.info("按照当前进度，升级到升级到Lv{}还需要: {}天", userInfo.getLevel_info().getCurrent_level() + 1, needExp / todayExp);
         } else {
-            log.info("当前等级Lv6，经验值为：{}", userInfo.getLevelInfo().getCurrent_exp());
+            log.info("当前等级Lv6，经验值为：{}", userInfo.getLevel_info().getCurrent_exp());
         }
     }
 

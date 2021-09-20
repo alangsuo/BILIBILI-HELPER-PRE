@@ -17,7 +17,7 @@ public class LevelInfo {
     private int current_exp;
     private String next_exp;
 
-    public int getNext_exp_asInt() {
+    public int getNextExpAsInt() {
         if ("--".equals(next_exp)) {
             return current_exp;
         } else {

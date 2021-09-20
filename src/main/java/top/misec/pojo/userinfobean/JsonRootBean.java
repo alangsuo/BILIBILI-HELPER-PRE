@@ -13,6 +13,6 @@ public class JsonRootBean {
     private int code;
     private String message;
     private int ttl;
-    private Data data;
+    private UserData userData;
 
 }

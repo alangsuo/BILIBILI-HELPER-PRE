@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
-import top.misec.pojo.userinfobean.Data;
+import top.misec.pojo.userinfobean.UserData;
 import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtils;
 
@@ -31,7 +31,7 @@ public class UserCheck implements Task {
             if (userJson.get(STATUS_CODE_STR).getAsInt() == 0
                     && userJson.get("data").getAsJsonObject().get("isLogin").getAsBoolean()) {
                 userInfo = new Gson().fromJson(userJson
-                        .getAsJsonObject("data"), Data.class);
+                        .getAsJsonObject("data"), UserData.class);
                 log.info("Cookies有效，登录成功");
             } else {
                 log.debug(String.valueOf(userJson));

@@ -1,10 +1,12 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
+
+import java.io.File;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.VersionInfo;
-
-import java.io.File;
 
 /**
  * util test.
@@ -27,10 +29,10 @@ public class UnitTest {
             String currentPath = System.getProperty("user.dir") + File.separator + "config.json";
             ConfigLoader.configInit(currentPath);
         }
-//        new UserCheck().run();
+        new UserCheck().run();
 //
 //        new CoinAdd().run();
-
+        calculateUpgradeDays();
 
 
     }

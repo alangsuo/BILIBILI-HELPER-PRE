@@ -1,18 +1,19 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 投币任务.
@@ -107,11 +108,10 @@ public class CoinAdd implements Task {
             }
 
             addCoinOperateCount++;
-            new VideoWatch().watchVideo(bvid);
-            new SleepTime().sleepDefault();
             boolean flag = coinAdd(bvid, 1, ConfigLoader.helperConfig.getTaskConfig().getSelectLike());
             if (flag) {
                 needCoins--;
+                new SleepTime().sleepDefault();
             }
             if (addCoinOperateCount > 15) {
                 log.info("尝试投币/投币失败次数太多");
@@ -141,6 +141,7 @@ public class CoinAdd implements Task {
                     + "&select_like=" + selectLike
                     + "&cross_domain=" + "true"
                     + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
+            new VideoWatch().watchVideo(bvid);
             JsonObject jsonObject = HttpUtils.doPost(ApiList.COIN_ADD, requestBody, headers);
             if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
                 log.info("为 " + videoTitle + " 投币成功");
