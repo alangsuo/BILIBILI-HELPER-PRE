@@ -125,6 +125,7 @@ ps ：需要本地有java8执行环境。
     "selectLike": 0,
     "monthEndAutoCharge": true,
     "giveGift": true,
+    "silver2Coin": true,
     "upLive": "0",
     "chargeForLove": "14602398",
     "chargeDay": 8,

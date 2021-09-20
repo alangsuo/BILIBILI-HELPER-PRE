@@ -51,8 +51,8 @@
 
 环境变量：
 
-| key      | value                                                        |
-| -------- | ------------------------------------------------------------ |
+| key      | value                                                                                         |
+| -------- | --------------------------------------------------------------------------------------------- |
 | `config` | `复制下方完整的config样例，填好对应的值，直接复制粘贴即可，值的具体含义可在项目READEME查看。` |
 
 **config样例**
@@ -74,6 +74,7 @@
     "selectLike": 0,
     "monthEndAutoCharge": true,
     "giveGift": true,
+    "silver2Coin": true,
     "upLive": "0",
     "chargeForLove": "14602398",
     "chargeDay": 8,
@@ -147,6 +148,7 @@
 			"selectLike": 0,
 			"monthEndAutoCharge": true,
 			"giveGift": true,
+      "silver2Coin": true,
 			"upLive": "0",
 			"chargeForLove": "14602398",
 			"chargeDay": 8,
@@ -163,7 +165,7 @@
 			"DING_TALK_SECRET": "",
 			"PUSH_PLUS_TOKEN": "",
 			"WE_COM_GROUP_TOKEN": "",
-			"WE_COM_APP_TOKEN_CONF": ""
+			"WE_COM_APP_TOKEN_CONF": "",
       "PROXY_HTTP_HOST": "",
       "PROXY_SOCKET_HOST": "",
       "PROXY_PORT": 0
