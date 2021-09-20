@@ -1,5 +1,5 @@
 1. 全新的配置文件格式（务必升级）。
 2. 适配腾讯云云函数，优化云函数测试。提供了一个测试模版。
-3. 支持在config.json中配置完整的Cookie。
-4. 取消使用jar参数传递ck，直接将新版config.json文件放在jar包同一目录即可。
-5. 可在 java -jar hlper.jar 后指定config.json的目录。
+3. 取消使用jar参数传递Cookie，支持在config.json中配置完整的Cookie。
+4. 增加银瓜子兑换硬币开关。
+5. 可在执行命令后指定config.json的目录或将新版config.json文件放在jar包同一目录。
