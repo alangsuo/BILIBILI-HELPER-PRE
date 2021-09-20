@@ -69,6 +69,19 @@
             <version>4.9.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.github.itning/guava-retrying3 -->
+        <dependency>
+            <groupId>io.github.itning</groupId>
+            <artifactId>guava-retrying3</artifactId>
+            <version>3.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

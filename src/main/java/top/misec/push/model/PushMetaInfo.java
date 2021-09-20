@@ -28,14 +28,4 @@ public class PushMetaInfo {
      */
     private final String secret;
 
-    /**
-     * 失败后重试次数 .
-     */
-    private final int numberOfRetries;
-
-    /**
-     * 失败后重试间隔 .
-     */
-    private final long retryInterval;
-
 }

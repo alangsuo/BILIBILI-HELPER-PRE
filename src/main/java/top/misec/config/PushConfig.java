@@ -132,17 +132,17 @@ public class PushConfig {
 
         public PushInfo(Push target, String token) {
             this.target = target;
-            this.metaInfo = PushMetaInfo.builder().numberOfRetries(3).token(token).build();
+            this.metaInfo = PushMetaInfo.builder().token(token).build();
         }
 
         public PushInfo(Push target, String token, String chatId) {
             this.target = target;
-            this.metaInfo = PushMetaInfo.builder().numberOfRetries(3).token(token).chatId(chatId).build();
+            this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).build();
         }
 
         public PushInfo(Push target, String token, String chatId, String secret) {
             this.target = target;
-            this.metaInfo = PushMetaInfo.builder().numberOfRetries(3).token(token).chatId(chatId).secret(secret).build();
+            this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).build();
         }
     }
 }

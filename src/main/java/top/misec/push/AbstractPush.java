@@ -2,15 +2,26 @@ package top.misec.push;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.github.itning.retry.Attempt;
+import io.github.itning.retry.RetryException;
+import io.github.itning.retry.Retryer;
+import io.github.itning.retry.RetryerBuilder;
+import io.github.itning.retry.listener.RetryListener;
+import io.github.itning.retry.strategy.limit.AttemptTimeLimiters;
+import io.github.itning.retry.strategy.stop.StopStrategies;
+import io.github.itning.retry.strategy.wait.WaitStrategies;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
-import top.misec.push.model.RetryContext;
 import top.misec.utils.HttpUtils;
 
 import java.net.Proxy;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 推送抽象类；公共模板方法封装.
@@ -19,22 +30,62 @@ import java.net.Proxy;
  * @since 2021/3/22 16:36
  */
 @Slf4j
-public abstract class AbstractPush implements Push {
+public abstract class AbstractPush implements Push, RetryListener {
+
+    private final Retryer<JsonObject> retryer;
+
+    public AbstractPush() {
+        retryer = RetryerBuilder.<JsonObject>newBuilder()
+                // 出现异常进行重试
+                .retryIfException()
+                // 检查结果进行重试
+                .retryIfResult((it) -> !checkPushStatus(it))
+                // 每次重试等待策略
+                .withWaitStrategy(WaitStrategies.fixedWait(1, TimeUnit.SECONDS))
+                // 重试停止策略
+                .withStopStrategy(StopStrategies.stopAfterAttempt(3))
+                // 持续时间限制
+                .withAttemptTimeLimiter(AttemptTimeLimiters.noTimeLimit())
+                // 重试监听器
+                .withRetryListener(this)
+                .build();
+    }
 
     @Override
     public final PushResult doPush(PushMetaInfo metaInfo, String content) {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
-        String pushContent = generatePushBody(metaInfo, content);
-        JsonObject jsonObject = post(url, pushContent);
-        boolean pushStatus = checkPushStatus(jsonObject);
-        if (pushStatus) {
-            log.info("任务状态推送成功");
-            return PushResult.success();
-        } else {
-            log.info("任务状态推送失败，开始重试");
-            return retryPush(new RetryContext(url, pushContent, metaInfo.getNumberOfRetries(), metaInfo.getRetryInterval()));
+        List<String> pushList = segmentation(content);
+        PushResult pushResult = PushResult.success();
+        for (String pushItemContent : pushList) {
+            String pushContent = generatePushBody(metaInfo, pushItemContent);
+            PushResult result = push2Target(url, pushContent);
+            if (!result.isSuccess()) {
+                pushResult = PushResult.failed();
+                break;
+            }
+            if (pushList.size() > 1) {
+                try {
+                    // 限速
+                    TimeUnit.MILLISECONDS.sleep(1500);
+                } catch (InterruptedException ignore) {
+                }
+            }
         }
+        return pushResult;
+    }
+
+    private PushResult push2Target(String url, String pushContent) {
+        try {
+            JsonObject jsonObject = retryer.call(() -> post(url, pushContent));
+            log.info("推送结果：{}", jsonObject.toString());
+            return PushResult.success();
+        } catch (RetryException e) {
+            log.error("重试最终失败：{}", this.getClass().getSimpleName(), e);
+        } catch (ExecutionException e) {
+            log.error("重试中断：{}", this.getClass().getSimpleName(), e);
+        }
+        return PushResult.failed();
     }
 
     private JsonObject post(String url, String content) {
@@ -62,26 +113,6 @@ public abstract class AbstractPush implements Push {
     }
 
     /**
-     * 重试推送
-     *
-     * @param context 重试上下文
-     */
-    private PushResult retryPush(RetryContext context) {
-        while (context.next()) {
-            JsonObject jsonObject = HttpUtils.doPost(context.getUrl(), context.getBody());
-            boolean pushStatus = checkPushStatus(jsonObject);
-            if (pushStatus) {
-                log.info("任务状态推送成功");
-                return PushResult.success();
-            } else {
-                log.info("任务状态推送失败，开始第{}次重试", context.getRetryCount());
-                log.info("错误信息: {}", jsonObject);
-            }
-        }
-        return PushResult.failed();
-    }
-
-    /**
      * 生成推送URL
      *
      * @param metaInfo 元信息
@@ -106,5 +137,27 @@ public abstract class AbstractPush implements Push {
      */
     protected String generatePushBody(final PushMetaInfo metaInfo, final String content) {
         return content;
+    }
+
+    /**
+     * 消息分割
+     * 对于一条消息可能太长，需要分割按顺序发送
+     *
+     * @param pushBody 消息内容
+     * @return 分割结果，默认不分割
+     */
+    protected List<String> segmentation(String pushBody) {
+        return Collections.singletonList(pushBody);
+    }
+
+    @Override
+    public <V> void onRetry(Attempt<V> attempt) {
+        if (attempt.hasException()) {
+            log.error("推送失败 已尝试：{}次", attempt.getAttemptNumber(), attempt.getExceptionCause());
+            return;
+        }
+        if (attempt.hasResult()) {
+            log.error("推送返回失败：{} 已尝试：{}次", attempt.getResult(), attempt.getAttemptNumber());
+        }
     }
 }

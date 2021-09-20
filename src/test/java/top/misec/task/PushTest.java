@@ -1,7 +1,11 @@
 package top.misec.task;
 
-import top.misec.push.impl.PushPlusPush;
+import org.apache.commons.lang3.RandomStringUtils;
+import top.misec.push.impl.DingTalkSecretPush;
 import top.misec.push.model.PushMetaInfo;
+import top.misec.push.model.PushResult;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * push test .
@@ -10,13 +14,16 @@ import top.misec.push.model.PushMetaInfo;
  * @since 2021/3/28 16:06
  */
 public class PushTest {
-    public static void main(String[] args) {
-        PushMetaInfo metaInfo = PushMetaInfo
-                .builder()
-                .numberOfRetries(3)
-                .token(args.length > 0 ? args[0] : null)
-                .chatId(args.length > 1 ? args[1] : null)
+    //@Test
+    public void test1() {
+        String s = RandomStringUtils.randomAlphanumeric(19926);
+        System.out.println(s.getBytes(StandardCharsets.UTF_8).length);
+
+        PushMetaInfo pushMetaInfo = PushMetaInfo.builder()
+                .token("")
+                .secret("")
                 .build();
-        new PushPlusPush().doPush(metaInfo, "测试内容");
+        PushResult pushResult = new DingTalkSecretPush().doPush(pushMetaInfo, s);
+        System.out.println(pushResult.isSuccess());
     }
 }
