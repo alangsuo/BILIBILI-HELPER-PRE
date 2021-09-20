@@ -7,13 +7,21 @@
     <property name="MAX_DAY" value="20"/>
     <property name="MAX_SIZE" value="100MB"/>
 
-    <appender name="ROOT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_PATH}/bili-helper.log</File>
+    <appender name="HISTORY_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/bili-helper-history.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <maxHistory>${MAX_DAY}</maxHistory>
             <fileNamePattern>${LOG_PATH}/%d{yyyy-MM-dd}/bili-helper-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <maxFileSize>${MAX_SIZE}</maxFileSize>
         </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{56} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROOT" class="ch.qos.logback.core.FileAppender">
+        <File>${LOG_PATH}/bili-helper.log</File>
+        <append>false</append>
         <encoder>
             <pattern>%msg%n%n</pattern>
         </encoder>
@@ -29,6 +37,7 @@
     <root level="${LOG_LEVEL}">
         <level value="${LOG_LEVEL}"/>
         <appender-ref ref="ROOT"/>
+        <appender-ref ref="HISTORY_LOG"/>
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
