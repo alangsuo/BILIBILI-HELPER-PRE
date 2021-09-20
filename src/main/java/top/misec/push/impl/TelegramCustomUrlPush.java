@@ -3,7 +3,7 @@ package top.misec.push.impl;
 import top.misec.push.model.PushMetaInfo;
 
 /**
- * TG推送 .自定义URL的
+ * 自定义URL的TG推送 .
  *
  * @author itning
  * @since 2021/3/22 17:55

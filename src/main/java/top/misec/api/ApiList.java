@@ -77,5 +77,5 @@ public class ApiList {
     public static final String QUERY_QUESTIONS = "https://api.bilibili.com/x/esports/guess/collection/question";
 
     public static final String QUERY_MATCH_INFO = "https://api.bilibili.com/x/esports/guess/collection/statis";
-    public static final String DO_ADD = "https://api.bilibili.com/x/esports/guess/add";
+    public static final String DO_MATCH_ADD = "https://api.bilibili.com/x/esports/guess/add";
 }

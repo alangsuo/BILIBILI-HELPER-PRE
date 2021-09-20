@@ -1,19 +1,20 @@
 package top.misec.task;
 
 
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
 import top.misec.utils.SleepTime;
-
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 赛事预测.
@@ -101,19 +102,22 @@ public class MatchGame implements Task {
         }
     }
 
+
     private JsonObject queryContestQuestion(String today, int pn, int ps) {
         String gid = "";
         String sids = "";
-        String urlParam = "?pn=" + pn
-                + "&ps=" + ps
-                + "&gid=" + gid
-                + "&sids=" + sids
-                + "&stime=" + today + URLEncoder.encode(" 00:00:00")
-                + "&etime=" + today + URLEncoder.encode(" 23:59:59")
-                + "&pn=" + pn
-                + "&ps=" + ps
-                + "&stime=" + today + "+00:00:00"
-                + "&etime=" + today + "+23:59:59";
+        String urlParam = "";
+        try {
+            urlParam = "?pn=" + pn
+                    + "&ps=" + ps
+                    + "&gid=" + gid
+                    + "&sids=" + sids
+                    + "&stime=" + today + URLEncoder.encode(" 00:00:00", "UTF-8")
+                    + "&etime=" + today + URLEncoder.encode(" 23:59:59", "UTF-8");
+        } catch (Exception ignored) {
+
+        }
+
         return HttpUtils.doGet(ApiList.QUERY_QUESTIONS + urlParam);
     }
 
@@ -125,7 +129,7 @@ public class MatchGame implements Task {
                 + "&is_fav=0"
                 + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
 
-        JsonObject result = HttpUtils.doPost(ApiList.DO_ADD, requestbody);
+        JsonObject result = HttpUtils.doPost(ApiList.DO_MATCH_ADD, requestbody);
 
         if (result.get("code").getAsInt() != 0) {
             log.info(result.get("message").getAsString());

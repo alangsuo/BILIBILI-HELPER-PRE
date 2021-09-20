@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import lombok.Data;
@@ -58,6 +57,13 @@ public class HttpUtils {
         return doPost(url, jsonObject.toString());
     }
 
+    /**
+     * post body support json str
+     *
+     * @param url         url
+     * @param requestBody body
+     * @return json object
+     */
     public static JsonObject doPost(String url, String requestBody) {
         return doPost(url, requestBody, null);
     }
@@ -108,19 +114,13 @@ public class HttpUtils {
 
 
     public static JsonObject doGet(String url) {
-        return doGet(url, new JsonObject());
-    }
-
-    public static JsonObject doGet(String url, JsonObject pJson) {
         Request.Builder builder = new Request.Builder()
                 .url(url)
                 .addHeader("Connection", "keep-alive")
                 .addHeader("User-Agent", userAgent)
                 .addHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies())
                 .get();
-        for (Map.Entry<String, JsonElement> entry : pJson.entrySet()) {
-            builder.addHeader(entry.getKey(), entry.getValue().toString());
-        }
+
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
