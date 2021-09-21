@@ -1,7 +1,5 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.calculateUpgradeDays;
-
 import java.io.File;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import top.misec.utils.VersionInfo;
 public class UnitTest {
 
     public static void main(String[] args) {
-
         VersionInfo.printVersionInfo();
 
         if (args.length > 0) {
@@ -29,12 +26,7 @@ public class UnitTest {
             String currentPath = System.getProperty("user.dir") + File.separator + "config.json";
             ConfigLoader.configInit(currentPath);
         }
-        new UserCheck().run();
-//
-//        new CoinAdd().run();
-        calculateUpgradeDays();
-//        new CoinAdd().run();
 
-        new Silver2Coin().run();
+        ServerPush.doServerPush();
     }
 }
