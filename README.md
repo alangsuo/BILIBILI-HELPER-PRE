@@ -191,22 +191,23 @@ ps ：需要本地有java8执行环境。
 
  **pushConfig**
 
-| Key(字段)         | Value(值)    | 说明                                                                                                                |
-| ----------------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| SC_KEY            | str          | Server酱老版本key，SCU开头的                                                                                        |
-| SCT_KEY           | str          | Server酱Turbo版本key，SCT开头的                                                                                     |
+| Key(字段)         | Value(值)    | 说明                                                         |
+| ----------------- | ------------ | ------------------------------------------------------------ |
+| SC_KEY            | str          | Server酱老版本key，SCU开头的                                 |
+| SCT_KEY           | str          | Server酱Turbo版本key，SCT开头的                              |
 | TG_USE_CUSTOM_URL | [false,true] | TGbotAPI反代开启选项，若开启，则`TG_BOT_TOKEN`填写为完整反代url，e.g.`https://api.telegram-proxy.org/bot?token=xxx` |
-| TG_BOT_TOKEN      | str          | TG推送bot_token,若`TG_USE_CUSTOM_URL`开启，则填写为完整反代url，e.g.`https://api.telegram-proxy.org/bot?token=xxx`  |
-| TG_USER_ID        | str          | TG推送的用户/群组/频道ID                                                                                            |
-| PUSH_PLUS_TOKEN   | str          | push plus++推送的`token`                                                                                            |
-| DING_TALK_URL     | str          | 钉钉推送的完整URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx`                                       |
-| DING_TALK_SECRET  | str          | 钉钉推送的密钥                                                                                                      |
-| PROXY_HTTP_HOST   | str          | 推送高级协议(HTTP/FTP)代理的域名/IP,e.g.`127.0.0.1`                                                                 |
-| PROXY_SOCKET_HOST | str          | 推送SOCKS(V4/V5)代理的域名/IP,e.g.`127.0.0.1`                                                                       |
-| PROXY_PORT        | int          | 推送代理的端口                                                                                                      |
+| TG_BOT_TOKEN      | str          | TG推送bot_token,若`TG_USE_CUSTOM_URL`开启，则填写为完整反代url，e.g.`https://api.telegram-proxy.org/bot?token=xxx` |
+| TG_USER_ID        | str          | TG推送的用户/群组/频道ID                                     |
+| PUSH_PLUS_TOKEN   | str          | push plus++推送的`token`                                     |
+| DING_TALK_URL     | str          | 钉钉推送的完整URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx` |
+| DING_TALK_SECRET  | str          | 钉钉推送的密钥                                               |
+| PROXY_HTTP_HOST   | str          | 推送使用HTTP代理,e.g.`127.0.0.1`                             |
+| PROXY_SOCKET_HOST | str          | 推送使用SOCKS(V4/V5)代理,e.g.`127.0.0.1`                     |
+| PROXY_PORT        | int          | 推送代理的端口，默认0不代理                                  |
+| WE_COM_TOKEN      | str          | 企业微信，群消息非应用消息                                   |
 
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
-- **tips:钉钉推送密钥可不填，仅用关键词验证。**
+- **tips:钉钉推送密钥可不填，不填仅用关键词验证。**
 
 
 ## 免责声明
