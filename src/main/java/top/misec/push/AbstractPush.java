@@ -1,6 +1,5 @@
 package top.misec.push;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.itning.retry.Attempt;
 import io.github.itning.retry.RetryException;
@@ -11,7 +10,7 @@ import io.github.itning.retry.strategy.limit.AttemptTimeLimiters;
 import io.github.itning.retry.strategy.stop.StopStrategies;
 import io.github.itning.retry.strategy.wait.WaitStrategies;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.OkHttpClient;
 import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
@@ -93,23 +92,7 @@ public abstract class AbstractPush implements Push, RetryListener {
         OkHttpClient client = HttpUtils.client.newBuilder()
                 .proxy(proxy)
                 .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(RequestBody.create(content, HttpUtils.JSON))
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            ResponseBody responseBody = response.body();
-            if (null == responseBody) {
-                return null;
-            }
-            String result = responseBody.string();
-            return new Gson().fromJson(result, JsonObject.class);
-        } catch (Exception e) {
-            log.error("", e);
-            return null;
-        }
+        return HttpUtils.doPost(url, content, null, client);
     }
 
     /**

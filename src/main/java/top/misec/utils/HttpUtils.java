@@ -1,24 +1,15 @@
 package top.misec.utils;
 
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.ConnectionPool;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
+import org.apache.commons.lang3.StringUtils;
 import top.misec.config.ConfigLoader;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -68,7 +59,7 @@ public class HttpUtils {
         return doPost(url, requestBody, null);
     }
 
-    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
+    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers, OkHttpClient client) {
 
         RequestBody body;
         if (requestBody.startsWith("{")) {
@@ -110,6 +101,10 @@ public class HttpUtils {
             log.error("", e);
             return null;
         }
+    }
+
+    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
+        return doPost(url, requestBody, headers, client);
     }
 
 
