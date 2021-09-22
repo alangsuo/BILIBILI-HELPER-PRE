@@ -27,6 +27,7 @@ public class UnitTest {
             ConfigLoader.configInit(currentPath);
         }
 
-        ServerPush.doServerPush();
+    //    new MatchGame().run();
+        //ServerPush.doServerPush();
     }
 }

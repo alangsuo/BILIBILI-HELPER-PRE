@@ -1,5 +1,6 @@
 package top.misec.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import lombok.Data;
@@ -21,7 +22,11 @@ public class BiliVerify {
         String[] sourceArray = biliCookies.split(";");
         for (String s : sourceArray) {
             String[] target = s.split("=");
-            cookieMap.put(target[0].trim(), target[1].trim());
+            if (Arrays.stream(target).count() == 2) {
+                cookieMap.put(target[0].trim(), target[1].trim());
+            } else {
+                cookieMap.put(target[0].trim(), "");
+            }
         }
         log.info("init cookies successfully");
     }

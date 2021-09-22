@@ -24,6 +24,8 @@ public class ApiList {
     public static final String GET_REGION_RANKING = "https://api.bilibili.com/x/web-interface/ranking/region";
     public static final String REWARD = "https://api.bilibili.com/x/member/web/exp/reward";
     public static final String WECHAT_PUSH = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
+    public static final String WECOM_APP_PUSH_GET_TOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken";
+    public static final String WECOM_APP_PUSH = "https://qyapi.weixin.qq.com/cgi-bin/message/send";
     /**
      * 查询获取已获取的投币经验.
      */

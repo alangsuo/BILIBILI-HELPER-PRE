@@ -32,8 +32,14 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractPush implements Push, RetryListener {
 
     private final Retryer<JsonObject> retryer;
+    protected final OkHttpClient proxyClient;
 
     public AbstractPush() {
+        Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
+        proxyClient = HttpUtils.client.newBuilder()
+                .proxy(proxy)
+                .build();
+
         retryer = RetryerBuilder.<JsonObject>newBuilder()
                 // 出现异常进行重试
                 .retryIfException()
@@ -88,11 +94,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     }
 
     private JsonObject post(String url, String content) {
-        Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
-        OkHttpClient client = HttpUtils.client.newBuilder()
-                .proxy(proxy)
-                .build();
-        return HttpUtils.doPost(url, content, null, client);
+        return HttpUtils.doPost(url, content, null, proxyClient);
     }
 
     /**

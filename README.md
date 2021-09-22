@@ -24,9 +24,7 @@ BILIBILI-HELPER
 
 **仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)**
 
-**B 站赛事预测助手已发布，每天自动参与 KPL，LPL 赛事预测，赚取硬币。**
-
-**仓库地址：[JunzhouLiu/bilibili-match-prediction](https://github.com/JunzhouLiu/bilibili-match-prediction)**
+**B 站赛事预测已集成到本工具中，每天自动参与 KPL，LPL 赛事预测，赚取硬币。**
 
 **请不要滥用相关 API，让我们一起爱护 B 站 ❤**
 
@@ -121,6 +119,7 @@ ps ：需要本地有java8执行环境。
     "minimumNumberOfCoins": 100,
     "taskIntervalTime": 20,
     "numberOfCoins": 5,
+    "coinAddPriority": 1,
     "reserveCoins": 10,
     "selectLike": 0,
     "monthEndAutoCharge": true,
@@ -130,25 +129,27 @@ ps ：需要本地有java8执行环境。
     "chargeForLove": "14602398",
     "chargeDay": 8,
     "devicePlatform": "ios",
-    "coinAddPriority": 1,
-    "userAgent": "你的默认UA"
+    "userAgent": "你的浏览器UA"
   },
   "pushConfig": {
     "SC_KEY": "",
     "SCT_KEY": "",
     "TG_BOT_TOKEN": "",
     "TG_USER_ID": "",
+    "TG_USE_CUSTOM_URL": false,
     "DING_TALK_URL": "",
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",
     "WE_COM_GROUP_TOKEN": "",
-    "WE_COM_APP_TOKEN_CONF": "",
+    "WE_COM_APP_CORPID": "",
+    "WE_COM_APP_CORP_SECRET": "",
+    "WE_COM_APP_AGENT_ID": 0,
+    "WE_COM_APP_TO_USER": "",
     "PROXY_HTTP_HOST": "",
     "PROXY_SOCKET_HOST": "",
     "PROXY_PORT": 0
   }
 }
-
 ```
 
 **如果不知道自己的浏览器UA之类数据，以及看不懂每个值的含义，可以采用**[配置生成网页](https://utils.misec.top/index)**生成自己的配置（暂未支持v2.0.0版本）**
@@ -191,20 +192,26 @@ ps ：需要本地有java8执行环境。
 
  **pushConfig**
 
-| Key(字段)         | Value(值)    | 说明                                                         |
-| ----------------- | ------------ | ------------------------------------------------------------ |
-| SC_KEY            | str          | Server酱老版本key，SCU开头的                                 |
-| SCT_KEY           | str          | Server酱Turbo版本key，SCT开头的                              |
-| TG_USE_CUSTOM_URL | [false,true] | TGbotAPI反代开启选项，若开启，则`TG_BOT_TOKEN`填写为完整反代url，e.g.`https://api.telegram-proxy.org/bot?token=xxx` |
-| TG_BOT_TOKEN      | str          | TG推送bot_token,若`TG_USE_CUSTOM_URL`开启，则填写为完整反代url，e.g.`https://api.telegram-proxy.org/bot?token=xxx` |
-| TG_USER_ID        | str          | TG推送的用户/群组/频道ID                                     |
-| PUSH_PLUS_TOKEN   | str          | push plus++推送的`token`                                     |
-| DING_TALK_URL     | str          | 钉钉推送的完整URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx` |
-| DING_TALK_SECRET  | str          | 钉钉推送的密钥                                               |
-| PROXY_HTTP_HOST   | str          | 推送使用HTTP代理,e.g.`127.0.0.1`                             |
-| PROXY_SOCKET_HOST | str          | 推送使用SOCKS(V4/V5)代理,e.g.`127.0.0.1`                     |
-| PROXY_PORT        | int          | 推送代理的端口，默认0不代理                                  |
-| WE_COM_TOKEN      | str          | 企业微信，群消息非应用消息                                   |
+| 字段类型       | Key(字段)              | Value(值)    | 说明                                                                          |
+| -------------- | ---------------------- | ------------ | ----------------------------------------------------------------------------- |
+| server酱       | SC_KEY                 | str          | Server酱老版本key，SCU开头的                                                  |
+| server酱turbo  | SCT_KEY                | str          | Server酱Turbo版本key，SCT开头的                                               |
+| Telegram       | TG_USE_CUSTOM_URL      | [false,true] | 是否开启TGbotAPI反代                                                          |
+| Telegram       | TG_BOT_TOKEN           | str          | TG推送bot_token,若开启反代，需填写完整反代url  `https://***/bot?token=xxx  `  |
+| Telegram       | TG_USER_ID             | str          | TG推送的用户/群组/频道ID                                                      |
+| PUSH PLUS      | PUSH_PLUS_TOKEN        | str          | push plus++推送的`token`                                                      |
+| 钉钉           | DING_TALK_URL          | str          | 钉钉推送的完整URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx` |
+| 钉钉           | DING_TALK_SECRET       | str          | 钉钉推送的密钥                                                                |
+| 推送代理       | PROXY_HTTP_HOST        | str          | 推送使用HTTP代理,e.g.`127.0.0.1`                                              |
+| 推送代理       | PROXY_SOCKET_HOST      | str          | 推送使用SOCKS(V4/V5)代理,e.g.`127.0.0.1`                                      |
+| 推送代理       | PROXY_PORT             | int          | 推送代理的端口，默认0不代理                                                   |
+| 企业微信群消息 | WE_COM_TOKEN           | str          | 企业微信，群消息非应用消息                                                    |
+| 企业微信应用   | WE_COM_APP_CORPID      | str          | 企业id 获取方式参考 :[获取][4]                                                |
+| 企业微信应用   | WE_COM_APP_CORP_SECRET | str          | 应用的凭证密钥                                                                |
+| 企业微信应用   | WE_COM_APP_AGENT_ID    | int          | 企业应用的id，整型                                                            |
+| 企业微信应用   | WE_COM_APP_TO_USER     | str          | 指定接收消息的成员，成员ID列表 默认为@all                                     |
+
+[4]:https://work.weixin.qq.com/api/doc/90000/90135/
 
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
 - **tips:钉钉推送密钥可不填，不填仅用关键词验证。**

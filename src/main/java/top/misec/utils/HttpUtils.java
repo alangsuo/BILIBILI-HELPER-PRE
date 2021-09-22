@@ -107,8 +107,7 @@ public class HttpUtils {
         return doPost(url, requestBody, headers, client);
     }
 
-
-    public static JsonObject doGet(String url) {
+    public static JsonObject doGet(String url, OkHttpClient client) {
         Request.Builder builder = new Request.Builder()
                 .url(url)
                 .addHeader("Connection", "keep-alive")
@@ -129,6 +128,10 @@ public class HttpUtils {
             log.error("", e);
             return null;
         }
+    }
+
+    public static JsonObject doGet(String url) {
+        return doGet(url, client);
     }
 
     public static void setUserAgent(String userAgent) {

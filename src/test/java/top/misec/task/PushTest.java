@@ -111,4 +111,15 @@ public class PushTest {
         PushResult pushResult = new WeComPush().doPush(pushMetaInfo, "testWeComPush");
         assertTrue(pushResult.isSuccess());
     }
+
+    @Test
+    void testWeComAppPush() {
+        PushMetaInfo pushMetaInfo = PushMetaInfo.builder()
+                .token("")
+                .secret("")
+                .agentId(0)
+                .build();
+        PushResult pushResult = new WeComAppPush().doPush(pushMetaInfo, "testWeComAppPush");
+        assertTrue(pushResult.isSuccess());
+    }
 }

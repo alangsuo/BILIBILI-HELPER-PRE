@@ -85,6 +85,32 @@ public class PushConfig {
      */
     private Integer PROXY_PORT;
 
+    /**
+     * 企业微信应用推送
+     * 企业ID，获取方式参考：<a href="https://work.weixin.qq.com/api/doc/90000/90135/90665#corpid">术语说明-corpid</a>
+     */
+    private String WE_COM_APP_CORPID;
+
+    /**
+     * 企业微信应用推送
+     * 应用的凭证密钥，获取方式参考：<a href="https://work.weixin.qq.com/api/doc/90000/90135/90665#secret">术语说明-secret</a>
+     */
+    private String WE_COM_APP_CORP_SECRET;
+
+    /**
+     * 企业微信应用推送
+     * 企业应用的id，整型。企业内部开发，可在应用的设置页面查看；第三方服务商，可通过接口 <a href="https://work.weixin.qq.com/api/doc/10975#%E8%8E%B7%E5%8F%96%E4%BC%81%E4%B8%9A%E6%8E%88%E6%9D%83%E4%BF%A1%E6%81%AF">获取企业授权信息</a>获取该参数值
+     */
+    private Integer WE_COM_APP_AGENT_ID;
+
+    /**
+     * 企业微信应用推送
+     * 指定接收消息的成员，成员ID列表（多个接收者用‘|’分隔，最多支持1000个）。
+     * 特殊情况：指定为”@all”，则向该企业应用的全部成员发送
+     * 默认 @all
+     */
+    private String WE_COM_APP_TO_USER;
+
     public PushInfo getPushInfo() {
         if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID) && Boolean.TRUE.equals(TG_USE_CUSTOM_URL)) {
             return new PushInfo(new TelegramCustomUrlPush(), TG_BOT_TOKEN, TG_USER_ID);
@@ -102,6 +128,8 @@ public class PushConfig {
             return new PushInfo(new WeComPush(), WE_COM_TOKEN);
         } else if (StringUtils.isNotBlank(SC_KEY)) {
             return new PushInfo(new ServerChanPush(), SC_KEY);
+        } else if (StringUtils.isNoneBlank(WE_COM_APP_CORP_SECRET, WE_COM_APP_CORPID) && null != WE_COM_APP_AGENT_ID) {
+            return new PushInfo(new WeComAppPush(), WE_COM_APP_CORPID, null, WE_COM_APP_CORP_SECRET, WE_COM_APP_AGENT_ID, WE_COM_APP_TO_USER);
         } else {
             return null;
         }
@@ -143,6 +171,14 @@ public class PushConfig {
         public PushInfo(Push target, String token, String chatId, String secret) {
             this.target = target;
             this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).build();
+        }
+
+        public PushInfo(Push target, String token, String chatId, String secret, Integer agentId, String toUser) {
+            this.target = target;
+            if (StringUtils.isBlank(toUser)) {
+                toUser = "@all";
+            }
+            this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).agentId(agentId).toUser(toUser).build();
         }
     }
 }

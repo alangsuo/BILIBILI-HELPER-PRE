@@ -87,15 +87,20 @@
     "SCT_KEY": "",
     "TG_BOT_TOKEN": "",
     "TG_USER_ID": "",
+    "TG_USE_CUSTOM_URL": false,
     "DING_TALK_URL": "",
     "DING_TALK_SECRET": "",
     "PUSH_PLUS_TOKEN": "",
     "WE_COM_GROUP_TOKEN": "",
-    "WE_COM_APP_TOKEN_CONF": "",
+    "WE_COM_APP_CORPID": "",
+    "WE_COM_APP_CORP_SECRET": "",
+    "WE_COM_APP_AGENT_ID": 0,
+    "WE_COM_APP_TO_USER": "",
     "PROXY_HTTP_HOST": "",
     "PROXY_SOCKET_HOST": "",
     "PROXY_PORT": 0
   }
+}
 }
 ```
 
@@ -157,15 +162,19 @@
 			"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38"
 		},
 		"pushConfig": {
-			"SC_KEY": "",
-			"SCT_KEY": "",
-			"TG_BOT_TOKEN": "",
-			"TG_USER_ID": "",
-			"DING_TALK_URL": "",
-			"DING_TALK_SECRET": "",
-			"PUSH_PLUS_TOKEN": "",
-			"WE_COM_GROUP_TOKEN": "",
-			"WE_COM_APP_TOKEN_CONF": "",
+		  "SC_KEY": "",
+      "SCT_KEY": "",
+      "TG_BOT_TOKEN": "",
+      "TG_USER_ID": "",
+      "TG_USE_CUSTOM_URL": false,
+      "DING_TALK_URL": "",
+      "DING_TALK_SECRET": "",
+      "PUSH_PLUS_TOKEN": "",
+      "WE_COM_GROUP_TOKEN": "",
+      "WE_COM_APP_CORPID": "",
+      "WE_COM_APP_CORP_SECRET": "",
+      "WE_COM_APP_AGENT_ID": 0,
+      "WE_COM_APP_TO_USER": "",
       "PROXY_HTTP_HOST": "",
       "PROXY_SOCKET_HOST": "",
       "PROXY_PORT": 0
