@@ -55,7 +55,7 @@ public class DailyTask {
             log.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
-            log.debug(jsonObject.get("message").getAsString());
+            log.warn(jsonObject.get("message").getAsString());
             return HttpUtils.doGet(ApiList.REWARD).get("data").getAsJsonObject();
             //偶发性请求失败，再请求一次。
         }

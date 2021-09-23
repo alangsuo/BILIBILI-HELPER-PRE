@@ -54,7 +54,7 @@ public class VideoWatch implements Task {
         if (responseCode == 0) {
             log.info("视频: {}播放成功,已观看到第{}秒", videoTitle, playedTime);
         } else {
-            log.debug("视频: {}播放失败,原因: {}", videoTitle, resultJson.get("message").getAsString());
+            log.warn("视频: {}播放失败,原因: {}", videoTitle, resultJson.get("message").getAsString());
         }
     }
 
@@ -70,8 +70,8 @@ public class VideoWatch implements Task {
         if (result.get(STATUS_CODE_STR).getAsInt() == 0) {
             log.info("视频: {} 分享成功", videoTitle);
         } else {
-            log.debug("视频分享失败，原因: {}", result.get("message").getAsString());
-            log.debug("如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
+            log.warn("视频分享失败，原因: {}", result.get("message").getAsString());
+            log.warn("如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
         }
     }
 }

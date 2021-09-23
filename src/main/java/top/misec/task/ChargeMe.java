@@ -92,11 +92,11 @@ public class ChargeMe implements Task {
                     String orderNo = dataJson.get("order_no").getAsString();
                     chargeComments(orderNo);
                 } else {
-                    log.debug("充电失败了啊 原因: {}", jsonObject);
+                    log.warn("充电失败了啊 原因: {}", jsonObject);
                 }
 
             } else {
-                log.debug("充电失败了啊 原因: {}", jsonObject);
+                log.warn("充电失败了啊 原因: {}", jsonObject);
             }
         }
     }
@@ -111,7 +111,7 @@ public class ChargeMe implements Task {
         if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
             log.info("充电留言成功");
         } else {
-            log.debug(jsonObject.get("message").getAsString());
+            log.warn(jsonObject.get("message").getAsString());
         }
     }
 

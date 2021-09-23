@@ -154,7 +154,7 @@ public class CoinAdd implements Task {
                 return false;
             }
         } else {
-            log.debug("已经为" + videoTitle + "投过币了");
+            log.info("已经为" + videoTitle + "投过币了");
             return false;
         }
     }
