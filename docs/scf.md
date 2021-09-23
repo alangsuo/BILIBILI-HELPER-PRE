@@ -98,6 +98,7 @@
     "WE_COM_APP_CORP_SECRET": "",
     "WE_COM_APP_AGENT_ID": 0,
     "WE_COM_APP_TO_USER": "",
+    "WE_COM_APP_MEDIA_ID": "",
     "PROXY_HTTP_HOST": "",
     "PROXY_SOCKET_HOST": "",
     "PROXY_PORT": 0
@@ -175,6 +176,7 @@
       "WE_COM_APP_CORP_SECRET": "",
       "WE_COM_APP_AGENT_ID": 0,
       "WE_COM_APP_TO_USER": "",
+      "WE_COM_APP_MEDIA_ID": "",
       "PROXY_HTTP_HOST": "",
       "PROXY_SOCKET_HOST": "",
       "PROXY_PORT": 0
