@@ -145,4 +145,28 @@ public abstract class AbstractPush implements Push, RetryListener {
             log.error("推送返回失败：{} 已尝试：{}次", attempt.getResult(), attempt.getAttemptNumber());
         }
     }
+
+    /**
+     * 将字符串按固定长度切割成字符子串
+     *
+     * @param src    需要切割的字符串
+     * @param length 字符子串的长度
+     * @return 字符子串数组
+     */
+    protected final String[] splitStringByLength(String src, int length) {
+
+        int n = (src.length() + length - 1) / length;
+
+        String[] split = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            if (i < (n - 1)) {
+                split[i] = src.substring(i * length, (i + 1) * length);
+            } else {
+                split[i] = src.substring(i * length);
+            }
+        }
+
+        return split;
+    }
 }
