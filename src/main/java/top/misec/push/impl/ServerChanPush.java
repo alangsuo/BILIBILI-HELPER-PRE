@@ -2,6 +2,7 @@ package top.misec.push.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import top.misec.api.ApiList;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;
@@ -42,6 +43,6 @@ public class ServerChanPush extends AbstractPush {
 
     @Override
     protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        return "text=BILIBILI-HELPER任务简报&desp=" + content;
+        return "text=BILIBILI-HELPER任务简报&desp=" + content.replaceAll("=", ":");
     }
 }
