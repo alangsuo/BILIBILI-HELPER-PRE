@@ -13,8 +13,10 @@ import top.misec.utils.GsonUtils;
 import top.misec.utils.HttpUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,6 +27,8 @@ import java.util.List;
  */
 @Slf4j
 public class WeComAppPush extends AbstractPush {
+
+    private static final int WE_COM_APP_MESSAGE_MAX_LENGTH = 1000;
 
     @Override
     protected String generatePushUrl(PushMetaInfo metaInfo) {
@@ -77,6 +81,22 @@ public class WeComAppPush extends AbstractPush {
 
 
         return GsonUtils.toJson(request);
+    }
+
+    @Override
+    protected List<String> segmentation(String pushBody) {
+        if (StringUtils.isBlank(pushBody)) {
+            return Collections.emptyList();
+        }
+
+        if (pushBody.length() > WE_COM_APP_MESSAGE_MAX_LENGTH) {
+            log.info("推送内容长度[{}]大于最大长度[{}]进行分割处理", pushBody.length(), WE_COM_APP_MESSAGE_MAX_LENGTH);
+            List<String> pushContent = Arrays.stream(splitStringByLength(pushBody, WE_COM_APP_MESSAGE_MAX_LENGTH)).collect(Collectors.toList());
+            log.info("分割数量：{}", pushContent.size());
+            return pushContent;
+        }
+
+        return Collections.singletonList(pushBody);
     }
 
     @Override

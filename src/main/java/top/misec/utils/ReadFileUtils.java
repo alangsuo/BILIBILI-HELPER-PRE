@@ -32,9 +32,9 @@ public class ReadFileUtils {
             inputStream.close();
             fileContentStr = new String(buffer, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
-            log.debug("file not found", e);
+            log.warn("file not found", e);
         } catch (IOException e) {
-            log.debug("", e);
+            log.warn("", e);
         }
         return fileContentStr;
     }
@@ -58,7 +58,7 @@ public class ReadFileUtils {
             fileContentStr = new String(buffer, StandardCharsets.UTF_8);
 
         } catch (IOException e) {
-            log.debug("", e);
+            log.warn("", e);
         }
         return fileContentStr;
     }

@@ -55,7 +55,7 @@ public class DailyTask {
             log.info("请求本日任务完成状态成功");
             return jsonObject.get("data").getAsJsonObject();
         } else {
-            log.debug(jsonObject.get("message").getAsString());
+            log.warn(jsonObject.get("message").getAsString());
             return HttpUtils.doGet(ApiList.REWARD).get("data").getAsJsonObject();
             //偶发性请求失败，再请求一次。
         }
@@ -65,14 +65,18 @@ public class DailyTask {
         try {
             dailyTasks.forEach(task -> {
                 log.debug("------{}开始------", task.getName());
-                task.run();
+                try {
+                    task.run();
+                } catch (Exception e) {
+                    log.error("任务[{}]运行失败", task.getName(), e);
+                }
                 log.debug("------{}结束------\n", task.getName());
                 new SleepTime().sleepDefault();
             });
             log.info("本日任务已全部执行完毕");
             calculateUpgradeDays();
         } catch (Exception e) {
-            log.debug("", e);
+            log.error("任务运行异常", e);
         } finally {
             ServerPush.doServerPush();
         }

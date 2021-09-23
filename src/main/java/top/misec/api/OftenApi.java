@@ -28,7 +28,7 @@ public class OftenApi {
                 return dataObject.get("money").getAsDouble();
             }
         } else {
-            log.debug("请求硬币余额接口错误，请稍后重试。错误请求信息：{}", responseJson);
+            log.warn("请求硬币余额接口错误，请稍后重试。错误请求信息：{}", responseJson);
             return 0.0;
         }
     }
@@ -48,7 +48,7 @@ public class OftenApi {
                 log.info("领取大会员福利/权益成功");
             }
         } else {
-            log.debug("领取年度大会员每月赠送的B币券/大会员福利失败，原因: {}", jsonObject.get("message").getAsString());
+            log.warn("领取年度大会员每月赠送的B币券/大会员福利失败，原因: {}", jsonObject.get("message").getAsString());
         }
     }
 

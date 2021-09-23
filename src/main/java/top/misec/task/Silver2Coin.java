@@ -1,17 +1,16 @@
 package top.misec.task;
 
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.userInfo;
-
-import java.util.Objects;
-
 import com.google.gson.JsonObject;
-
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
+
+import java.util.Objects;
+
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.userInfo;
 
 /**
  * 银瓜子换硬币.
@@ -25,7 +24,7 @@ public class Silver2Coin implements Task {
     @Override
     public void run() {
 
-        if (!ConfigLoader.helperConfig.getTaskConfig().silver2Coin) {
+        if (null == ConfigLoader.helperConfig.getTaskConfig().silver2Coin || !ConfigLoader.helperConfig.getTaskConfig().silver2Coin) {
             log.info("未开启银瓜子兑换硬币功能");
             return;
         }

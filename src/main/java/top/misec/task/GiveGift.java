@@ -61,7 +61,7 @@ public class GiveGift implements Task {
                         log.info("给直播间 - {} - {} - 数量: {}✔", roomId, giftName, giftNum);
                         flag = false;
                     } else {
-                        log.debug("送礼失败, 原因 : {}❌", jsonObject3);
+                        log.warn("送礼失败, 原因 : {}❌", jsonObject3);
                     }
                 }
             }

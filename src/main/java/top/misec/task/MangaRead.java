@@ -34,7 +34,7 @@ public class MangaRead implements Task {
         if (code == 0) {
             log.info("本日漫画自动阅读1章节成功！，阅读漫画为：堀与宫村");
         } else {
-            log.debug("阅读失败,错误信息为\n```json\n{}\n```", result);
+            log.warn("阅读失败,错误信息为\n```json\n{}\n```", result);
         }
 
     }

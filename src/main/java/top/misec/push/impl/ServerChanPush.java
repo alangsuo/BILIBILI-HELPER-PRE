@@ -2,7 +2,6 @@ package top.misec.push.impl;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import top.misec.api.ApiList;
 import top.misec.push.AbstractPush;
 import top.misec.push.model.PushMetaInfo;
@@ -28,12 +27,17 @@ public class ServerChanPush extends AbstractPush {
         }
 
         JsonElement code = jsonObject.get("code");
+        JsonElement errno = jsonObject.get("errno");
 
-        if (null == code) {
-            return false;
+        if (null != code && code.getAsInt() == 0) {
+            return true;
         }
 
-        return code.getAsInt() == 0;
+        if (null != errno && errno.getAsInt() == 0) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
