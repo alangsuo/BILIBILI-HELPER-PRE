@@ -13,6 +13,9 @@ import top.misec.utils.GsonUtils;
 import top.misec.utils.HttpUtils;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * 企业微信应用PUSH
@@ -44,13 +47,35 @@ public class WeComAppPush extends AbstractPush {
 
     @Override
     protected String generatePushBody(PushMetaInfo metaInfo, String content) {
+        content = content.replaceAll("\r\n\r", "").replaceAll("\n\n\n","\n").replaceAll("\n\n","\n");
+        String Mediaid = metaInfo.getMediaid();
+
         WeComMessageSendRequest request = new WeComMessageSendRequest();
         request.setToUser(metaInfo.getToUser());
-        request.setMsgType("text");
         request.setAgentId(metaInfo.getAgentId());
-        WeComMessageSendRequest.Text text = new WeComMessageSendRequest.Text();
-        text.setContent(content);
-        request.setText(text);
+        if (Mediaid == null || Mediaid.length() <= 0){
+            request.setMsgType("text");
+            WeComMessageSendRequest.Text text = new WeComMessageSendRequest.Text();
+            text.setContent(content);
+            request.setText(text);
+        } else {
+            request.setMsgType("mpnews");
+            WeComMessageSendRequest.Articles Articles = new WeComMessageSendRequest.Articles();
+            Articles.setAuthor("海尔破小助手");
+            Articles.setTitle("BILIBILI-HELPER任务简报");
+            Articles.setDigest(content);
+            Articles.setContent(content.replaceAll("\n","<br>"));
+            Articles.setThumb_media_id(metaInfo.getMediaid());
+            WeComMessageSendRequest.Mpnews Mpnews = new WeComMessageSendRequest.Mpnews();
+            Mpnews.setArticles(Collections.singletonList(Articles));
+
+            request.setMpnews(Mpnews);
+
+        }
+
+
+
+
         return GsonUtils.toJson(request);
     }
 
@@ -106,6 +131,12 @@ public class WeComAppPush extends AbstractPush {
         @SerializedName("text")
         private Text text;
         /**
+         * 图文内容
+         */
+        @SerializedName("mpnews")
+        private Mpnews mpnews;
+
+        /**
          * 表示是否是保密消息，0表示否，1表示是，默认0
          */
         @SerializedName("safe")
@@ -133,6 +164,43 @@ public class WeComAppPush extends AbstractPush {
              */
             @SerializedName("content")
             private String content;
+        }
+        @Data
+        public static class Mpnews implements Serializable {
+            @SerializedName("articles")
+            private List<Articles> articles;
+        }
+
+        @Data
+        public static class Articles implements Serializable {
+            /**
+             * 标题，不超过128个字节，超过会自动截断（支持id转译）
+             */
+            @SerializedName("title")
+            private String title;
+            /**
+             * 图文消息缩略图的media_id, 可以通过素材管理接口获得。此处thumb_media_id即上传接口返回的media_id
+             */
+            @SerializedName("thumb_media_id")
+            private String thumb_media_id;
+            /**
+             * 图文消息的作者，不超过64个字节
+             */
+            @SerializedName("author")
+            private String author;
+
+            @SerializedName("content_source_url")
+            private String content_source_url;
+            /**
+             * 消息内容，支持html标签，不超过666 K个字节
+             */
+            @SerializedName("content")
+            private String content;
+            /**
+             * 图文消息的描述，不超过512个字节，超过会自动截断（支持id转译）
+             */
+            @SerializedName("digest")
+            private String digest;
         }
     }
 }

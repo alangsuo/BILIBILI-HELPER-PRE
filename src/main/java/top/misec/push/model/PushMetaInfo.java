@@ -40,4 +40,9 @@ public class PushMetaInfo {
      */
     private final String toUser;
 
+    /**
+     * 企业微信图文消息缩略图的
+     */
+    private final String mediaid;
+
 }
