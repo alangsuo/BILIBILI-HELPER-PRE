@@ -111,6 +111,13 @@ public class PushConfig {
      */
     private String WE_COM_APP_TO_USER;
 
+    /**
+     * 企业微信应用推送
+     * 图文消息缩略图的media_id, 可以通过素材管理接口https://work.weixin.qq.com/api/doc/90001/90143/90372#10112获得。此处thumb_media_id即上传接口返回的media_id
+     * 为空发送文本消息
+     */
+    private String WE_COM_APP_MEDIA_ID;
+
     public PushInfo getPushInfo() {
         if (StringUtils.isNoneBlank(TG_BOT_TOKEN, TG_USER_ID) && Boolean.TRUE.equals(TG_USE_CUSTOM_URL)) {
             return new PushInfo(new TelegramCustomUrlPush(), TG_BOT_TOKEN, TG_USER_ID);
@@ -129,7 +136,7 @@ public class PushConfig {
         } else if (StringUtils.isNotBlank(SC_KEY)) {
             return new PushInfo(new ServerChanPush(), SC_KEY);
         } else if (StringUtils.isNoneBlank(WE_COM_APP_CORP_SECRET, WE_COM_APP_CORPID) && null != WE_COM_APP_AGENT_ID) {
-            return new PushInfo(new WeComAppPush(), WE_COM_APP_CORPID, null, WE_COM_APP_CORP_SECRET, WE_COM_APP_AGENT_ID, WE_COM_APP_TO_USER);
+            return new PushInfo(new WeComAppPush(), WE_COM_APP_CORPID, null, WE_COM_APP_CORP_SECRET, WE_COM_APP_AGENT_ID, WE_COM_APP_TO_USER,WE_COM_APP_MEDIA_ID);
         } else {
             return null;
         }
@@ -173,12 +180,12 @@ public class PushConfig {
             this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).build();
         }
 
-        public PushInfo(Push target, String token, String chatId, String secret, Integer agentId, String toUser) {
+        public PushInfo(Push target, String token, String chatId, String secret, Integer agentId, String toUser,String mediaid) {
             this.target = target;
             if (StringUtils.isBlank(toUser)) {
                 toUser = "@all";
             }
-            this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).agentId(agentId).toUser(toUser).build();
+            this.metaInfo = PushMetaInfo.builder().token(token).chatId(chatId).secret(secret).agentId(agentId).toUser(toUser).mediaid(mediaid).build();
         }
     }
 }

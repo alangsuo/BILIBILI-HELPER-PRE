@@ -145,6 +145,7 @@ ps ：需要本地有 java8 执行环境。
     "WE_COM_APP_CORP_SECRET": "",
     "WE_COM_APP_AGENT_ID": 0,
     "WE_COM_APP_TO_USER": "",
+    "WE_COM_APP_MEDIA_ID": "",
     "PROXY_HTTP_HOST": "",
     "PROXY_SOCKET_HOST": "",
     "PROXY_PORT": 0
@@ -209,11 +210,14 @@ ps ：需要本地有 java8 执行环境。
 | 企业微信应用    | WE_COM_APP_CORP_SECRET | str          | 应用的凭证密钥                                                                 |
 | 企业微信应用    | WE_COM_APP_AGENT_ID    | int          | 企业应用的 id，整型                                                            |
 | 企业微信应用    | WE_COM_APP_TO_USER     | str          | 指定接收消息的成员，成员 ID 列表 默认为@all                                    |
+| 企业微信应用    | WE_COM_APP_MEDIA_ID     | str          | 缩略图的media_id, 可以通过素材[管理接口][5]获得。(为空发送**文本消息**)                                  |
 
-[4]: https://work.weixin.qq.com/api/doc/90000/90135/
-
+[4]: https://work.weixin.qq.com/wework_admin/frame#profile
+[5]: https://work.weixin.qq.com/wework_admin/frame#material/image
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
 - **tips:钉钉推送密钥可不填，不填仅用关键词验证。**
+- **获取media_id**
+- ![获取media_id](docs/IMG/media_id.png)
 
 ## 免责声明
 

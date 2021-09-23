@@ -28,7 +28,7 @@ public class BiliVerify {
                 cookieMap.put(target[0].trim(), "");
             }
         }
-        log.info("init cookies successfully");
+        //log.info("init cookies successfully");
     }
 
     public String getBiliJct() {
