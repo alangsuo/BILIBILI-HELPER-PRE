@@ -55,6 +55,7 @@ BILIBILI-HELPER
     - [一、快速使用](#一快速使用)
     - [二、使用 Docker](#二使用-docker)
     - [三、使用 腾讯云函数](#三使用-腾讯云函数)
+    - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
     - [自定义功能配置](#自定义功能配置)
       - [配置文件参数](#配置文件参数)
   - [免责声明](#免责声明)
@@ -101,6 +102,10 @@ ps ：需要本地有 java8 执行环境。
 ### 三、使用 腾讯云函数
 
 请参考[腾讯云函数部署](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/docs/scf.md)
+
+### 四、使用 GitLab CI/CD
+
+请参考[GitLab CI/CD 部署](docs/gitlab.md)
 
 ### 自定义功能配置
 

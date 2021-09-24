@@ -1,0 +1,60 @@
+image: ubuntu:latest
+
+variables:
+  REPO_SOURCE: "JunzhouLiu/BILIBILI-HELPER-PRE" # Expect to be at GitHub
+  PACK_NAME: "BILIBILI-HELPER"
+  VERSION: "" # tag names from https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/tags or "latest" to use the latest commit
+  USE_MAVEN: "" # "TRUE" to force packing using maven when running
+  CONFIG: ""
+  # It's not recommended to change the following variables' values
+  LANGUAGE: "zh_CN:zh"
+  LANG: "zh_CN.UTF-8"
+  DEBIAN_FRONTEND: "noninteractive"
+
+stages:
+  - run
+
+run:
+  stage: run
+  script:
+    # CONFIG is necessary
+    - if [ -z "${CONFIG}" ]; then 
+        echo "Missing variable 'CONFIG'.";
+        exit 1;
+      fi
+    # Install dependencies
+    - apt-get update && apt-get install openjdk-8-jdk wget locales unzip -y
+    # Generate locale to resolve the mistaken Chinese code when pushing messages
+    - locale-gen zh_CN.UTF-8
+    # Get the latest version number if not specify VERSION
+    - if [ -z "${VERSION}" ]; then
+        VERSION=`wget -O - "https://api.github.com/repos/${REPO_SOURCE}/releases/latest" |  grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`;
+      fi
+    - echo "Package ${PACK_NAME} Uses Version ${VERSION}, Source from https://github.com/${REPO_SOURCE}."
+    # If possible, directly get the latest release package from GitHub
+    - if [ ! "${USE_MAVEN}" = "TRUE" ] && [ ! "${VERSION}" = "latest" ]; then
+        mkdir -p "/tmp/release";
+        if wget -O "/tmp/release/${PACK_NAME}.zip" "https://github.com/${REPO_SOURCE}/releases/download/${VERSION}/${PACK_NAME}-${VERSION}.zip"; then
+          if unzip -o "/tmp/release/${PACK_NAME}.zip" -d "/tmp/release"; then
+            if [ ! -z "`ls /tmp/release/${PACK_NAME}-*.jar 2> /dev/null`" ]; then
+              mv -f /tmp/release/${PACK_NAME}-*.jar .;
+            fi;
+          fi;
+        fi;
+      fi
+    # Otherwise, pack the jar file using maven
+    - if [ -z "`ls ${PACK_NAME}-*.jar 2> /dev/null`" ]; then
+        apt-get install git maven -y;
+        git clone https://github.com/${REPO_SOURCE} repo;
+        cd repo;
+        if [ ! "${VERSION}" = "latest" ]; then
+          git reset --hard ${VERSION};
+        fi;
+        mvn -B package --file pom.xml -Dmaven.test.skip=true;
+        mv -f target/${PACK_NAME}-*.jar ..;
+        cd ..;
+      fi
+    # Export the config from environment variable to file
+    - echo ${CONFIG} > config.json
+    # Start running
+    - java -jar ${PACK_NAME}-*.jar
