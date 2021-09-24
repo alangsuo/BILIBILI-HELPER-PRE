@@ -60,7 +60,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     public final PushResult doPush(PushMetaInfo metaInfo, String content) {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
-        List<String> pushList = segmentation(content);
+        List<String> pushList = segmentation(metaInfo,content);
         PushResult pushResult = PushResult.success();
         for (String pushItemContent : pushList) {
             String pushContent = generatePushBody(metaInfo, pushItemContent);
@@ -131,7 +131,7 @@ public abstract class AbstractPush implements Push, RetryListener {
      * @param pushBody 消息内容
      * @return 分割结果，默认不分割
      */
-    protected List<String> segmentation(String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
         return Collections.singletonList(pushBody);
     }
 

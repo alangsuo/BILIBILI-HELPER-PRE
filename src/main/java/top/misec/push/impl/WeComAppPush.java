@@ -52,12 +52,11 @@ public class WeComAppPush extends AbstractPush {
     @Override
     protected String generatePushBody(PushMetaInfo metaInfo, String content) {
         content = content.replaceAll("\r\n\r", "").replaceAll("\n\n\n","\n").replaceAll("\n\n","\n");
-        String Mediaid = metaInfo.getMediaid();
-
         WeComMessageSendRequest request = new WeComMessageSendRequest();
         request.setToUser(metaInfo.getToUser());
         request.setAgentId(metaInfo.getAgentId());
-        if (Mediaid == null || Mediaid.length() <= 0){
+        //System.out.println(StringUtils.isBlank(metaInfo.getMediaid()));
+        if (StringUtils.isBlank(metaInfo.getMediaid())){
             request.setMsgType("text");
             WeComMessageSendRequest.Text text = new WeComMessageSendRequest.Text();
             text.setContent(content);
@@ -72,24 +71,17 @@ public class WeComAppPush extends AbstractPush {
             Articles.setThumb_media_id(metaInfo.getMediaid());
             WeComMessageSendRequest.Mpnews Mpnews = new WeComMessageSendRequest.Mpnews();
             Mpnews.setArticles(Collections.singletonList(Articles));
-
             request.setMpnews(Mpnews);
-
         }
-
-
-
-
         return GsonUtils.toJson(request);
     }
 
     @Override
-    protected List<String> segmentation(String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
         if (StringUtils.isBlank(pushBody)) {
             return Collections.emptyList();
         }
-
-        if (pushBody.length() > WE_COM_APP_MESSAGE_MAX_LENGTH) {
+        if (pushBody.length() > WE_COM_APP_MESSAGE_MAX_LENGTH && StringUtils.isBlank(metaInfo.getMediaid())) {
             log.info("推送内容长度[{}]大于最大长度[{}]进行分割处理", pushBody.length(), WE_COM_APP_MESSAGE_MAX_LENGTH);
             List<String> pushContent = Arrays.stream(splitStringByLength(pushBody, WE_COM_APP_MESSAGE_MAX_LENGTH)).collect(Collectors.toList());
             log.info("分割数量：{}", pushContent.size());
