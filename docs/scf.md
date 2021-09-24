@@ -79,7 +79,7 @@
     "silver2Coin": true,
     "upLive": "0",
     "chargeForLove": "14602398",
-    "chargeDay": 8,
+    "chargeDay": 28,
     "devicePlatform": "ios",
     "coinAddPriority": 1,
     "userAgent": "你的默认UA"
@@ -157,7 +157,7 @@
       "silver2Coin": true,
       "upLive": "0",
       "chargeForLove": "14602398",
-      "chargeDay": 8,
+      "chargeDay": 28,
       "devicePlatform": "ios",
       "coinAddPriority": 1,
       "userAgent": "你的默认UA"
