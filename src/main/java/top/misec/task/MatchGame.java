@@ -26,12 +26,15 @@ public class MatchGame implements Task {
 
     @Override
     public void run() {
+
         if (!ConfigLoader.helperConfig.getTaskConfig().getMatchGame()) {
             log.info("赛事预测未开启");
             return;
         }
 
-        if (OftenApi.getCoinBalance() < ConfigLoader.helperConfig.getTaskConfig().getMinimumNumberOfCoins()) {
+        double currentCoin = OftenApi.getCoinBalance();
+
+        if (currentCoin < ConfigLoader.helperConfig.getTaskConfig().getMinimumNumberOfCoins()) {
             log.info("{}个硬币都没有，参加什么预测呢？任务结束", ConfigLoader.helperConfig.getTaskConfig().getMinimumNumberOfCoins());
             return;
         }
@@ -56,6 +59,12 @@ public class MatchGame implements Task {
                 String seasonName;
                 for (JsonElement listinfo : list) {
                     log.info("-----预测开始-----");
+
+                    if (currentCoin < ConfigLoader.helperConfig.getTaskConfig().getMinimumNumberOfCoins()) {
+                        log.info("仅剩{}个硬币，低于最低保留硬币数量，后续预测不再执行", currentCoin);
+                        break;
+                    }
+
                     JsonObject contestJson = listinfo.getAsJsonObject().getAsJsonObject("contest");
                     JsonObject questionJson = listinfo.getAsJsonObject().getAsJsonArray("questions").get(0).getAsJsonObject();
                     contestId = contestJson.get("id").getAsInt();
@@ -93,6 +102,7 @@ public class MatchGame implements Task {
                         }
                     }
                     log.info("拟预测的队伍是:{},预测硬币数为:{}", teamName, coinNumber);
+                    currentCoin -= coinNumber;
                     doPrediction(contestId, questionId, teamId, coinNumber);
                     new SleepTime().sleepDefault();
                 }

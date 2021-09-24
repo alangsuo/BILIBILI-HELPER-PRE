@@ -1,17 +1,21 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.queryVipStatusType;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
+
 import com.google.gson.JsonObject;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
+import top.misec.utils.GsonUtils;
 import top.misec.utils.HttpUtils;
-
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.queryVipStatusType;
 
 /**
  * 漫画权益领取.
@@ -35,7 +39,6 @@ public class GetVipPrivilege implements Task {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         int day = cal.get(Calendar.DATE);
 
-
         /*
            根据userInfo.getVipStatus() ,如果是1 ，会员有效，0会员失效。
            @JunzhouLiu: fixed query_vipStatusType()现在可以查询会员状态，以及会员类型了 2020-10-15
@@ -49,9 +52,9 @@ public class GetVipPrivilege implements Task {
 
         if (vipType == 1 && day == 1) {
             log.info("开始领取大会员漫画权益");
-            String requestBody = "{\"reason_id\":" + reasonId + "}";
-            //注意参数构造格式为json，不知道需不需要重载下面的Post函数改请求头
-            JsonObject jsonObject = HttpUtils.doPost(ApiList.MANGA_GET_VIP_REWARD, requestBody);
+            Map<String, Object> map = new HashMap<>(1);
+            map.put("reason_id", reasonId);
+            JsonObject jsonObject = HttpUtils.doPost(ApiList.MANGA_GET_VIP_REWARD, GsonUtils.toJson(map));
             if (jsonObject.get(STATUS_CODE_STR).getAsInt() == 0) {
                 /*
                   @happy888888:好像也可以getAsString或,getAsShort
@@ -66,13 +69,12 @@ public class GetVipPrivilege implements Task {
             log.info("本日非领取大会员漫画执行日期");
         }
 
-        if (day == 1 || day % 7 == 0) {
+        if (day == 1 || day % 3 == 0) {
             if (vipType == 2) {
                 log.info("开始领取年度大会员权益");
                 OftenApi.getVipPrivilege(1);
                 OftenApi.getVipPrivilege(2);
             }
-
         } else {
             log.info("本日非领取年度大会员权益执行日期");
         }
