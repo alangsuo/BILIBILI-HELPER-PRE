@@ -1,17 +1,20 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.queryVipStatusType;
+import static top.misec.task.TaskInfoHolder.userInfo;
+
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtils;
-
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import static top.misec.task.TaskInfoHolder.*;
 
 /**
  * 给自己充电.
@@ -117,6 +120,6 @@ public class ChargeMe implements Task {
 
     @Override
     public String getName() {
-        return "大会员月底B币券充电和月初大会员权益领取";
+        return "大会员月底B币券充电";
     }
 }

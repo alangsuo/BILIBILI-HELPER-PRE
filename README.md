@@ -132,7 +132,7 @@ ps ：需要本地有 java8 执行环境。
     "silver2Coin": true,
     "upLive": "0",
     "chargeForLove": "14602398",
-    "chargeDay": 8,
+    "chargeDay": 25,
     "devicePlatform": "ios",
     "userAgent": "你的浏览器UA"
   },
