@@ -49,7 +49,7 @@ public class DingTalkPush extends AbstractPush {
     }
 
     @Override
-    protected List<String> segmentation(String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
         if (StringUtils.isBlank(pushBody)) {
             return Collections.emptyList();
         }
