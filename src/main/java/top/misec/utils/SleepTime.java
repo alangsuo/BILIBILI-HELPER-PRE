@@ -22,7 +22,7 @@ public class SleepTime {
 
         Random random = new Random();
         int sleepTime = (int) ((random.nextDouble() + 0.5) * defaultTime * 1000);
-        log.info("-----随机暂停{}ms-----\n", sleepTime);
+        log.debug("-----随机暂停{}ms-----\n", sleepTime);
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {
