@@ -32,7 +32,7 @@ public class ReadFileUtils {
             inputStream.close();
             fileContentStr = new String(buffer, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
-            log.warn("file not found", e);
+            log.debug("file not found", e);
         } catch (IOException e) {
             log.warn("", e);
         }
