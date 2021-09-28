@@ -19,9 +19,9 @@ public class HelperConfig {
     @Override
     public String toString() {
         return "HelperConfig{" +
-                "taskConfig=" + taskConfig +
-                ", pushConfig=" + "敏感配置不输出" +
-                ", biliVerify=" + "敏感配置不输出" +
-                '}';
+                "taskConfig=" + taskConfig
+                + ", pushConfig=" + "敏感配置不输出"
+                + ", biliVerify=" + "敏感配置不输出"
+                + '}';
     }
 }

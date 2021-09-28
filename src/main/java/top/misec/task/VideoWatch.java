@@ -1,17 +1,18 @@
 package top.misec.task;
 
+import static top.misec.task.DailyTask.getDailyTaskStatus;
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.getVideoId;
+
+import java.util.Random;
+
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
-
-import java.util.Random;
-
-import static top.misec.task.DailyTask.getDailyTaskStatus;
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.getVideoId;
 
 /**
  * 观看分享视频.
