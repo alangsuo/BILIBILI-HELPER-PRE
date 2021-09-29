@@ -202,7 +202,7 @@ ps ：需要本地有 java8 执行环境。
 | server 酱       | SC_KEY                 | str          | Server 酱老版本 key，SCU 开头的                                                |
 | server 酱 turbo | SCT_KEY                | str          | Server 酱 Turbo 版本 key，SCT 开头的                                           |
 | Telegram        | TG_USE_CUSTOM_URL      | [false,true] | 是否开启 TGbotAPI 反代                                                         |
-| Telegram        | TG_BOT_TOKEN           | str          | TG 推送 bot_token,若开启反代，需填写完整反代 url `https://***/bot?token=xxx `  |
+| Telegram        | TG_BOT_TOKEN           | str          | TG 推送 bot_token,若开启反代，需填写完整反代 url `https://api.mytelegram.org/botTOKEN`  |
 | Telegram        | TG_USER_ID             | str          | TG 推送的用户/群组/频道 ID                                                     |
 | PUSH PLUS       | PUSH_PLUS_TOKEN        | str          | push plus++推送的`token`                                                       |
 | 钉钉            | DING_TALK_URL          | str          | 钉钉推送的完整 URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx` |
