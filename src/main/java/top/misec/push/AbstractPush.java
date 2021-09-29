@@ -10,7 +10,10 @@ import io.github.itning.retry.strategy.limit.AttemptTimeLimiters;
 import io.github.itning.retry.strategy.stop.StopStrategies;
 import io.github.itning.retry.strategy.wait.WaitStrategies;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
 import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
@@ -35,9 +38,28 @@ public abstract class AbstractPush implements Push, RetryListener {
     protected final OkHttpClient proxyClient;
 
     public AbstractPush() {
+        // 强制使用TLS1.2
+        ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+                .tlsVersions(TlsVersion.TLS_1_2)
+                .cipherSuites(
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+                .build();
+
         Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
         proxyClient = HttpUtils.client.newBuilder()
                 .proxy(proxy)
+                .connectionSpecs(Collections.singletonList(spec))
                 .build();
 
         retryer = RetryerBuilder.<JsonObject>newBuilder()
@@ -60,7 +82,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     public final PushResult doPush(PushMetaInfo metaInfo, String content) {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
-        List<String> pushList = segmentation(metaInfo,content);
+        List<String> pushList = segmentation(metaInfo, content);
         PushResult pushResult = PushResult.success();
         for (String pushItemContent : pushList) {
             String pushContent = generatePushBody(metaInfo, pushItemContent);
@@ -131,7 +153,7 @@ public abstract class AbstractPush implements Push, RetryListener {
      * @param pushBody 消息内容
      * @return 分割结果，默认不分割
      */
-    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo, String pushBody) {
         return Collections.singletonList(pushBody);
     }
 
