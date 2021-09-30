@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
@@ -19,7 +18,6 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @author @JunzhouLiu
  * @since 2020/11/12 13:17
  */
-@Slf4j
 @Data
 public class GetVideoId {
     private ArrayList<String> followUpVideoList;

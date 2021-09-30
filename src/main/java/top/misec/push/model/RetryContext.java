@@ -1,15 +1,11 @@
 package top.misec.push.model;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author itning
  * @since 2021/3/22 17:25
  */
-@Slf4j
 @Getter
 public class RetryContext {
 

@@ -1,16 +1,27 @@
 package top.misec.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import top.misec.config.ConfigLoader;
 
+import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import java.util.Optional;
 
 /**
  * http utils.
@@ -22,116 +33,145 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Data
 public class HttpUtils {
-
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectTimeout(5000)
+            .setConnectionRequestTimeout(5000)
+            .setSocketTimeout(10000)
+            .build();
     private static String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.38";
-    public static final MediaType JSON = MediaType.parse("application/json");
-    public static OkHttpClient client;
-
-    static {
-        client = new OkHttpClient.Builder()
-                // 设置完整的请求过程超时时间。该参数计算的是整个请求过程的时间：从解析DNS、与Server建立连接、发送请求、Server响应处理到读取请求结果。同时，如果请求中包含重定向和失败重连，这两个过程执行时间也包含在callTimeOut计时时间内。
-                .callTimeout(20, TimeUnit.SECONDS)
-                // 设置ping信号发送时间间隔，该选项一般用于维持Websocket/Http2长连接，发送心跳包。默认值为0表示禁用心跳机制。
-                .pingInterval(2, TimeUnit.SECONDS)
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                // 是否允许OkHttp自动执行失败重连，默认为true。当设置为true时，okhttp会在以下几种可能的请求失败的情况下恢复连接并重新请求：1.IP地址不可达；2.过久的池化连接；3.代理服务器不可达。
-                .retryOnConnectionFailure(true)
-                .connectionPool(new ConnectionPool(10, 5, TimeUnit.MINUTES))
-                .build();
-        client.dispatcher().setMaxRequests(10);
-        client.dispatcher().setMaxRequestsPerHost(8);
-    }
+    private static CloseableHttpClient httpClient = null;
+    private static CloseableHttpResponse httpResponse = null;
 
     public static JsonObject doPost(String url, JsonObject jsonObject) {
         return doPost(url, jsonObject.toString());
     }
 
-    /**
-     * post body support json str
-     *
-     * @param url         url
-     * @param requestBody body
-     * @return json object
-     */
     public static JsonObject doPost(String url, String requestBody) {
         return doPost(url, requestBody, null);
     }
 
-    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers, OkHttpClient client) {
-
-        RequestBody body;
+    public static JsonObject doPost(String url, String requestBody, Map<String, String> headers, RequestConfig requestConfig) {
+        httpClient = HttpClients.createDefault();
+        JsonObject resultJson = null;
+        // 创建httpPost远程连接实例
+        HttpPost httpPost = new HttpPost(url);
+        // 设置请求头
+        httpPost.setConfig(requestConfig);
+        /*
+          addHeader：添加一个新的请求头字段。（一个请求头中允许有重名字段。）
+          setHeader：设置一个请求头字段，有则覆盖，无则添加。
+          有什么好的方式判断key1=value和{"key1":"value"}
+         */
         if (requestBody.startsWith("{")) {
             //java的正则表达式咋写......
-            body = RequestBody.create(requestBody, JSON);
+            httpPost.setHeader("Content-Type", "application/json");
         } else {
-            FormBody.Builder builder = new FormBody.Builder();
-            String[] itemArray = requestBody.split("&");
-            for (String item : itemArray) {
-                String[] keyValueArray = item.split("=");
-                builder.add(keyValueArray[0], keyValueArray[1]);
-            }
-            body = builder.build();
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
         }
-
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(url)
-                .addHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies())
-                .addHeader("User-Agent", userAgent)
-                .addHeader("Connection", "keep-alive")
-                .post(body);
+        httpPost.setHeader("Connection", "keep-alive");
+        httpPost.setHeader("User-Agent", userAgent);
+        httpPost.setHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies());
 
         if (null != headers && !headers.isEmpty()) {
-            headers.forEach(requestBuilder::addHeader);
+            headers.forEach(httpPost::setHeader);
         } else {
-            requestBuilder.addHeader("Referer", "https://www.bilibili.com/");
+            httpPost.setHeader("Referer", "https://www.bilibili.com/");
         }
+        // 封装post请求参数
+        StringEntity stringEntity = new StringEntity(requestBody, "utf-8");
 
-        Request request = requestBuilder.build();
+        httpPost.setEntity(stringEntity);
+
         try {
-            Response response = client.newCall(request).execute();
-            ResponseBody responseBody = response.body();
-            if (null == responseBody) {
-                return null;
-            }
-            String result = responseBody.string();
-            return new Gson().fromJson(result, JsonObject.class);
+            // httpClient对象执行post请求,并返回响应参数对象
+            httpResponse = httpClient.execute(httpPost);
+            resultJson = processResult(httpResponse);
         } catch (Exception e) {
             log.error("", e);
-            return null;
+        } finally {
+            closeResource(httpClient, httpResponse);
         }
+        return resultJson;
     }
+
 
     public static JsonObject doPost(String url, String requestBody, Map<String, String> headers) {
-        return doPost(url, requestBody, headers, client);
+        return doPost(url, requestBody, headers, REQUEST_CONFIG);
     }
 
-    public static JsonObject doGet(String url, OkHttpClient client) {
-        Request.Builder builder = new Request.Builder()
-                .url(url)
-                .addHeader("Connection", "keep-alive")
-                .addHeader("User-Agent", userAgent)
-                .addHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies())
-                .get();
-
-        Request request = builder.build();
-        try {
-            Response response = client.newCall(request).execute();
-            ResponseBody responseBody = response.body();
-            if (null == responseBody) {
-                return null;
-            }
-            String result = responseBody.string();
-            return new Gson().fromJson(result, JsonObject.class);
-        } catch (Exception e) {
-            log.error("", e);
-            return null;
-        }
-    }
 
     public static JsonObject doGet(String url) {
-        return doGet(url, client);
+        return doGet(url, new JsonObject());
+    }
+
+    public static JsonObject doGet(String url, JsonObject pJson, RequestConfig requestConfig) {
+        // 通过址默认配置创建一个httpClient实例
+        httpClient = HttpClients.createDefault();
+        JsonObject resultJson = null;
+        try {
+            // 创建httpGet远程连接实例
+            HttpGet httpGet = new HttpGet(url);
+            // 设置请求头信息，鉴权
+            httpGet.setHeader("Connection", "keep-alive");
+            httpGet.setHeader("User-Agent", userAgent);
+            httpGet.setHeader("cookie", ConfigLoader.helperConfig.getBiliVerify().getBiliCookies());
+            for (NameValuePair pair : getPairList(pJson)) {
+                httpGet.setHeader(pair.getName(), pair.getValue());
+            }
+            // 为httpGet实例设置配置
+            httpGet.setConfig(requestConfig);
+            // 执行get请求得到返回对象
+            httpResponse = httpClient.execute(httpGet);
+            resultJson = processResult(httpResponse);
+        } catch (Exception e) {
+            log.error("{}", e.getMessage());
+        } finally {
+            closeResource(httpClient, httpResponse);
+        }
+
+        return resultJson;
+    }
+
+    public static JsonObject doGet(String url, JsonObject pJson) {
+        return doGet(url, pJson, REQUEST_CONFIG);
+    }
+
+    public static JsonObject processResult(CloseableHttpResponse httpResponse) {
+        JsonObject resultJson = null;
+
+        if (httpResponse != null) {
+            int responseStatusCode = httpResponse.getStatusLine().getStatusCode();
+            // 从响应对象中获取响应内容
+            // 通过返回对象获取返回数据
+            HttpEntity entity = httpResponse.getEntity();
+
+            String result = null;
+            try {
+                // 通过EntityUtils中的toString方法将结果转换为字符串
+                result = EntityUtils.toString(entity);
+                resultJson = new Gson().fromJson(result, JsonObject.class);
+            } catch (Exception e) {
+                log.debug("HttpUtils parse json error: {}", result.substring(0, 100));
+            }
+        }
+        return resultJson;
+    }
+
+    private static NameValuePair getNameValuePair(Map.Entry<String, JsonElement> entry) {
+        return new BasicNameValuePair(entry.getKey(), Optional.ofNullable(entry.getValue()).map(Object::toString).orElse(null));
+    }
+
+    public static NameValuePair[] getPairList(JsonObject pJson) {
+        return pJson.entrySet().parallelStream().map(HttpUtils::getNameValuePair).toArray(NameValuePair[]::new);
+    }
+
+    private static void closeResource(CloseableHttpClient httpClient, CloseableHttpResponse response) {
+        try {
+            httpClient.close();
+            response.close();
+        } catch (IOException e) {
+            log.info("释放资源失败", e);
+        }
     }
 
     public static void setUserAgent(String userAgent) {

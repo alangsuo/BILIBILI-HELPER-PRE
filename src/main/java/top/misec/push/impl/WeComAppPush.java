@@ -33,7 +33,7 @@ public class WeComAppPush extends AbstractPush {
     @Override
     protected String generatePushUrl(PushMetaInfo metaInfo) {
 
-        JsonObject jsonObject = HttpUtils.doGet(ApiList.WECOM_APP_PUSH_GET_TOKEN + "?corpid=" + metaInfo.getToken() + "&corpsecret=" + metaInfo.getSecret(), proxyClient);
+        JsonObject jsonObject = HttpUtils.doGet(ApiList.WECOM_APP_PUSH_GET_TOKEN + "?corpid=" + metaInfo.getToken() + "&corpsecret=" + metaInfo.getSecret(), new JsonObject(), requestConfig);
         if (null == jsonObject) {
             throw new RuntimeException("获取企业微信凭证失败，JsonObject Is Null");
         }
@@ -51,12 +51,12 @@ public class WeComAppPush extends AbstractPush {
 
     @Override
     protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        content = content.replaceAll("\r\n\r", "").replaceAll("\n\n\n","\n").replaceAll("\n\n","\n");
+        content = content.replaceAll("\r\n\r", "").replaceAll("\n\n\n", "\n").replaceAll("\n\n", "\n");
         WeComMessageSendRequest request = new WeComMessageSendRequest();
         request.setToUser(metaInfo.getToUser());
         request.setAgentId(metaInfo.getAgentId());
         //System.out.println(StringUtils.isBlank(metaInfo.getMediaid()));
-        if (StringUtils.isBlank(metaInfo.getMediaid())){
+        if (StringUtils.isBlank(metaInfo.getMediaid())) {
             request.setMsgType("text");
             WeComMessageSendRequest.Text text = new WeComMessageSendRequest.Text();
             text.setContent(content);
@@ -67,7 +67,7 @@ public class WeComAppPush extends AbstractPush {
             Articles.setAuthor("海尔破小助手");
             Articles.setTitle("BILIBILI-HELPER任务简报");
             Articles.setDigest(content);
-            Articles.setContent(content.replaceAll("\n","<br>"));
+            Articles.setContent(content.replaceAll("\n", "<br>"));
             Articles.setThumb_media_id(metaInfo.getMediaid());
             WeComMessageSendRequest.Mpnews Mpnews = new WeComMessageSendRequest.Mpnews();
             Mpnews.setArticles(Collections.singletonList(Articles));
@@ -77,7 +77,7 @@ public class WeComAppPush extends AbstractPush {
     }
 
     @Override
-    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo, String pushBody) {
         if (StringUtils.isBlank(pushBody)) {
             return Collections.emptyList();
         }
@@ -177,6 +177,7 @@ public class WeComAppPush extends AbstractPush {
             @SerializedName("content")
             private String content;
         }
+
         @Data
         public static class Mpnews implements Serializable {
             @SerializedName("articles")

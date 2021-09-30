@@ -56,6 +56,7 @@ BILIBILI-HELPER
     - [二、使用 Docker](#二使用-docker)
     - [三、使用 腾讯云函数](#三使用-腾讯云函数)
     - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
+    - [四、使用青龙管理面板](#四使用青龙管理面板)
     - [自定义功能配置](#自定义功能配置)
       - [配置文件参数](#配置文件参数)
   - [免责声明](#免责声明)
@@ -76,7 +77,7 @@ BILIBILI-HELPER
 
 ps:cookie 和 ua 只需要选中，右键复制值即可。
 
-![准备cookie](docs//IMG/ck.png)
+![准备cookie](docs/image/ck.png)
 
 [1]: https://www.bilibili.com/
 
@@ -101,11 +102,15 @@ ps ：需要本地有 java8 执行环境。
 
 ### 三、使用 腾讯云函数
 
-请参考[腾讯云函数部署](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/docs/scf.md)
+请参考[腾讯云函数部署](docs/scf.md)
 
 ### 四、使用 GitLab CI/CD
 
 请参考[GitLab CI/CD 部署](docs/gitlab.md)
+
+### 四、使用青龙管理面板
+
+请参考[青龙管理面板部署](docs/qinglong.md)
 
 ### 自定义功能配置
 
@@ -197,32 +202,33 @@ ps ：需要本地有 java8 执行环境。
 
   **pushConfig**
 
-| 字段类型        | Key(字段)              | Value(值)    | 说明                                                                           |
-| --------------- | ---------------------- | ------------ | ------------------------------------------------------------------------------ |
-| server 酱       | SC_KEY                 | str          | Server 酱老版本 key，SCU 开头的                                                |
-| server 酱 turbo | SCT_KEY                | str          | Server 酱 Turbo 版本 key，SCT 开头的                                           |
-| Telegram        | TG_USE_CUSTOM_URL      | [false,true] | 是否开启 TGbotAPI 反代                                                         |
-| Telegram        | TG_BOT_TOKEN           | str          | TG 推送 bot_token,若开启反代，需填写完整反代 url `https://***/bot?token=xxx `  |
-| Telegram        | TG_USER_ID             | str          | TG 推送的用户/群组/频道 ID                                                     |
-| PUSH PLUS       | PUSH_PLUS_TOKEN        | str          | push plus++推送的`token`                                                       |
-| 钉钉            | DING_TALK_URL          | str          | 钉钉推送的完整 URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx` |
-| 钉钉            | DING_TALK_SECRET       | str          | 钉钉推送的密钥                                                                 |
-| 推送代理        | PROXY_HTTP_HOST        | str          | 推送使用 HTTP 代理,e.g.`127.0.0.1`                                             |
-| 推送代理        | PROXY_SOCKET_HOST      | str          | 推送使用 SOCKS(V4/V5)代理,e.g.`127.0.0.1`                                      |
-| 推送代理        | PROXY_PORT             | int          | 推送代理的端口，默认 0 不代理                                                  |
-| 企业微信群消息  | WE_COM_TOKEN           | str          | 企业微信，群消息非应用消息                                                     |
-| 企业微信应用    | WE_COM_APP_CORPID      | str          | 企业 id 获取方式参考 :[获取][4]                                                |
-| 企业微信应用    | WE_COM_APP_CORP_SECRET | str          | 应用的凭证密钥                                                                 |
-| 企业微信应用    | WE_COM_APP_AGENT_ID    | int          | 企业应用的 id，整型                                                            |
-| 企业微信应用    | WE_COM_APP_TO_USER     | str          | 指定接收消息的成员，成员 ID 列表 默认为@all                                    |
-| 企业微信应用    | WE_COM_APP_MEDIA_ID     | str          | 缩略图的media_id, 可以通过素材[管理接口][5]获得。(为空发送**文本消息**)                                  |
+| 字段类型        | Key(字段)              | Value(值)    | 说明                                                                                   |
+| --------------- | ---------------------- | ------------ | -------------------------------------------------------------------------------------- |
+| server 酱       | SC_KEY                 | str          | Server 酱老版本 key，SCU 开头的                                                        |
+| server 酱 turbo | SCT_KEY                | str          | Server 酱 Turbo 版本 key，SCT 开头的                                                   |
+| Telegram        | TG_USE_CUSTOM_URL      | [false,true] | 是否开启 TGbotAPI 反代                                                                 |
+| Telegram        | TG_BOT_TOKEN           | str          | TG 推送 bot_token,若开启反代，需填写完整反代 url `https://api.mytelegram.org/botTOKEN` |
+| Telegram        | TG_USER_ID             | str          | TG 推送的用户/群组/频道 ID                                                             |
+| PUSH PLUS       | PUSH_PLUS_TOKEN        | str          | push plus++推送的`token`                                                               |
+| 钉钉            | DING_TALK_URL          | str          | 钉钉推送的完整 URL,e.g.`https://oapi.dingtalk.com/robot/send?access_token=xxx`         |
+| 钉钉            | DING_TALK_SECRET       | str          | 钉钉推送的密钥                                                                         |
+| 正向推送代理    | PROXY_HTTP_HOST        | str          | 推送使用 HTTP 正向代理,e.g.`127.0.0.1`                                                 |
+| 正向推送代理    | PROXY_SOCKET_HOST      | str          | 推送使用 SOCKS(V4/V5)正向代理,e.g.`127.0.0.1`                                          |
+| 正向推送代理    | PROXY_PORT             | int          | 推送正向代理的端口，默认 0 不代理                                                      |
+| 企业微信群消息  | WE_COM_TOKEN           | str          | 企业微信，群消息非应用消息                                                             |
+| 企业微信应用    | WE_COM_APP_CORPID      | str          | 企业 id 获取方式参考 :[获取][4]                                                        |
+| 企业微信应用    | WE_COM_APP_CORP_SECRET | str          | 应用的凭证密钥                                                                         |
+| 企业微信应用    | WE_COM_APP_AGENT_ID    | int          | 企业应用的 id，整型                                                                    |
+| 企业微信应用    | WE_COM_APP_TO_USER     | str          | 指定接收消息的成员，成员 ID 列表 默认为@all                                            |
+| 企业微信应用    | WE_COM_APP_MEDIA_ID    | str          | 缩略图的 media_id, 可以通过素材[管理接口][5]获得。(为空发送**文本消息**)               |
 
 [4]: https://work.weixin.qq.com/wework_admin/frame#profile
 [5]: https://work.weixin.qq.com/wework_admin/frame#material/image
+
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
 - **tips:钉钉推送密钥可不填，不填仅用关键词验证。**
-- **获取media_id**
-- ![获取media_id](docs/IMG/media_id.png)
+- **获取 media_id**
+- ![获取media_id](docs/image/media_id.png)
 
 ## 免责声明
 
@@ -249,13 +255,13 @@ ps ：需要本地有 java8 执行环境。
 
 感谢 JetBrains 对本项目的支持。
 
-[![JetBrains](docs/IMG/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER)
+[![JetBrains](docs/image/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER)
 
 ## 讨论群
 
 qq 群二维码
 
-![qq群二维码](docs/IMG/qqgroup.png)
+![qq群二维码](docs/image/qqgroup.png)
 
 [也可点击此处一键加群](https://qm.qq.com/cgi-bin/qm/qr?k=m_M1Fydi3MvrVAEM0Sp6hDfZF4N2SpXU&jump_from=webapi)
 

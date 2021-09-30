@@ -1,9 +1,9 @@
 package top.misec.utils;
 
+import java.util.Random;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
-
-import java.util.Random;
 
 /**
  * sleep.
