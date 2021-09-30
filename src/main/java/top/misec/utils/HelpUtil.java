@@ -1,7 +1,11 @@
 package top.misec.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 /**
  * av bv utils.
@@ -59,5 +63,23 @@ public class HelpUtil {
         return userName.substring(0, s2)
                 + String.join("", Collections.nCopies(s1, "*"))
                 + userName.substring(s1 + s2);
+    }
+    
+    public static String utcTime(String utcTime){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        //设置时区UTC
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        //格式化，转当地时区时间
+        Date after = null;
+        try {
+            after = df.parse(utcTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        df.applyPattern("yyyy-MM-dd HH:mm:ss");
+        //默认时区
+        df.setTimeZone(TimeZone.getDefault());
+        return df.format(after);
+
     }
 }
