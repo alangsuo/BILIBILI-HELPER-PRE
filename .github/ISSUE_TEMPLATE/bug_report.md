@@ -27,4 +27,4 @@ assignees: ''
 
 ### 使用环境
 
-> 是在什么环境下出现的这个问题，Actions，Linux还是windows或者其他
+> 是在什么环境下出现的这个问题，Linux还是windows或者其他
