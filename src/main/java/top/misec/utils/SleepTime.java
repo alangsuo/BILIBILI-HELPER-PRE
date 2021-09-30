@@ -1,9 +1,9 @@
 package top.misec.utils;
 
+import java.util.Random;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.config.ConfigLoader;
-
-import java.util.Random;
 
 /**
  * sleep.
@@ -22,7 +22,7 @@ public class SleepTime {
 
         Random random = new Random();
         int sleepTime = (int) ((random.nextDouble() + 0.5) * defaultTime * 1000);
-        log.debug("-----随机暂停{}ms-----\n", sleepTime);
+        log.info("-----随机暂停{}ms-----\n", sleepTime);
         try {
             Thread.sleep(sleepTime);
         } catch (InterruptedException e) {

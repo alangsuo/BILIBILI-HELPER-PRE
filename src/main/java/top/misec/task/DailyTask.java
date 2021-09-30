@@ -64,13 +64,13 @@ public class DailyTask {
     public void doDailyTask() {
         try {
             dailyTasks.forEach(task -> {
-                log.debug("------{}开始------", task.getName());
+                log.info("------{}开始------", task.getName());
                 try {
                     task.run();
                 } catch (Exception e) {
                     log.error("任务[{}]运行失败", task.getName(), e);
                 }
-                log.debug("------{}结束------\n", task.getName());
+                log.info("------{}结束------\n", task.getName());
                 new SleepTime().sleepDefault();
             });
             log.info("本日任务已全部执行完毕");
