@@ -10,16 +10,13 @@ import io.github.itning.retry.strategy.limit.AttemptTimeLimiters;
 import io.github.itning.retry.strategy.stop.StopStrategies;
 import io.github.itning.retry.strategy.wait.WaitStrategies;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
-import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.utils.HttpUtils;
 
-import java.net.Proxy;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -35,32 +32,19 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractPush implements Push, RetryListener {
 
     private final Retryer<JsonObject> retryer;
-    protected final OkHttpClient proxyClient;
+    protected final RequestConfig requestConfig;
 
     public AbstractPush() {
-        // 强制使用TLS1.2
-        ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
-                .cipherSuites(
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
-                .build();
 
-        Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
-        proxyClient = HttpUtils.client.newBuilder()
-                .proxy(proxy)
-                .connectionSpecs(Collections.singletonList(spec))
-                .build();
+        HttpHost proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
+        RequestConfig.Builder builder = RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setConnectionRequestTimeout(5000)
+                .setSocketTimeout(10000);
+        if (null != proxy) {
+            builder.setProxy(proxy);
+        }
+        requestConfig = builder.build();
 
         retryer = RetryerBuilder.<JsonObject>newBuilder()
                 // 出现异常进行重试
@@ -116,7 +100,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     }
 
     private JsonObject post(String url, String content) {
-        return HttpUtils.doPost(url, content, null, proxyClient);
+        return HttpUtils.doPost(url, content, null, requestConfig);
     }
 
     /**
