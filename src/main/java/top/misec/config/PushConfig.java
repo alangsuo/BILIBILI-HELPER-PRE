@@ -1,23 +1,15 @@
 package top.misec.config;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-
-import org.apache.commons.lang3.StringUtils;
-
 import lombok.Data;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 import top.misec.push.Push;
-import top.misec.push.impl.DingTalkPush;
-import top.misec.push.impl.DingTalkSecretPush;
-import top.misec.push.impl.PushPlusPush;
-import top.misec.push.impl.ServerChanPush;
-import top.misec.push.impl.ServerChanTurboPush;
-import top.misec.push.impl.TelegramCustomUrlPush;
-import top.misec.push.impl.TelegramPush;
-import top.misec.push.impl.WeComAppPush;
-import top.misec.push.impl.WeComPush;
+import top.misec.push.impl.*;
 import top.misec.push.model.PushMetaInfo;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 
 /**
  * pushconfig ddd .
@@ -151,22 +143,21 @@ public class PushConfig {
         }
     }
 
-    public Proxy getProxy() {
+    public HttpHost getProxy() {
         if (null == PROXY_PORT || PROXY_PORT.equals(0)) {
-            return Proxy.NO_PROXY;
+            return null;
         }
 
         if (StringUtils.isNotBlank(PROXY_HTTP_HOST)) {
-            InetSocketAddress address = new InetSocketAddress(PROXY_HTTP_HOST, PROXY_PORT);
-            return new Proxy(Proxy.Type.HTTP, address);
+            return new HttpHost(PROXY_HTTP_HOST, PROXY_PORT, "http");
         }
 
         if (StringUtils.isNotBlank(PROXY_SOCKET_HOST)) {
             InetSocketAddress address = new InetSocketAddress(PROXY_SOCKET_HOST, PROXY_PORT);
-            return new Proxy(Proxy.Type.SOCKS, address);
+            return new HttpHost(PROXY_SOCKET_HOST, PROXY_PORT, "socket");
         }
 
-        return Proxy.NO_PROXY;
+        return null;
     }
 
     @Getter

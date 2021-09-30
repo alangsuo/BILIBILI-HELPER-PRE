@@ -10,13 +10,13 @@ import io.github.itning.retry.strategy.limit.AttemptTimeLimiters;
 import io.github.itning.retry.strategy.stop.StopStrategies;
 import io.github.itning.retry.strategy.wait.WaitStrategies;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import top.misec.config.ConfigLoader;
 import top.misec.push.model.PushMetaInfo;
 import top.misec.push.model.PushResult;
 import top.misec.utils.HttpUtils;
 
-import java.net.Proxy;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -32,13 +32,19 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractPush implements Push, RetryListener {
 
     private final Retryer<JsonObject> retryer;
-    protected final OkHttpClient proxyClient;
+    protected final RequestConfig requestConfig;
 
     public AbstractPush() {
-        Proxy proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
-        proxyClient = HttpUtils.client.newBuilder()
-                .proxy(proxy)
-                .build();
+
+        HttpHost proxy = ConfigLoader.helperConfig.getPushConfig().getProxy();
+        RequestConfig.Builder builder = RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setConnectionRequestTimeout(5000)
+                .setSocketTimeout(10000);
+        if (null != proxy) {
+            builder.setProxy(proxy);
+        }
+        requestConfig = builder.build();
 
         retryer = RetryerBuilder.<JsonObject>newBuilder()
                 // 出现异常进行重试
@@ -60,7 +66,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     public final PushResult doPush(PushMetaInfo metaInfo, String content) {
         String url = generatePushUrl(metaInfo);
         assert null != url : "推送URL不能为空";
-        List<String> pushList = segmentation(metaInfo,content);
+        List<String> pushList = segmentation(metaInfo, content);
         PushResult pushResult = PushResult.success();
         for (String pushItemContent : pushList) {
             String pushContent = generatePushBody(metaInfo, pushItemContent);
@@ -94,7 +100,7 @@ public abstract class AbstractPush implements Push, RetryListener {
     }
 
     private JsonObject post(String url, String content) {
-        return HttpUtils.doPost(url, content, null, proxyClient);
+        return HttpUtils.doPost(url, content, null, requestConfig);
     }
 
     /**
@@ -131,7 +137,7 @@ public abstract class AbstractPush implements Push, RetryListener {
      * @param pushBody 消息内容
      * @return 分割结果，默认不分割
      */
-    protected List<String> segmentation(PushMetaInfo metaInfo,String pushBody) {
+    protected List<String> segmentation(PushMetaInfo metaInfo, String pushBody) {
         return Collections.singletonList(pushBody);
     }
 
