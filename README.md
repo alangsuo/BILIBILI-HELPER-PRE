@@ -50,22 +50,22 @@ BILIBILI-HELPER
 # 目录
 
 - [目录](#目录)
-  - [使用说明](#使用说明)
-    - [获取执行所需的 cookies](#获取执行所需的-cookies)
-    - [一、快速使用](#一快速使用)
-    - [二、使用 Docker](#二使用-docker)
-    - [三、使用 腾讯云函数](#三使用-腾讯云函数)
-    - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
-    - [五、使用青龙管理面板](#四使用青龙管理面板)
-    - [自定义功能配置](#自定义功能配置)
-      - [配置文件参数](#配置文件参数)
-  - [免责声明](#免责声明)
-  - [API 参考列表](#api-参考列表)
-  - [基于本项目的衍生项目](#基于本项目的衍生项目)
-  - [致谢](#致谢)
-  - [讨论群](#讨论群)
-  - [License](#license)
-  - [Stargazers over time](#stargazers-over-time)
+    - [使用说明](#使用说明)
+        - [获取执行所需的 cookies](#获取执行所需的-cookies)
+        - [一、快速使用](#一快速使用)
+        - [二、使用 Docker](#二使用-docker)
+        - [三、使用 腾讯云函数](#三使用-腾讯云函数)
+        - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
+        - [五、使用青龙管理面板](#四使用青龙管理面板)
+        - [自定义功能配置](#自定义功能配置)
+            - [配置文件参数](#配置文件参数)
+    - [免责声明](#免责声明)
+    - [API 参考列表](#api-参考列表)
+    - [基于本项目的衍生项目](#基于本项目的衍生项目)
+    - [致谢](#致谢)
+    - [讨论群](#讨论群)
+    - [License](#license)
+    - [Stargazers over time](#stargazers-over-time)
 
 ## 使用说明
 
@@ -77,7 +77,7 @@ BILIBILI-HELPER
 
 ps:cookie 和 ua 只需要选中，右键复制值即可。
 
-![准备cookie](docs/image/ck.png)
+![准备cookie](docs/IMG/ck.png)
 
 [1]: https://www.bilibili.com/
 
@@ -206,7 +206,7 @@ ps ：需要本地有 java8 执行环境。
 | --------------- | ---------------------- | ------------ | -------------------------------------------------------------------------------------- |
 | server 酱       | SC_KEY                 | str          | Server 酱老版本 key，SCU 开头的                                                        |
 | server 酱 turbo | SCT_KEY                | str          | Server 酱 Turbo 版本 key，SCT 开头的                                                   |
-| Telegram        | TG_USE_CUSTOM_URL      | [false,true] | 是否开启 TGbotAPI 反代                                                                 |
+| Telegram        | TG_USE_CUSTOM_URL      | [false,true] | 是否开启 TGbot API 反代                                                                 |
 | Telegram        | TG_BOT_TOKEN           | str          | TG 推送 bot_token,若开启反代，需填写完整反代 url `https://api.mytelegram.org/botTOKEN` |
 | Telegram        | TG_USER_ID             | str          | TG 推送的用户/群组/频道 ID                                                             |
 | PUSH PLUS       | PUSH_PLUS_TOKEN        | str          | push plus++推送的`token`                                                               |
@@ -223,6 +223,7 @@ ps ：需要本地有 java8 执行环境。
 | 企业微信应用    | WE_COM_APP_MEDIA_ID    | str          | 缩略图的 media_id, 可以通过素材[管理接口][5]获得。(为空发送**文本消息**)               |
 
 [4]: https://work.weixin.qq.com/wework_admin/frame#profile
+
 [5]: https://work.weixin.qq.com/wework_admin/frame#material/image
 
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
@@ -255,7 +256,7 @@ ps ：需要本地有 java8 执行环境。
 
 感谢 JetBrains 对本项目的支持。
 
-[![JetBrains](docs/image/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER)
+[![JetBrains](docs/image/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER-PRE)
 
 ## 讨论群
 
