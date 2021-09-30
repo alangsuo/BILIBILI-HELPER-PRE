@@ -51,7 +51,7 @@ public class WeComAppPush extends AbstractPush {
 
     @Override
     protected String generatePushBody(PushMetaInfo metaInfo, String content) {
-        content = content.replaceAll("\r\n\r", "").replaceAll("\n\n\n", "\n").replaceAll("\n\n", "\n");
+        content = content.replaceAll("\r","").replaceAll("\n\n","\n");
         WeComMessageSendRequest request = new WeComMessageSendRequest();
         request.setToUser(metaInfo.getToUser());
         request.setAgentId(metaInfo.getAgentId());
@@ -67,7 +67,7 @@ public class WeComAppPush extends AbstractPush {
             Articles.setAuthor("海尔破小助手");
             Articles.setTitle("BILIBILI-HELPER任务简报");
             Articles.setDigest(content);
-            Articles.setContent(content.replaceAll("\n", "<br>"));
+            Articles.setContent(content.replaceAll("\n","<br>"));
             Articles.setThumb_media_id(metaInfo.getMediaid());
             WeComMessageSendRequest.Mpnews Mpnews = new WeComMessageSendRequest.Mpnews();
             Mpnews.setArticles(Collections.singletonList(Articles));
