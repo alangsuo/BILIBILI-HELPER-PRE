@@ -12,7 +12,7 @@ ps:只需要`BILIBILI-HELPER-v2.x.x.jar`和`config.json`这两个文件。
 
 新建一个定时任务，并执行。此任务可执行完可删除。
 
-![](IMG/qinglong/1.png)
+![](image/qinglong/1.png)
 
 - **任务名：** install openjdk
 
@@ -26,7 +26,7 @@ ps:只需要`BILIBILI-HELPER-v2.x.x.jar`和`config.json`这两个文件。
 
 ### 创建海尔破定时任务
 
-![](IMG/qinglong/2.png)
+![](image/qinglong/2.png)
 
 - **任务名：** 运行海尔破
 
