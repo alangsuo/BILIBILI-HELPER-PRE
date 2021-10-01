@@ -110,7 +110,8 @@ ps ：需要本地有 java8 执行环境。
 
 ### 五、使用青龙管理面板
 
-请参考[青龙管理面板部署](docs/qinglong.md)
+- ** 青龙拉取命令 `ql raw https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER-PRE/main/bilibili_helper.sh`
+- **请参考[青龙管理面板部署](docs/qinglong.md)
 
 ## 自定义功能配置
 
