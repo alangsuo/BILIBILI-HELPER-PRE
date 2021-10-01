@@ -21,11 +21,7 @@ latest=$(curl -s https://api.github.com/repos/JunzhouLiu/BILIBILI-HELPER-PRE/rel
 latest_VERSION=`echo $latest | jq '.tag_name' | sed 's/v\|"//g'`
 echo "最新版本:"$latest_VERSION
 download_url=`echo $latest | jq '.assets[0].browser_download_url' | sed 's/"//g'`
-echo "https://ghproxy.com/$download_url"
-function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
-
-if version_lt $VERSION $latest_VERSION; then
-   echo "有新版本，开始更新"
+download(){
    curl -L -o "./BILIBILI-HELPER.zip" "https://ghproxy.com/$download_url"
    mkdir ./tmp
    echo "正在解压文件......."
@@ -39,7 +35,20 @@ if version_lt $VERSION $latest_VERSION; then
    rm -rf tmp
    rm -rf BILIBILI-HELPER.zip
    echo "更新完成"
+}
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+if version_lt $VERSION $latest_VERSION; then
+   echo "有新版本，开始更新"
+   download
    else
    echo "已经是最新版本，不需要更新！！！"
 fi
-java -jar BILIBILI-HELPER.jar config.json
+if [ ! -f "/ql/scripts/bilibili/BILIBILI-HELPER.jar" ];then
+   echo "没找到BILIBILI-HELPER.jar，开始下载.........."
+  download
+fi
+files=$(ls *.json)
+for file_name in $files ;do
+   echo $file_name
+	java -jar BILIBILI-HELPER.jar $file_name
+done
