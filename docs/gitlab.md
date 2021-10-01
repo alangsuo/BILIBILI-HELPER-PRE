@@ -8,7 +8,7 @@
 
 ### 2. 变量配置
 
-![](image/gitlab/1.png)
+![](images/gitlab/1.png)
 在你刚刚创建的空白项目页面中，依次按上图序号点击，进行变量的配置。
 
 环境变量：
@@ -71,14 +71,14 @@
 
 **如果不知道自己的 UA 之类数据，以及看不懂每个值的含义，可以[点击进入配置自动生成页面](https://utils.misec.top/index) 此页面暂不支持生成 v2.0.0 的配置**
 
-![](image/gitlab/2.png)
+![](images/gitlab/2.png)
 
 完成后界面如下图所示：
-![](image/gitlab/3.png)
+![](images/gitlab/3.png)
 
 ### 3. 配置 CI/CD 流水线
 
-![](image/gitlab/0.png)
+![](images/gitlab/0.png)
 依次按上图序号点击，创建一个新的 CI/CD 流水线。
 
 如果你希望 CI/CD 流水线内容始终跟随[上游](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)，直接将以下内容复制覆盖粘贴到编辑器中。
@@ -94,18 +94,18 @@ include:
 
 之后会提示`您的更改已成功提交`，并自动触发一次流水线运行，你可以点击`查看流水线`查询流水线运行日志。
 
-![](image/gitlab/4.png)
+![](images/gitlab/4.png)
 
 最终流水线提示`已通过`，并一切按配置正常工作，则成功。否则请检查上述操作中是否有疏漏之处。
 
 ### 4. 配置定时运行
 
-![](image/gitlab/5.png)
+![](images/gitlab/5.png)
 依次按上图序号点击，创建一个新的流水线计划。
 
 随后按下图说明创建：
-![](image/gitlab/6.png)
+![](images/gitlab/6.png)
 
 创建成功，可查看你刚刚配置完成的流水线计划，下一次运行的时间等。点击右方最左边▶️按钮还可以立即触发一次流水线运行。
 
-![](image/gitlab/7.png)
+![](images/gitlab/7.png)

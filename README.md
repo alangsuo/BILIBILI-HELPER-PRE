@@ -77,7 +77,7 @@ BILIBILI-HELPER
 
 ps:cookie 和 ua 只需要选中，右键复制值即可。
 
-![准备cookie](docs/image/ck.png)
+![准备cookie](docs/images/ck.webp)
 
 [1]: https://www.bilibili.com/
 
@@ -228,7 +228,7 @@ ps ：需要本地有 java8 执行环境。
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
 - **tips:钉钉推送密钥可不填，不填仅用关键词验证。**
 - **获取 media_id**
-- ![获取media_id](docs/image/media_id.png)
+- ![获取media_id](docs/images/media_id.png)
 
 ## 免责声明
 
@@ -255,13 +255,13 @@ ps ：需要本地有 java8 执行环境。
 
 感谢 JetBrains 对本项目的支持。
 
-[![JetBrains](docs/image/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER-PRE)
+[![JetBrains](docs/images/jetbrains.svg)](https://www.jetbrains.com/?from=BILIBILI-HELPER-PRE)
 
 ## 讨论群
 
 qq 群二维码
 
-![qq群二维码](docs/image/qqgroup.png)
+![qq群二维码](docs/images/qqgroup.png)
 
 [也可点击此处一键加群](https://qm.qq.com/cgi-bin/qm/qr?k=m_M1Fydi3MvrVAEM0Sp6hDfZF4N2SpXU&jump_from=webapi)
 

@@ -14,10 +14,10 @@
 
 ### 2. 配置云函数
 
-![](image/scf/0.png)
+![](images/scf/0.png)
 点击新建按钮，新建一个云函数，选择自定义创建，并填写以下信息：
 
-![](image/scf/1.png)
+![](images/scf/1.png)
 
 #### 基础配置
 
@@ -43,7 +43,7 @@
 
 #### 环境配置
 
-![](image/scf/2.png)
+![](images/scf/2.png)
 
 - **内存：** 建议不低于 256MB
 
@@ -110,7 +110,7 @@
 
 ### 触发器配置
 
-![](image/scf/3.png)
+![](images/scf/3.png)
 
 创建触发器选择自定义创建。
 
@@ -127,8 +127,8 @@
 
 ### 更新部署
 
-![](image/scf/4.png)
-![](image/scf/5.png)
+![](images/scf/4.png)
+![](images/scf/5.png)
 
 点击函数列表函数名，进入已创建的函数，点击函数管理。选择函数代码，上传新版本的 jar 包，点击部署即可。
 
