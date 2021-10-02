@@ -3,32 +3,53 @@ image: ubuntu:latest
 variables:
   REPO_SOURCE: "JunzhouLiu/BILIBILI-HELPER-PRE" # Expect to be at GitHub
   PACK_NAME: "BILIBILI-HELPER"
-  VERSION: "" # tag names from https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/tags or "latest" to use the latest commit
+  VERSION: "" # Tag names from https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/tags or "latest" to use the latest commit
   USE_MAVEN: "" # "TRUE" to force packing using maven when running
+  BUILD_BRANCH: "" # Empty to be the default branch
   CONFIG: ""
   # It's not recommended to change the following variables' values
+  MAVEN_OPTS: "-Dmaven.test.skip=true -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   LANGUAGE: "zh_CN:zh"
   LANG: "zh_CN.UTF-8"
   DEBIAN_FRONTEND: "noninteractive"
 
+cache:
+  # Keep cache across branch
+  key: "$CI_JOB_NAME"
+  paths:
+    - .m2/repository
+    - .apt
+    - repo_backup
+    - jar_backup
+
 stages:
   - run
+
+before_script:
+  # CONFIG is necessary
+  - if [ -z "${CONFIG}" ]; then 
+      echo "Missing variable 'CONFIG'.";
+      exit 1;
+    fi
 
 run:
   stage: run
   script:
-    # CONFIG is necessary
-    - if [ -z "${CONFIG}" ]; then 
-        echo "Missing variable 'CONFIG'.";
-        exit 1;
-      fi
+    # Configure apt caching
+    - export APT_DIR=$CI_PROJECT_DIR/.apt && export APT_STATE_LISTS=$APT_DIR/lists && export APT_CACHE_ARCHIVES=$APT_DIR/archives
+    - printf "dir::state::lists    ${APT_STATE_LISTS};\ndir::cache::archives    ${APT_CACHE_ARCHIVES};\n" > /etc/apt/apt.conf
+    - mkdir -p "${APT_STATE_LISTS}/partial" && mkdir -p "${APT_CACHE_ARCHIVES}/partial"
     # Install dependencies
     - apt-get update && apt-get install openjdk-8-jdk wget locales unzip -y
     # Generate locale to resolve the mistaken Chinese code when pushing messages
     - locale-gen zh_CN.UTF-8
-    # Get the latest version number if not specify VERSION
+    # Get the latest version number if not specify VERSION, if get failed use latest
     - if [ -z "${VERSION}" ]; then
-        VERSION=`wget -O - "https://api.github.com/repos/${REPO_SOURCE}/releases/latest" |  grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`;
+        if wget -O "/tmp/version" "https://api.github.com/repos/${REPO_SOURCE}/releases/latest"; then
+          VERSION=`cat /tmp/version |  grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`;
+        else
+          VERSION="latest";
+        fi;
       fi
     - echo "Package ${PACK_NAME} Uses Version ${VERSION}, Source from https://github.com/${REPO_SOURCE}."
     # If possible, directly get the latest release package from GitHub
@@ -42,19 +63,47 @@ run:
           fi;
         fi;
       fi
-    # Otherwise, pack the jar file using maven
+    # Otherwise, pack the jar file using maven, if get upstream failed use cached
     - if [ -z "`ls ${PACK_NAME}-*.jar 2> /dev/null`" ]; then
-        apt-get install git maven -y;
-        git clone https://github.com/${REPO_SOURCE} repo;
-        cd repo;
-        if [ ! "${VERSION}" = "latest" ]; then
-          git reset --hard ${VERSION};
+        apt-get install git -y;
+        if git clone https://github.com/${REPO_SOURCE} repo; then
+          rm -rf repo_backup;
+          cp -r repo repo_backup;
+        else
+          echo "Warning... Upstream Unavailable, Using Cached Repo or Jar...";
+          if [ -d "repo_backup" ]; then
+            cp -r repo_backup repo;
+          fi;
         fi;
-        mvn -B package --file pom.xml -Dmaven.test.skip=true;
-        mv -f target/${PACK_NAME}-*.jar ..;
-        cd ..;
+        if [ -d "repo" ]; then
+          cd repo;
+          if [ ! -z "${BUILD_BRANCH}" ]; then
+            git checkout ${BUILD_BRANCH};
+          fi;
+          if [ ! "${VERSION}" = "latest" ]; then
+            git reset --hard ${VERSION};
+          fi;
+          apt-get install maven -y;
+          mvn -B package --file pom.xml;
+          mv -f target/${PACK_NAME}-*.jar ..;
+          cd ..;
+        else
+          if [ ! -z "`ls jar_backup/${PACK_NAME}-*.jar 2> /dev/null`" ]; then
+            cp jar_backup/${PACK_NAME}-*.jar .;
+          else
+            echo "Both Upstream and Cached Repo or Jar are Unavailable!";
+            exit 1;
+          fi;
+        fi;
       fi
     # Export the config from environment variable to file
     - echo ${CONFIG} > config.json
     # Start running
     - java -jar ${PACK_NAME}-*.jar
+    # Backup jar file
+    - mkdir -p jar_backup
+    - rm -rf jar_backup/*
+    - cp ${PACK_NAME}-*.jar jar_backup/
+  artifacts:
+    paths:
+      - "*.jar"

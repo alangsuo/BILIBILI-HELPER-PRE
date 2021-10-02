@@ -19,6 +19,7 @@
 |   `VERSION`   |  否  | `不填或空自动使用最新发布版本；如指定，则填写对应tag号；如使用仓库中最新commit，请填写latest。` |
 |  `USE_MAVEN`  |  否  | `值为TRUE时强制每次都打包；其他值或不填首先会尝试从GitHub仓库release中下载zip包，失败则打包。` |
 | `REPO_SOURCE` |  否  | `必为GitHub仓库，不填或空默认为本仓库（JunzhouLiu/BILIBILI-HELPER-PRE）,格式为 ID/仓库名。`  |
+| `BUILD_BRANCH`|  否  | `每次使用Maven打包时的仓库分支名，不填或空默认为REPO_SOURCE中对应仓库设置的的默认分支。`       |
 
 **config 样例**
 
