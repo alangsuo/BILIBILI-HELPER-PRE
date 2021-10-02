@@ -1,7 +1,5 @@
 <div align="center">
-<h1 align="center">
-BILIBILI-HELPER
-</h1>
+<h1 align="center">BILIBILI-HELPER</h1>
 
 [![GitHub stars](https://img.shields.io/github/stars/JunzhouLiu/BILIBILI-HELPER-PRE?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/JunzhouLiu/BILIBILI-HELPER-PRE?style=flat-square)](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/network)
@@ -17,14 +15,11 @@ BILIBILI-HELPER
 
 ## 工具简介
 
-这是一个利用 Linux Crontab ,云函数， Docker 等方式实现哔哩哔哩（Bilibili）每日任务投币，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到，简单配置即可每日轻松获取 65 经验值，快来和我一起成为 Lv6
-吧\~\~\~\~
+这是一个利用 Linux 定时任务，Java Jar ,云函数， Docker ，青龙面板等方式完成哔哩哔哩（Bilibili）每日投币，赛事预测，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到等任务，简单配置即可每日轻松获取 65 经验值，快来和我一起成为 Lv6 吧 \~\~\~\~
 
 **如果觉得好用，顺手点个 Star 吧 ❤**
 
 **仓库地址：[JunzhouLiu/BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)**
-
-**B 站赛事预测已集成到本工具中，每天自动参与 KPL，LPL 赛事预测，赚取硬币。**
 
 **请不要滥用相关 API，让我们一起爱护 B 站 ❤**
 
@@ -43,39 +38,36 @@ BILIBILI-HELPER
 - [x] 支持推送执行结果到微信，钉钉，飞书等。
 - [x] 支持赛事预测。_【支持反向预测】_
 
-[点击快速开始使用](#使用说明)
+[点击快速开始使用](#一快速使用)
 
 [点击快速查看自定义功能配置](#自定义功能配置)
 
 # 目录
 
 - [目录](#目录)
-  - [使用说明](#使用说明)
+  - [开始使用](#开始使用)
     - [获取执行所需的 cookies](#获取执行所需的-cookies)
     - [一、快速使用](#一快速使用)
     - [二、使用 Docker](#二使用-docker)
-    - [三、使用 腾讯云函数](#三使用-腾讯云函数)
+    - [三、使用腾讯云函数](#三使用腾讯云函数)
     - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
     - [五、使用青龙管理面板](#五使用青龙管理面板)
   - [自定义功能配置](#自定义功能配置)
     - [配置文件参数](#配置文件参数)
   - [免责声明](#免责声明)
   - [API 参考列表](#api-参考列表)
-  - [基于本项目的衍生项目](#基于本项目的衍生项目)
   - [致谢](#致谢)
   - [讨论群](#讨论群)
   - [License](#license)
   - [Stargazers over time](#stargazers-over-time)
 
-## 使用说明
+## 开始使用
 
 ### 获取执行所需的 cookies
 
 1. 浏览器打开并登录 [bilibili][1] 网站
 2. 按 F12 打开 「开发者工具」 打开 网络/NetWork -> 找到并点击 nav 请求
-3. 下拉请求详情，复制完整的 cookie 和 UA 备用。
-
-ps:cookie 和 ua 只需要选中，右键复制值即可。
+3. 下拉请求详情，复制完整的 cookie 和 UA 备用。cookie 和 ua 只需要选中，右键复制值即可。
 
 ![准备cookie](docs/images/ck.webp)
 
@@ -83,39 +75,38 @@ ps:cookie 和 ua 只需要选中，右键复制值即可。
 
 ### 一、快速使用
 
+- **需要本地有 Java8 执行环境。**
+
 1. 点击 [BILIBILI-HELPER/release][3]，下载已发布的版本，解压后压缩包内应该包含一个 jar 包和一份`config.json`文件。
-2. 将获取的到的 cookie 字符串和 ua 字符串填写到 config.json 中的 `biliCookies`和`userAgent`字段值中。
+2. 将获取的到的 `Cookie` 字符串和 UA 字符串填写到 `config.json` 中的 `biliCookies`和`userAgent`字段值中。
+3. 在当前目录执行 `java -jar BILIBILI-HELPER.jar` 即可开始执行任务。如果 `config.json` 和 jar 包不在同一目录，可通过例如 `java -jar BILIBILI-HELPER.jar /tmp/config.json` 的方式指定特定路径的配置文件。
 
 [3]: https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/releases/latest
 
-3. 在当前目录执行 `java -jar BILIBILI-HELPER.jar` 即可开始执行任务（需要保证`config.json`文件存在并且配置好了 ck 等）。
-
-ps ：需要本地有 java8 执行环境。
-
 ### 二、使用 Docker
-
-请自行参阅 [基于本项目的衍生项目](#基于本项目的衍生项目)。
 
 - **基于本项目的 docker 封装项目：[SuperNG6/docker-bilibili-helper](https://github.com/SuperNG6/docker-bilibili-helper)**
 
 - **基于本项目的 docker 镜像：[superng6/bilibili-helper](https://hub.docker.com/r/superng6/bilibili-helper)**
 
-### 三、使用 腾讯云函数
+### 三、使用腾讯云函数
 
-请参考[腾讯云函数部署](docs/scf.md)
+- **请参考[腾讯云函数部署](docs/scf.md)**
 
 ### 四、使用 GitLab CI/CD
 
-请参考[GitLab CI/CD 部署](docs/gitlab.md)
+- **请参考[GitLab CI/CD 部署](docs/gitlab.md)**
 
 ### 五、使用青龙管理面板
 
-- ** 青龙拉取命令 `ql raw https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER-PRE/main/bilibili_helper.sh`
-- **请参考[青龙管理面板部署](docs/qinglong.md)
+- **青龙一键拉取命令 `ql raw https://raw.githubusercontent.com/JunzhouLiu/BILIBILI-HELPER-PRE/main/bilibili_helper.sh`**
+- **[青龙管理面板部署](docs/qinglong.md)**
 
 ## 自定义功能配置
 
-配置文件示例：
+注意：通常配置文件需要和 jar 包放置在同一目录，如果不在同一目录，请在执行命令后指定配置文件路径。
+
+**配置文件示例：**
 
 ```json
 {
@@ -164,17 +155,20 @@ ps ：需要本地有 java8 执行环境。
 }
 ```
 
-**如果不知道自己的浏览器 UA 之类数据，以及看不懂每个值的含义，可以采用**[配置生成网页](https://utils.misec.top/index)**生成自己的配置（暂未支持 v2.0.0 版本）**
+**如果不知道自己的浏览器 UA 之类数据，以及看不懂每个值的含义，可以采用[配置生成网页](https://utils.misec.top/index)生成自己的配置（暂未支持 v2.0.x 版本）**
 
 ### 配置文件参数
 
 **biliVerify**
+
+
 
 | Key(字段)   | Value(值) | 说明                                       |
 | ----------- | --------- | ------------------------------------------ |
 | biliCookies | str       | bilibili 的 cookie，获取方式请查看使用说明 |
 
 **taskConfig**
+
 
 | Key(字段)            | Value(值)            | 说明                                                                               |
 | -------------------- | -------------------- | ---------------------------------------------------------------------------------- |
@@ -201,7 +195,8 @@ ps ：需要本地有 java8 执行环境。
 - **默认配置文件是给开发者充电，给自己充电或者给其他 up 充电，请改为对应的 uid**
 - **userAgent 建议使用你自己真实常用浏览器 UA，如果不知道自己的 UA 请到[配置生成页面查看你的 UA](https://utils.misec.top/index)**
 
-  **pushConfig**
+**pushConfig**
+
 
 | 字段类型        | Key(字段)              | Value(值)    | 说明                                                                                   |
 | --------------- | ---------------------- | ------------ | -------------------------------------------------------------------------------------- |
@@ -228,8 +223,7 @@ ps ：需要本地有 java8 执行环境。
 
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
 - **tips:钉钉推送密钥可不填，不填仅用关键词验证。**
-- **获取 media_id**
-- ![获取media_id](docs/images/media_id.png)
+- **获取 `media_id`的方式请参考`docs/images/media_id.png`**
 
 ## 免责声明
 
@@ -243,14 +237,6 @@ ps ：需要本地有 java8 执行环境。
 
 - [SocialSisterYi/bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
 - [happy888888/BiliExp](https://github.com/happy888888/BiliExp)
-
-## 基于本项目的衍生项目
-
-- **基于本项目的 docker 封装项目：[SuperNG6/docker-bilibili-helper](https://github.com/SuperNG6/docker-bilibili-helper)**
-
-- **基于本项目的 docker 镜像：[superng6/bilibili-helper](https://hub.docker.com/r/superng6/bilibili-helper)**
-
-- **基于本项目的 k8s 项目：[yangyang0507/k8s-bilibili-helper](https://github.com/yangyang0507/k8s-bilibili-helper)**
 
 ## 致谢
 
