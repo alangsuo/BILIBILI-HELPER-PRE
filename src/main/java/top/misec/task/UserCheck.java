@@ -1,15 +1,16 @@
 package top.misec.task;
 
+import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
+import static top.misec.task.TaskInfoHolder.userInfo;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.pojo.userinfobean.UserData;
 import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtils;
-
-import static top.misec.task.TaskInfoHolder.STATUS_CODE_STR;
-import static top.misec.task.TaskInfoHolder.userInfo;
 
 /**
  * 登录检查.
@@ -35,7 +36,7 @@ public class UserCheck implements Task {
                 log.info("Cookies有效，登录成功");
             } else {
                 log.debug(String.valueOf(userJson));
-                log.warn("Cookies可能失效了,请仔细检查配置中的DEDEUSERID SESSDATA BILI_JCT三项的值是否正确、过期");
+                log.warn("Cookies可能失效了,请仔细检查配置中的Cookies是否有效");
             }
 
             log.info("用户名称: {}", HelpUtil.userNameEncode(userInfo.getUname()));

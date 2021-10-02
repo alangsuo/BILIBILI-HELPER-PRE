@@ -30,19 +30,14 @@ public class CoinAdd implements Task {
      * 检查是否投币.
      *
      * @param bvid av号
-     * @return 返回是否投过硬币了. true没有投币，false透投过了。
+     * @return 返回是否投过硬币了. true没有投币，false投过了。
      */
     static boolean isCoinAdded(String bvid) {
         String urlParam = "?bvid=" + bvid;
         JsonObject result = HttpUtils.doGet(ApiList.IS_COIN + urlParam);
 
         int multiply = result.getAsJsonObject("data").get("multiply").getAsInt();
-        if (multiply > 0) {
-            log.info("之前已经为av{}投过{}枚硬币啦", bvid, multiply);
-            return false;
-        } else {
-            return true;
-        }
+        return multiply <= 0;
     }
 
     @Override
