@@ -29,5 +29,6 @@ public class UnitTest {
 
     //    new MatchGame().run();
         //ServerPush.doServerPush();
+        new UserCheck().run();
     }
 }
