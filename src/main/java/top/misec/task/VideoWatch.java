@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.misec.api.ApiList;
 import top.misec.api.OftenApi;
 import top.misec.config.ConfigLoader;
+import top.misec.utils.HelpUtil;
 import top.misec.utils.HttpUtils;
 
 /**
@@ -63,16 +64,14 @@ public class VideoWatch implements Task {
      * @param bvid 要分享的视频bvid.
      */
     public void dailyAvShare(String bvid) {
-        String requestBody = "bvid=" + bvid + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
-        JsonObject result = HttpUtils.doPost((ApiList.AV_SHARE), requestBody);
-
+        String requestBody = "aid=" + HelpUtil.bv2av(bvid) + "&csrf=" + ConfigLoader.helperConfig.getBiliVerify().getBiliJct();
+        JsonObject result = HttpUtils.doPost(ApiList.AV_SHARE, requestBody);
         String videoTitle = OftenApi.getVideoTitle(bvid);
-
         if (result.get(STATUS_CODE_STR).getAsInt() == 0) {
             log.info("视频: {} 分享成功", videoTitle);
         } else {
-            log.warn("视频分享失败，原因: {}", result.get("message").getAsString());
-            log.warn("如果是csrf校验失败请检查BILI_JCT参数是否正确或者失效");
+            log.info("视频分享失败，原因: {}", result.get("message").getAsString());
+            log.info("如果出现 csrf 校验失败 提示，请查看常用浏览器中的cookie并替换");
         }
     }
 }
