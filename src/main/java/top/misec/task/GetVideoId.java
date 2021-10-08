@@ -1,16 +1,17 @@
 package top.misec.task;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import lombok.Data;
 import top.misec.api.ApiList;
 import top.misec.config.ConfigLoader;
 import top.misec.utils.HttpUtils;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * GetVideoId .
@@ -27,7 +28,6 @@ public class GetVideoId {
     public GetVideoId() {
         this.followUpVideoList = queryDynamicNew();
         this.rankVideoList = regionRanking();
-        videoUpdate("14602398");
         if (this.followUpVideoList.size() > 0) {
             this.followUpVideoQueue = new ArrayBlockingQueue<>(followUpVideoList.size());
             this.followUpVideoQueue.addAll(followUpVideoList);
@@ -96,7 +96,7 @@ public class GetVideoId {
      * @return regionId 分区id
      */
     public int randomRegion() {
-        int[] arr = {1, 3, 4, 5, 160, 22, 119};
+        int[] arr = {1, 3, 4, 5, 36, 188, 160, 22, 119};
         return arr[(int) (Math.random() * arr.length)];
     }
 
