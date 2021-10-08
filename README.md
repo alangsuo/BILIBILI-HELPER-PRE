@@ -15,7 +15,8 @@
 
 ## 工具简介
 
-这是一个利用 Linux 定时任务，Java Jar ,云函数， Docker ，青龙面板等方式完成哔哩哔哩（Bilibili）每日投币，赛事预测，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到等任务，简单配置即可每日轻松获取 65 经验值，快来和我一起成为 Lv6 吧 \~\~\~\~
+这是一个利用 Linux 定时任务，Java Jar ,云函数， Docker ，青龙面板等方式完成哔哩哔哩（Bilibili）每日投币，赛事预测，点赞，分享视频，直播签到，银瓜子兑换硬币，漫画每日签到等任务，简单配置即可每日轻松获取 65
+经验值，快来和我一起成为 Lv6 吧 \~\~\~\~
 
 **如果觉得好用，顺手点个 Star 吧 ❤**
 
@@ -45,28 +46,28 @@
 # 目录
 
 - [目录](#目录)
-  - [开始使用](#开始使用)
-    - [获取执行所需的 cookies](#获取执行所需的-cookies)
-    - [一、快速使用](#一快速使用)
-    - [二、使用 Docker](#二使用-docker)
-    - [三、使用腾讯云函数](#三使用腾讯云函数)
-    - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
-    - [五、使用青龙管理面板](#五使用青龙管理面板)
-  - [自定义功能配置](#自定义功能配置)
-    - [配置文件参数](#配置文件参数)
-  - [免责声明](#免责声明)
-  - [API 参考列表](#api-参考列表)
-  - [致谢](#致谢)
-  - [讨论群](#讨论群)
-  - [License](#license)
-  - [Stargazers over time](#stargazers-over-time)
+    - [开始使用](#开始使用)
+        - [获取执行所需的 cookies](#获取执行所需的-cookies)
+        - [一、快速使用](#一快速使用)
+        - [二、使用 Docker](#二使用-docker)
+        - [三、使用腾讯云函数](#三使用腾讯云函数)
+        - [四、使用 GitLab CI/CD](#四使用-gitlab-cicd)
+        - [五、使用青龙管理面板](#五使用青龙管理面板)
+    - [自定义功能配置](#自定义功能配置)
+        - [配置文件参数](#配置文件参数)
+    - [免责声明](#免责声明)
+    - [API 参考列表](#api-参考列表)
+    - [致谢](#致谢)
+    - [讨论群](#讨论群)
+    - [License](#license)
+    - [Stargazers over time](#stargazers-over-time)
 
 ## 开始使用
 
 ### 获取执行所需的 cookies
 
-1. 浏览器打开并登录 [bilibili][1] 网站
-2. 按 F12 打开 「开发者工具」 打开 网络/NetWork -> 找到并点击 nav 请求
+1. 浏览器打开并登录 [bilibili][1] 网站。
+2. 按 F12 打开 「开发者工具」 打开 网络/NetWork -> 找到并点击 nav 请求。
 3. 下拉请求详情，复制完整的 cookie 和 UA 备用。cookie 和 ua 只需要选中，右键复制值即可。
 
 ![准备cookie](docs/images/ck.webp)
@@ -79,7 +80,8 @@
 
 1. 点击 [BILIBILI-HELPER/release][3]，下载已发布的版本，解压后压缩包内应该包含一个 jar 包和一份`config.json`文件。
 2. 将获取的到的 `Cookie` 字符串和 UA 字符串填写到 `config.json` 中的 `biliCookies`和`userAgent`字段值中。
-3. 在当前目录执行 `java -jar BILIBILI-HELPER.jar` 即可开始执行任务。如果 `config.json` 和 jar 包不在同一目录，可通过例如 `java -jar BILIBILI-HELPER.jar /tmp/config.json` 的方式指定特定路径的配置文件。
+3. 在当前目录执行 `java -jar BILIBILI-HELPER.jar` 即可开始执行任务。如果 `config.json` 和 jar
+   包不在同一目录，可通过例如 `java -jar BILIBILI-HELPER.jar /tmp/config.json` 的方式指定特定路径的配置文件。
 
 [3]: https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/releases/latest
 
@@ -161,14 +163,11 @@
 
 **biliVerify**
 
-
-
 | Key(字段)   | Value(值) | 说明                                       |
 | ----------- | --------- | ------------------------------------------ |
 | biliCookies | str       | bilibili 的 cookie，获取方式请查看使用说明 |
 
 **taskConfig**
-
 
 | Key(字段)            | Value(值)            | 说明                                                                               |
 | -------------------- | -------------------- | ---------------------------------------------------------------------------------- |
@@ -191,12 +190,10 @@
 | userAgent            | 浏览器 UA            | 你的浏览器的 UA。                                                                  |
 | skipDailyTask        | [false,true]         | 是否跳过每日任务，默认`true`,如果关闭跳过每日任务，请改为`false`。                 |
 
-- **tips:从 1.0.0 版本开始，随机视频投币有一定的概率会将硬币投给本项目的开发者。**
-- **默认配置文件是给开发者充电，给自己充电或者给其他 up 充电，请改为对应的 uid**
+- **默认配置文件的充电选项配置的是给开发者充电，给自己充电或者给其他 up主充电，请改为对应的 uid**
 - **userAgent 建议使用你自己真实常用浏览器 UA，如果不知道自己的 UA 请到[配置生成页面查看你的 UA](https://utils.misec.top/)**
 
 **pushConfig**
-
 
 | 字段类型        | Key(字段)              | Value(值)    | 说明                                                                                   |
 | --------------- | ---------------------- | ------------ | -------------------------------------------------------------------------------------- |
@@ -219,6 +216,7 @@
 | 企业微信应用    | WE_COM_APP_MEDIA_ID    | str          | 缩略图的 media_id, 可以通过素材[管理接口][5]获得。(为空发送**文本消息**)               |
 
 [4]: https://work.weixin.qq.com/wework_admin/frame#profile
+
 [5]: https://work.weixin.qq.com/wework_admin/frame#material/image
 
 - **tips:`PROXY_HTTP_HOST`和`PROXY_SOCKET_HOST`仅需填写一个。**
@@ -229,9 +227,9 @@
 
 1. 本项目的初衷是为了辅助大家更快的升级到 lv6，在使用的过程中不会记录或上传任何数据，执行过程中的数据均存在你自己的设备上。
 2. 开源的目的单纯是技术分享，所有代码细节都公开，本项目不会增加类似于自动转发抽奖，秒杀，下载版权受限视频等侵犯 UP 主/B 站权益的功能。
-3. 请不要把自己的敏感信息（账号，cookies 等）提供给他人。（**网络安全教育普及任重而道远**）
+3. 请不要把自己的敏感信息（账号，cookies 等）提供给他人或代挂平台，这是很危险的行为。（**网络安全教育普及任重而道远**）
 4. 本工具源码仅在[JunzhouLiu/BILIBILI-HELPER-PRE](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE)开源。
-5. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/LICENSE)，因使用造成的任何损失，纠纷等，和开发者无关，请各位知悉。
+5. 本项目遵守[MIT License](https://github.com/JunzhouLiu/BILIBILI-HELPER-PRE/blob/main/LICENSE)，使用本项目视为用户的个人行为，因使用本工具造成的任何损失，纠纷等，和开发者无关，请各位知悉。
 
 ## API 参考列表
 
